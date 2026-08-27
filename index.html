@@ -1729,3 +1729,327 @@ function processData(data){
         "difficultyHour"
     ).textContent =
         formatNumber(
+            accounting.creditedDifficultyLastHour
+        );
+
+
+    document.getElementById(
+        "sharesDay"
+    ).textContent =
+        formatNumber(
+            accounting.acceptedSharesLastDay
+        );
+
+
+    document.getElementById(
+        "difficultyDay"
+    ).textContent =
+        formatNumber(
+            accounting.creditedDifficultyLastDay
+        );
+
+
+    /* ACTIVITY */
+
+    document.getElementById(
+        "bestSubmission"
+    ).textContent =
+        formatNumber(
+            accounting.bestSubmissionDifficulty
+        );
+
+
+    document.getElementById(
+        "latestShare"
+    ).textContent =
+        accounting.latestShareAt
+        ?
+        new Date(
+            accounting.latestShareAt
+        ).toLocaleString(
+            "es-ES"
+        )
+        :
+        "—";
+
+
+    document.getElementById(
+        "blockCandidates"
+    ).textContent =
+        formatNumber(
+            accounting.blockCandidateCount
+        );
+
+
+    document.getElementById(
+        "expectedPayout"
+    ).textContent =
+        data.expectedPayout === null
+        ?
+        "—"
+        :
+        Number(
+            data.expectedPayout
+        ).toLocaleString(
+            "es-ES",
+            {
+                maximumFractionDigits:8
+            }
+        );
+
+
+    /* EFICIENCIA */
+
+    if(currentHashrate > 0){
+
+        const th =
+            currentHashrate / 1e12;
+
+
+        const efficiency =
+            POWER_WATTS / th;
+
+
+        document.getElementById(
+            "efficiency"
+        ).textContent =
+            efficiency.toFixed(2)
+            +
+            " J/TH";
+
+    }
+
+
+    /* WORKERS */
+
+    renderWorkers(workers);
+
+
+    /* HISTORIAL */
+
+    const now =
+        new Date();
+
+
+    history.push({
+
+        time:
+            now.toLocaleTimeString(
+                "es-ES",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    second:"2-digit"
+                }
+            ),
+
+        timestamp:
+            Date.now(),
+
+        hashrate:
+            currentHashrate,
+
+        difficulty:
+            Number(
+                accounting.bestSubmissionDifficulty
+            ) || 0
+
+    });
+
+
+    saveHistory();
+
+    updateCharts();
+
+
+    /* RAW JSON */
+
+    document.getElementById(
+        "raw"
+    ).textContent =
+        JSON.stringify(
+            data,
+            null,
+            2
+        );
+
+}
+
+
+/* =========================
+   WORKERS
+========================= */
+
+function renderWorkers(workers){
+
+    const table =
+        document.getElementById(
+            "workerTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if(!workers.length){
+
+        table.innerHTML =
+        `
+        <tr>
+            <td colspan="5">
+                No hay workers conectados.
+            </td>
+        </tr>
+        `;
+
+        return;
+    }
+
+
+    workers.forEach(worker => {
+
+        const online =
+            !worker.lastSeen ||
+            Date.now() -
+            new Date(
+                worker.lastSeen
+            ).getTime()
+            <
+            5 * 60 * 1000;
+
+
+        const row =
+            document.createElement(
+                "tr"
+            );
+
+
+        row.innerHTML = `
+
+        <td class="worker">
+            ${escapeHTML(worker.name)}
+        </td>
+
+        <td class="${
+            online
+            ? "online"
+            : "offline"
+        }">
+
+            ${
+                online
+                ? "● Online"
+                : "● Offline"
+            }
+
+        </td>
+
+        <td>
+            ${formatHashrate(
+                worker.hashRate
+            )}
+        </td>
+
+        <td>
+            ${formatNumber(
+                worker.bestDifficulty
+            )}
+        </td>
+
+        <td>
+
+            ${
+                worker.lastSeen
+                ?
+                escapeHTML(
+                    new Date(
+                        worker.lastSeen
+                    ).toLocaleString(
+                        "es-ES"
+                    )
+                )
+                :
+                "—"
+            }
+
+            <span
+            style="
+                color:#667789;
+                margin-left:5px;
+            ">
+
+            ${
+                worker.lastSeen
+                ?
+                "(" +
+                timeAgo(
+                    worker.lastSeen
+                ) +
+                ")"
+                :
+                ""
+            }
+
+            </span>
+
+        </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+/* =========================
+   COPY ADDRESS
+========================= */
+
+function copyAddress(){
+
+    navigator
+        .clipboard
+        .writeText(
+            BTC_ADDRESS
+        );
+
+}
+
+
+/* =========================
+   INIT
+========================= */
+
+document.getElementById(
+    "address"
+).textContent =
+    BTC_ADDRESS;
+
+
+document.getElementById(
+    "poolLink"
+).href =
+    "https://web.public-pool.io/#/app/" +
+    BTC_ADDRESS;
+
+
+loadHistory();
+
+createCharts();
+
+updateCharts();
+
+loadData();
+
+setInterval(
+    loadData,
+    REFRESH_INTERVAL
+);
+
+</script>
+
+</body>
+</html>
