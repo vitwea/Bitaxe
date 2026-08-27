@@ -2,135 +2,820 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Bitaxe Dashboard</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
-
 <style>
-body {
-  font-family: 'Inter', sans-serif;
-  background: #0d0d0f;
-  color: #e5e5e5;
-  margin: 0;
-  padding: 20px;
-}
+    * {
+        box-sizing: border-box;
+    }
 
-h1 {
-  text-align: center;
-  font-weight: 700;
-  margin-bottom: 30px;
-  color: #00eaff;
-}
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #0b0f14;
+        color: #e8edf2;
+    }
 
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 25px;
+    }
 
-.card {
-  background: linear-gradient(145deg, #141418, #0b0b0d);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        gap: 20px;
+    }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
-}
+    h1 {
+        margin: 0;
+        font-size: 28px;
+    }
 
-.card h2 {
-  margin-top: 0;
-  font-size: 1.3rem;
-  color: #00eaff;
-}
+    .subtitle {
+        color: #8c98a5;
+        margin-top: 6px;
+        font-size: 14px;
+    }
 
-.value {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-top: 10px;
-}
+    .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #7ee787;
+        font-size: 14px;
+    }
 
-.sub {
-  opacity: 0.7;
-  margin-top: 5px;
-}
+    .dot {
+        width: 10px;
+        height: 10px;
+        background: #3fb950;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #3fb950;
+    }
 
-.footer {
-  text-align: center;
-  margin-top: 40px;
-  opacity: 0.5;
-  font-size: 0.9rem;
-}
+    .dot.offline {
+        background: #f85149;
+        box-shadow: 0 0 10px #f85149;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .card {
+        background: #111820;
+        border: 1px solid #202a35;
+        border-radius: 12px;
+        padding: 20px;
+    }
+
+    .label {
+        color: #8c98a5;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .value {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .unit {
+        font-size: 13px;
+        color: #8c98a5;
+        margin-left: 4px;
+    }
+
+    .section {
+        background: #111820;
+        border: 1px solid #202a35;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .section h2 {
+        margin-top: 0;
+        font-size: 18px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        text-align: left;
+        padding: 13px 10px;
+        border-bottom: 1px solid #202a35;
+    }
+
+    th {
+        color: #8c98a5;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
+    .online {
+        color: #7ee787;
+    }
+
+    .offline {
+        color: #f85149;
+    }
+
+    .worker {
+        font-weight: bold;
+    }
+
+    .error {
+        background: #35151a;
+        border: 1px solid #6e2027;
+        color: #ff7b72;
+        padding: 15px;
+        border-radius: 10px;
+        display: none;
+        margin-bottom: 20px;
+    }
+
+    .footer {
+        color: #66717d;
+        text-align: center;
+        font-size: 12px;
+        margin-top: 25px;
+    }
+
+    .address {
+        font-family: monospace;
+        color: #8c98a5;
+        font-size: 12px;
+        word-break: break-all;
+    }
+
+    button {
+        background: #1f6feb;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #388bfd;
+    }
+
+    @media (max-width: 800px) {
+        .cards {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .container {
+            padding: 15px;
+        }
+
+        .cards {
+            grid-template-columns: 1fr;
+        }
+
+        table {
+            font-size: 13px;
+        }
+    }
 </style>
 </head>
 
 <body>
 
-<h1>Bitaxe Dashboard · CKPool</h1>
-
 <div class="container">
-  <div class="card">
-    <h2>Hashrate</h2>
-    <div id="hashrate" class="value">Cargando...</div>
-    <div id="hashrate_sub" class="sub"></div>
-  </div>
 
-  <div class="card">
-    <h2>Shares</h2>
-    <div id="shares" class="value">Cargando...</div>
-    <div id="shares_sub" class="sub"></div>
-  </div>
+    <header>
+        <div>
+            <h1>⛏️ Bitaxe Dashboard</h1>
 
-  <div class="card">
-    <h2>Estado</h2>
-    <div id="status" class="value">Cargando...</div>
-    <div id="status_sub" class="sub"></div>
-  </div>
+            <div class="subtitle">
+                Public Pool • Solo Mining
+            </div>
+
+            <div class="address">
+                bc1qz8yh0y2wr4jdfmydcwpcsnl0m2h4k34zg2557j
+            </div>
+        </div>
+
+        <div>
+            <div class="status">
+                <div id="statusDot" class="dot"></div>
+                <span id="statusText">Conectando...</span>
+            </div>
+
+            <br>
+
+            <button onclick="loadData()">
+                🔄 Actualizar
+            </button>
+        </div>
+    </header>
+
+
+    <div id="error" class="error"></div>
+
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="label">HASHRATE</div>
+            <div class="value">
+                <span id="hashrate">--</span>
+                <span class="unit">TH/s</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="label">WORKERS</div>
+            <div class="value" id="workers">
+                --
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="label">MEJOR DIFICULTAD</div>
+            <div class="value" id="bestDifficulty">
+                --
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="label">ACTUALIZADO</div>
+            <div class="value" id="updated">
+                --
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>Workers</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Worker</th>
+                    <th>Estado</th>
+                    <th>Hashrate</th>
+                    <th>Mejor dificultad</th>
+                </tr>
+            </thead>
+
+            <tbody id="workerTable">
+
+                <tr>
+                    <td colspan="4">
+                        Cargando...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="section">
+
+        <h2>Información</h2>
+
+        <p>
+            Los datos proceden directamente de la API pública
+            de Public Pool.
+        </p>
+
+        <p>
+            Última consulta:
+            <strong id="lastRequest">--</strong>
+        </p>
+
+        <p>
+            Próxima actualización:
+            <strong id="nextUpdate">30</strong> segundos
+        </p>
+
+    </div>
+
+
+    <div class="footer">
+
+        Bitaxe Dashboard · Public Pool
+
+    </div>
+
 </div>
 
-<div class="footer">
-  Actualizando cada 10 segundos · solo.ckpool.org
-</div>
 
 <script>
-async function loadData() {
-  try {
-    const res = await fetch("https://solo.ckpool.org/users/bc1qz8yh0y2wr4jdfmydcwpcsnl0m2h4k34zg2557j");
-    const data = await res.json();
 
-    const worker = data.workers[0];
+const BTC_ADDRESS =
+    "bc1qz8yh0y2wr4jdfmydcwpcsnl0m2h4k34zg2557j";
 
-    // Hashrate
-    document.getElementById("hashrate").innerText =
-      (worker.hashrate / 1000).toFixed(2) + " kH/s";
+const API_URL =
+    "https://public-pool.io:40557/api/client/" + BTC_ADDRESS;
 
-    document.getElementById("hashrate_sub").innerText =
-      "Hashrate efectivo";
+let countdown = 30;
 
-    // Shares
-    document.getElementById("shares").innerText =
-      worker.valid + " válidas";
 
-    document.getElementById("shares_sub").innerText =
-      "Inválidas: " + worker.invalid;
+/*
+    Convierte hashes/s a una unidad legible
+*/
+function formatHashrate(hashrate) {
 
-    // Estado
-    document.getElementById("status").innerText =
-      worker.lastshare + "s";
+    if (!hashrate || isNaN(hashrate)) {
+        return "--";
+    }
 
-    document.getElementById("status_sub").innerText =
-      "Última share enviada";
-  } catch (e) {
-    document.getElementById("status").innerText = "Error";
-    document.getElementById("status_sub").innerText = "No se pudo cargar la API";
-  }
+    if (hashrate >= 1e12) {
+        return (hashrate / 1e12).toFixed(3);
+    }
+
+    if (hashrate >= 1e9) {
+        return (hashrate / 1e9).toFixed(2) + " G";
+    }
+
+    if (hashrate >= 1e6) {
+        return (hashrate / 1e6).toFixed(2) + " M";
+    }
+
+    return Math.round(hashrate).toLocaleString();
 }
 
+
+/*
+    Intenta encontrar un valor aunque la
+    API cambie ligeramente la estructura.
+*/
+function getValue(obj, keys) {
+
+    for (const key of keys) {
+
+        if (
+            obj &&
+            obj[key] !== undefined &&
+            obj[key] !== null
+        ) {
+            return obj[key];
+        }
+
+    }
+
+    return null;
+}
+
+
+/*
+    Carga los datos de Public Pool
+*/
+async function loadData() {
+
+    const error = document.getElementById("error");
+
+    error.style.display = "none";
+
+    try {
+
+        const response =
+            await fetch(API_URL, {
+                cache: "no-store"
+            });
+
+        if (!response.ok) {
+            throw new Error(
+                "HTTP " + response.status
+            );
+        }
+
+        const data =
+            await response.json();
+
+        console.log("Public Pool API:", data);
+
+        processData(data);
+
+        setOnline();
+
+        document.getElementById(
+            "lastRequest"
+        ).textContent =
+            new Date().toLocaleTimeString();
+
+        countdown = 30;
+
+    } catch (err) {
+
+        console.error(err);
+
+        error.textContent =
+            "No se han podido obtener los datos de Public Pool. " +
+            "Puede ser un problema de conexión o de CORS.";
+
+        error.style.display = "block";
+
+        setOffline();
+
+    }
+
+}
+
+
+/*
+    Procesa la respuesta
+*/
+function processData(data) {
+
+    /*
+        Dependiendo de la versión de Public Pool,
+        los workers pueden venir directamente
+        o dentro de diferentes propiedades.
+    */
+
+    let workers = [];
+
+    if (Array.isArray(data)) {
+        workers = data;
+    }
+
+    else if (Array.isArray(data.workers)) {
+        workers = data.workers;
+    }
+
+    else if (Array.isArray(data.data)) {
+        workers = data.data;
+    }
+
+    else if (
+        data.data &&
+        Array.isArray(data.data.workers)
+    ) {
+        workers = data.data.workers;
+    }
+
+
+    /*
+        Si no encontramos workers,
+        intentamos interpretar la respuesta
+        como un único worker.
+    */
+
+    if (
+        workers.length === 0 &&
+        typeof data === "object"
+    ) {
+
+        const possibleWorker =
+            getValue(
+                data,
+                [
+                    "worker",
+                    "workerName",
+                    "name"
+                ]
+            );
+
+        if (possibleWorker) {
+            workers = [data];
+        }
+
+    }
+
+
+    document.getElementById(
+        "workers"
+    ).textContent = workers.length;
+
+
+    /*
+        Hashrate total
+    */
+
+    let totalHashrate = 0;
+
+    let bestDifficulty = 0;
+
+
+    workers.forEach(worker => {
+
+        const hr =
+            getValue(
+                worker,
+                [
+                    "hashrate",
+                    "hashRate",
+                    "hash_rate"
+                ]
+            );
+
+        if (hr) {
+            totalHashrate += Number(hr);
+        }
+
+
+        const diff =
+            getValue(
+                worker,
+                [
+                    "bestDifficulty",
+                    "bestDiff",
+                    "best_diff"
+                ]
+            );
+
+        if (
+            diff &&
+            Number(diff) > bestDifficulty
+        ) {
+            bestDifficulty = Number(diff);
+        }
+
+    });
+
+
+    /*
+        Si la API proporciona el hashrate
+        directamente a nivel superior,
+        usamos ese valor.
+    */
+
+    const apiHashrate =
+        getValue(
+            data,
+            [
+                "hashrate",
+                "hashRate",
+                "hash_rate"
+            ]
+        );
+
+
+    if (
+        apiHashrate !== null &&
+        !isNaN(apiHashrate)
+    ) {
+        totalHashrate =
+            Number(apiHashrate);
+    }
+
+
+    document.getElementById(
+        "hashrate"
+    ).textContent =
+        formatHashrate(totalHashrate);
+
+
+    document.getElementById(
+        "bestDifficulty"
+    ).textContent =
+        bestDifficulty
+            ? bestDifficulty.toLocaleString()
+            : "--";
+
+
+    renderWorkers(workers);
+
+}
+
+
+/*
+    Renderiza los workers
+*/
+function renderWorkers(workers) {
+
+    const table =
+        document.getElementById(
+            "workerTable"
+        );
+
+    table.innerHTML = "";
+
+
+    if (!workers.length) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="4">
+                    No se han encontrado workers.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    workers.forEach(worker => {
+
+        const name =
+            getValue(
+                worker,
+                [
+                    "worker",
+                    "workerName",
+                    "name",
+                    "id"
+                ]
+            ) || "Bitaxe";
+
+
+        const hashrate =
+            getValue(
+                worker,
+                [
+                    "hashrate",
+                    "hashRate",
+                    "hash_rate"
+                ]
+            );
+
+
+        const difficulty =
+            getValue(
+                worker,
+                [
+                    "bestDifficulty",
+                    "bestDiff",
+                    "best_diff"
+                ]
+            );
+
+
+        let online = true;
+
+
+        const lastSeen =
+            getValue(
+                worker,
+                [
+                    "lastSeen",
+                    "last_seen",
+                    "lastShare"
+                ]
+            );
+
+
+        if (lastSeen) {
+
+            const timestamp =
+                new Date(lastSeen).getTime();
+
+            if (
+                !isNaN(timestamp) &&
+                Date.now() - timestamp >
+                5 * 60 * 1000
+            ) {
+                online = false;
+            }
+
+        }
+
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td class="worker">
+                ${escapeHtml(name)}
+            </td>
+
+            <td class="${online ? "online" : "offline"}">
+                ${online ? "● Online" : "● Offline"}
+            </td>
+
+            <td>
+                ${formatHashrate(hashrate)}
+                ${hashrate ? " H/s" : ""}
+            </td>
+
+            <td>
+                ${
+                    difficulty
+                    ? Number(difficulty).toLocaleString()
+                    : "--"
+                }
+            </td>
+
+        `;
+
+
+        table.appendChild(row);
+
+    });
+
+}
+
+
+/*
+    Evita insertar texto procedente de la API
+    directamente como HTML.
+*/
+function escapeHtml(text) {
+
+    return String(text)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+}
+
+
+/*
+    Estado online
+*/
+function setOnline() {
+
+    document.getElementById(
+        "statusDot"
+    ).classList.remove("offline");
+
+    document.getElementById(
+        "statusText"
+    ).textContent =
+        "API conectada";
+
+}
+
+
+/*
+    Estado offline
+*/
+function setOffline() {
+
+    document.getElementById(
+        "statusDot"
+    ).classList.add("offline");
+
+    document.getElementById(
+        "statusText"
+    ).textContent =
+        "Sin conexión";
+
+}
+
+
+/*
+    Contador
+*/
+setInterval(() => {
+
+    countdown--;
+
+    if (countdown < 0) {
+        countdown = 30;
+    }
+
+    document.getElementById(
+        "nextUpdate"
+    ).textContent =
+        countdown;
+
+}, 1000);
+
+
+/*
+    Actualización automática
+*/
+setInterval(
+    loadData,
+    30000
+);
+
+
+/*
+    Primera carga
+*/
 loadData();
-setInterval(loadData, 10000);
+
 </script>
 
 </body>
