@@ -3,553 +3,433 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070b12">
 
 <title>Bitaxe Mining Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-
-:root {
-    --bg: #070b10;
-    --panel: #0d131b;
-    --panel2: #111923;
-    --border: #202b38;
-    --text: #edf2f7;
-    --muted: #7d8b99;
-    --green: #39d98a;
-    --green2: #16a36a;
-    --blue: #4ea1ff;
-    --orange: #ffad42;
-    --red: #ff5c68;
-    --purple: #a77bff;
+:root{
+    --bg:#070b12;
+    --panel:#0d141e;
+    --panel2:#111b27;
+    --border:#1d2a38;
+    --text:#eef4f8;
+    --muted:#7f8e9e;
+    --green:#39e58c;
+    --blue:#4ca3ff;
+    --orange:#ffb24d;
+    --red:#ff6370;
+    --purple:#ad7cff;
 }
 
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-body {
-    margin: 0;
+body{
+    margin:0;
     background:
-        radial-gradient(
-            circle at 20% 0%,
-            rgba(50,130,255,.10),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 90% 20%,
-            rgba(40,220,130,.08),
-            transparent 30%
-        ),
+        radial-gradient(circle at 15% 0%,rgba(61,139,255,.13),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(57,229,140,.08),transparent 28%),
         var(--bg);
-
-    color: var(--text);
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
+    color:var(--text);
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 }
 
-.container {
-    max-width: 1400px;
-    margin: auto;
-    padding: 28px;
+.container{
+    max-width:1450px;
+    margin:auto;
+    padding:26px;
 }
-
 
 /* HEADER */
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 25px;
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:22px;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+.brand{
+    display:flex;
+    gap:14px;
+    align-items:center;
 }
 
-.logoIcon {
-    width: 54px;
-    height: 54px;
-    border-radius: 15px;
+.logo{
+    width:56px;
+    height:56px;
+    border:1px solid var(--border);
+    border-radius:16px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display:grid;
+    place-items:center;
 
-    font-size: 27px;
+    font-size:28px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #182635,
-            #0b1119
-        );
+    background:linear-gradient(
+        145deg,
+        #172433,
+        #0b1119
+    );
 
-    border: 1px solid var(--border);
-
-    box-shadow:
-        0 0 30px rgba(70,150,255,.12);
+    box-shadow:0 0 30px #0008;
 }
 
-h1 {
-    margin: 0;
-    font-size: 27px;
+h1{
+    margin:0;
+    font-size:27px;
 }
 
-.subtitle {
-    margin-top: 5px;
-    color: var(--muted);
-    font-size: 13px;
+.subtitle{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:4px;
 }
 
-.address {
-    margin-top: 7px;
-    color: #607080;
-    font-family: monospace;
-    font-size: 11px;
-    word-break: break-all;
+.address{
+    color:#5f7081;
+    font-family:monospace;
+    font-size:11px;
+    margin-top:6px;
+    word-break:break-all;
 }
 
-
-/* STATUS */
-
-.headerRight {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
+.header-right{
+    text-align:right;
 }
 
-.status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
+.status{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
 }
 
-.statusDot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-
-    background: var(--green);
-
-    box-shadow:
-        0 0 12px var(--green);
+.status-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 12px var(--green);
 }
 
-.statusDot.offline {
-    background: var(--red);
-    box-shadow:
-        0 0 12px var(--red);
+.status-dot.offline{
+    background:var(--red);
+    box-shadow:0 0 12px var(--red);
 }
 
-
-/* BUTTONS */
-
-.buttons {
-    display: flex;
-    gap: 8px;
+.buttons{
+    display:flex;
+    gap:8px;
+    justify-content:flex-end;
 }
 
 button,
-.button {
-    border: 1px solid var(--border);
-    background: var(--panel2);
-    color: var(--text);
-
-    padding: 9px 13px;
-
-    border-radius: 8px;
-
-    cursor: pointer;
-
-    font-size: 12px;
-
-    text-decoration: none;
+.button{
+    border:1px solid var(--border);
+    background:var(--panel2);
+    color:var(--text);
+    padding:9px 13px;
+    border-radius:8px;
+    cursor:pointer;
+    text-decoration:none;
+    font-size:12px;
 }
 
 button:hover,
-.button:hover {
-    border-color: #36516b;
-    background: #162230;
+.button:hover{
+    background:#172433;
 }
-
 
 /* ERROR */
 
-.error {
-    display: none;
-
-    background: rgba(255,70,80,.08);
-
-    border: 1px solid rgba(255,70,80,.3);
-
-    color: #ff8a92;
-
-    padding: 13px;
-
-    border-radius: 10px;
-
-    margin-bottom: 20px;
-
-    font-size: 13px;
+.error{
+    display:none;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:10px;
+    border:1px solid #71313a;
+    background:#32151a;
+    color:#ff9aa2;
 }
 
+/* KPI */
 
-/* KPI GRID */
-
-.kpis {
-    display: grid;
-
-    grid-template-columns:
-        repeat(6, 1fr);
-
-    gap: 12px;
-
-    margin-bottom: 18px;
+.kpis{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:12px;
+    margin-bottom:14px;
 }
 
-.card {
+.card,
+.panel{
+    border:1px solid var(--border);
+    border-radius:13px;
+
     background:
         linear-gradient(
             145deg,
-            rgba(255,255,255,.025),
-            rgba(255,255,255,.005)
+            #ffffff08,
+            #ffffff01
         );
 
-    border: 1px solid var(--border);
-
-    border-radius: 13px;
-
-    padding: 17px;
-
-    min-height: 105px;
-
-    box-shadow:
-        0 10px 30px rgba(0,0,0,.15);
+    box-shadow:0 12px 35px #0003;
 }
 
-.cardLabel {
-    color: var(--muted);
-
-    font-size: 11px;
-
-    text-transform: uppercase;
-
-    letter-spacing: .7px;
-
-    margin-bottom: 10px;
+.card{
+    padding:17px;
+    min-height:108px;
 }
 
-.cardValue {
-    font-size: 23px;
-
-    font-weight: 700;
+.label{
+    color:var(--muted);
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+    margin-bottom:10px;
 }
 
-.cardSmall {
-    margin-top: 5px;
-
-    color: var(--muted);
-
-    font-size: 11px;
+.value{
+    font-size:23px;
+    font-weight:750;
 }
 
-.green {
-    color: var(--green);
+.small{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:6px;
 }
 
-.blue {
-    color: var(--blue);
+.green{
+    color:var(--green);
 }
 
-.orange {
-    color: var(--orange);
+.blue{
+    color:var(--blue);
 }
 
-.purple {
-    color: var(--purple);
+.orange{
+    color:var(--orange);
 }
 
+.purple{
+    color:var(--purple);
+}
 
 /* GRID */
 
-.grid {
-    display: grid;
-
-    grid-template-columns:
-        2fr 1fr;
-
-    gap: 15px;
-
-    margin-bottom: 15px;
+.grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:14px;
+    margin-bottom:14px;
 }
 
-.panel {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.025),
-            rgba(255,255,255,.008)
-        );
-
-    border: 1px solid var(--border);
-
-    border-radius: 13px;
-
-    padding: 20px;
-
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.16);
+.panel{
+    padding:18px;
 }
 
-.panelHeader {
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 15px;
+.panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
 }
 
-.panelTitle {
-    font-size: 15px;
-
-    font-weight: 600;
+.panel-title{
+    font-size:15px;
+    font-weight:650;
 }
 
-.panelSub {
-    color: var(--muted);
-
-    font-size: 11px;
+.panel-sub{
+    color:var(--muted);
+    font-size:11px;
 }
 
-
-/* CHART */
-
-.chartContainer {
-    height: 310px;
-    position: relative;
+.chart{
+    height:300px;
 }
 
+/* WORKER */
 
-/* WORKERS */
-
-table {
-    width: 100%;
-    border-collapse: collapse;
+table{
+    width:100%;
+    border-collapse:collapse;
 }
 
-th {
-    color: var(--muted);
-
-    font-size: 10px;
-
-    text-transform: uppercase;
-
-    text-align: left;
-
-    padding: 9px;
-
-    border-bottom: 1px solid var(--border);
+th{
+    color:var(--muted);
+    font-size:10px;
+    text-transform:uppercase;
+    text-align:left;
+    padding:9px;
+    border-bottom:1px solid var(--border);
 }
 
-td {
-    padding: 13px 9px;
-
-    border-bottom:
-        1px solid rgba(255,255,255,.04);
-
-    font-size: 12px;
+td{
+    padding:13px 9px;
+    border-bottom:1px solid #ffffff09;
+    font-size:12px;
 }
 
-.workerName {
-    font-weight: 600;
+.worker{
+    font-weight:700;
 }
 
-.online {
-    color: var(--green);
+.online{
+    color:var(--green);
 }
 
-.offline {
-    color: var(--red);
+.offline{
+    color:var(--red);
 }
 
-.dotOnline {
-    display: inline-block;
+/* STATS */
 
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background: var(--green);
-
-    margin-right: 5px;
-
-    box-shadow:
-        0 0 8px var(--green);
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
 }
 
-
-/* TECHNICAL */
-
-.tech {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap: 8px;
+.stat{
+    padding:12px;
+    background:#ffffff04;
+    border:1px solid var(--border);
+    border-radius:9px;
 }
 
-.techItem {
-    background: rgba(255,255,255,.025);
-
-    border: 1px solid var(--border);
-
-    padding: 11px;
-
-    border-radius: 8px;
+.stat-label{
+    font-size:10px;
+    color:var(--muted);
+    margin-bottom:5px;
 }
 
-.techLabel {
-    color: var(--muted);
-
-    font-size: 10px;
-
-    margin-bottom: 5px;
+.stat-value{
+    font-family:monospace;
+    font-size:13px;
+    word-break:break-word;
 }
 
-.techValue {
-    font-family: monospace;
-
-    font-size: 12px;
-
-    word-break: break-all;
+.round{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
 }
 
+/* JSON */
 
-/* RAW JSON */
-
-pre {
-    background: #06090d;
-
-    border: 1px solid var(--border);
-
-    border-radius: 8px;
-
-    padding: 15px;
-
-    max-height: 350px;
-
-    overflow: auto;
-
-    font-family: monospace;
-
-    font-size: 10px;
-
-    color: #9fb1c2;
+details summary{
+    cursor:pointer;
+    font-weight:650;
 }
 
+pre{
+    max-height:450px;
+    overflow:auto;
+
+    background:#05080d;
+    border:1px solid var(--border);
+    border-radius:9px;
+
+    padding:14px;
+
+    color:#9db0c1;
+    font-family:monospace;
+    font-size:11px;
+}
 
 /* FOOTER */
 
-footer {
-    color: #4f5c69;
-
-    text-align: center;
-
-    font-size: 10px;
-
-    padding: 25px 0 5px;
+footer{
+    text-align:center;
+    color:#506071;
+    font-size:10px;
+    padding:20px 0;
 }
-
 
 /* MOBILE */
 
-@media(max-width:1100px) {
+@media(max-width:1100px){
 
-    .kpis {
-        grid-template-columns:
-            repeat(3,1fr);
+    .kpis{
+        grid-template-columns:repeat(3,1fr);
     }
 
 }
 
-@media(max-width:800px) {
+@media(max-width:800px){
 
-    .container {
-        padding: 15px;
+    .container{
+        padding:14px;
     }
 
-    header {
-        flex-direction: column;
-
-        align-items: flex-start;
+    header{
+        flex-direction:column;
+        align-items:flex-start;
     }
 
-    .headerRight {
-        align-items: flex-start;
+    .header-right{
+        text-align:left;
     }
 
-    .grid {
-        grid-template-columns: 1fr;
+    .status,
+    .buttons{
+        justify-content:flex-start;
     }
 
-}
-
-@media(max-width:550px) {
-
-    .kpis {
-        grid-template-columns:
-            repeat(2,1fr);
+    .grid{
+        grid-template-columns:1fr;
     }
 
-    .cardValue {
-        font-size: 20px;
-    }
-
-    .panel {
-        padding: 14px;
-    }
-
-    th:nth-child(4),
-    td:nth-child(4) {
-        display: none;
+    .round,
+    .stats{
+        grid-template-columns:repeat(2,1fr);
     }
 
 }
 
+@media(max-width:520px){
+
+    .kpis{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .value{
+        font-size:19px;
+    }
+
+    .panel{
+        padding:13px;
+    }
+
+    th:nth-child(5),
+    td:nth-child(5){
+        display:none;
+    }
+
+}
 </style>
-
 </head>
-
 
 <body>
 
 <div class="container">
 
-
 <header>
 
 <div>
 
-<div class="logo">
+<div class="brand">
 
-<div class="logoIcon">
+<div class="logo">
 ⛏️
 </div>
 
@@ -565,21 +445,21 @@ Public Pool · Solo Bitcoin Mining
 
 </div>
 
-<div class="address">
-bc1qz8yh0y2wr4jdfmydcwpcsnl0m2h4k34zg2557j
-</div>
+<div class="address" id="address"></div>
 
 </div>
 
 
-<div class="headerRight">
+<div class="header-right">
 
 <div class="status">
 
-<div id="statusDot"
-     class="statusDot"></div>
+<div
+id="statusDot"
+class="status-dot">
+</div>
 
-<span id="statusText">
+<span id="status">
 Conectando...
 </span>
 
@@ -599,7 +479,7 @@ Conectando...
 <a
 class="button"
 target="_blank"
-href="https://web.public-pool.io/#/app/bc1qz8yh0y2wr4jdfmydcwpcsnl0m2h4k34zg2557j">
+id="poolLink">
 
 Public Pool ↗
 
@@ -612,48 +492,31 @@ Public Pool ↗
 </header>
 
 
-<div id="error"
-     class="error">
+<div
+id="error"
+class="error">
 </div>
 
 
 <!-- KPI -->
 
-<div class="kpis">
+<section class="kpis">
 
 
 <div class="card">
 
-<div class="cardLabel">
-Hashrate
+<div class="label">
+Hashrate actual
 </div>
 
-<div class="cardValue green"
-     id="hashrate">
---
+<div
+id="hashrate"
+class="value green">
+—
 </div>
 
-<div class="cardSmall"
-     id="hashrateUnit">
-TH/s
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cardLabel">
-Hashrate medio
-</div>
-
-<div class="cardValue blue"
-     id="avgHashrate">
---
-</div>
-
-<div class="cardSmall">
-desde que se abrió este dashboard
+<div class="small">
+Bitaxe
 </div>
 
 </div>
@@ -661,17 +524,18 @@ desde que se abrió este dashboard
 
 <div class="card">
 
-<div class="cardLabel">
-Workers
+<div class="label">
+Hashrate últimos 10 min
 </div>
 
-<div class="cardValue"
-     id="workers">
---
+<div
+id="hashrate10"
+class="value blue">
+—
 </div>
 
-<div class="cardSmall">
-conectados
+<div class="small">
+Accounting
 </div>
 
 </div>
@@ -679,34 +543,58 @@ conectados
 
 <div class="card">
 
-<div class="cardLabel">
+<div class="label">
+Hashrate última hora
+</div>
+
+<div
+id="hashrateHour"
+class="value blue">
+—
+</div>
+
+<div class="small">
+Accounting
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="label">
+Shares aceptadas
+</div>
+
+<div
+id="shares"
+class="value">
+—
+</div>
+
+<div
+id="sharesSub"
+class="small">
+—
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="label">
 Mejor dificultad
 </div>
 
-<div class="cardValue orange"
-     id="bestDifficulty">
---
+<div
+id="bestDifficulty"
+class="value orange">
+—
 </div>
 
-<div class="cardSmall">
-mejor share registrado
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="cardLabel">
-Potencia estimada
-</div>
-
-<div class="cardValue purple">
-25 W
-</div>
-
-<div class="cardSmall">
-Bitaxe Gamma
+<div class="small">
+Mejor submission
 </div>
 
 </div>
@@ -714,22 +602,25 @@ Bitaxe Gamma
 
 <div class="card">
 
-<div class="cardLabel">
-Eficiencia
+<div class="label">
+Workers
 </div>
 
-<div class="cardValue"
-     id="efficiency">
---
+<div
+id="workers"
+class="value purple">
+—
 </div>
 
-<div class="cardSmall">
-J/TH
+<div
+id="workersSub"
+class="small">
+—
 </div>
 
 </div>
 
-</div>
+</section>
 
 
 <!-- CHARTS -->
@@ -737,51 +628,52 @@ J/TH
 <div class="grid">
 
 
-<div class="panel">
+<section class="panel">
 
-<div class="panelHeader">
+<div class="panel-header">
 
 <div>
 
-<div class="panelTitle">
-Hashrate
+<div class="panel-title">
+⚡ Hashrate
 </div>
 
-<div class="panelSub">
-Historial guardado localmente
+<div class="panel-sub">
+Historial desde que abriste el dashboard
 </div>
 
 </div>
 
-<div class="panelSub"
-     id="chartPoints">
+<div
+id="points"
+class="panel-sub">
 0 puntos
 </div>
 
 </div>
 
 
-<div class="chartContainer">
+<div class="chart">
 
 <canvas id="hashrateChart"></canvas>
 
 </div>
 
-</div>
+</section>
 
 
-<div class="panel">
+<section class="panel">
 
-<div class="panelHeader">
+<div class="panel-header">
 
 <div>
 
-<div class="panelTitle">
-Dificultad
+<div class="panel-title">
+🎯 Mejor dificultad
 </div>
 
-<div class="panelSub">
-Mejor dificultad observada
+<div class="panel-sub">
+Evolución del récord
 </div>
 
 </div>
@@ -789,37 +681,41 @@ Mejor dificultad observada
 </div>
 
 
-<div class="chartContainer">
+<div class="chart">
 
 <canvas id="difficultyChart"></canvas>
 
 </div>
 
-</div>
+</section>
 
 </div>
 
 
-<!-- WORKERS -->
+<!-- WORKER -->
 
-<div class="panel">
+<section
+class="panel"
+style="margin-bottom:14px">
 
-<div class="panelHeader">
+<div class="panel-header">
 
 <div>
 
-<div class="panelTitle">
-⛏️ Workers</div>
+<div class="panel-title">
+⛏️ Workers
+</div>
 
-<div class="panelSub">
-Estado de tus dispositivos
+<div class="panel-sub">
+Estado de los dispositivos conectados
 </div>
 
 </div>
 
-<div id="workerStatus"
-     class="panelSub">
---
+<div
+id="workerStatus"
+class="panel-sub">
+—
 </div>
 
 </div>
@@ -832,14 +728,10 @@ Estado de tus dispositivos
 <tr>
 
 <th>Worker</th>
-
 <th>Estado</th>
-
 <th>Hashrate</th>
-
 <th>Mejor dificultad</th>
-
-<th>Última actividad</th>
+<th>Última conexión</th>
 
 </tr>
 
@@ -857,111 +749,271 @@ Cargando...
 
 </table>
 
+</section>
+
+
+<!-- ACCOUNTING -->
+
+<div class="grid">
+
+
+<section class="panel">
+
+<div class="panel-header">
+
+<div>
+
+<div class="panel-title">
+📊 Accounting
+</div>
+
+<div class="panel-sub">
+Estadísticas de tu cuenta Public Pool
+</div>
+
+</div>
+
+</div>
+
+
+<div class="stats">
+
+
+<div class="stat">
+
+<div class="stat-label">
+SHARES TOTALES
+</div>
+
+<div
+id="totalShares"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+DIFICULTAD ACREDITADA
+</div>
+
+<div
+id="totalDifficulty"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+SHARES · 10 MIN
+</div>
+
+<div
+id="shares10"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+DIFICULTAD · 10 MIN
+</div>
+
+<div
+id="difficulty10"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+SHARES · 1 HORA
+</div>
+
+<div
+id="sharesHour"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+DIFICULTAD · 1 HORA
+</div>
+
+<div
+id="difficultyHour"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+SHARES · 24 HORAS
+</div>
+
+<div
+id="sharesDay"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+DIFICULTAD · 24 HORAS
+</div>
+
+<div
+id="difficultyDay"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- ACTIVITY -->
+
+<section class="panel">
+
+<div class="panel-header">
+
+<div>
+
+<div class="panel-title">
+🏆 Récord & actividad
+</div>
+
+<div class="panel-sub">
+Información disponible actualmente
+</div>
+
+</div>
+
+</div>
+
+
+<div class="round">
+
+
+<div class="stat">
+
+<div class="stat-label">
+MEJOR SUBMISSION
+</div>
+
+<div
+id="bestSubmission"
+class="stat-value orange">
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+ÚLTIMO SHARE
+</div>
+
+<div
+id="latestShare"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+CANDIDATOS DE BLOQUE
+</div>
+
+<div
+id="blockCandidates"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-label">
+PAYOUT ESPERADO
+</div>
+
+<div
+id="expectedPayout"
+class="stat-value">
+—
+</div>
+
+</div>
+
+
+</div>
+
+</section>
+
 </div>
 
 
 <br>
 
 
-<!-- STATISTICS -->
+<!-- ENERGY -->
 
-<div class="grid">
+<section
+class="panel"
+style="margin-bottom:14px">
 
+<div class="panel-header">
 
-<div class="panel">
+<div>
 
-<div class="panelHeader">
-
-<div class="panelTitle">
-📊 Estadísticas de sesión
+<div class="panel-title">
+🔌 Energía & eficiencia
 </div>
 
-</div>
-
-
-<div class="tech">
-
-<div class="techItem">
-
-<div class="techLabel">
-HASHRATE MÍNIMO
-</div>
-
-<div class="techValue"
-     id="minHashrate">
---
-</div>
-
-</div>
-
-
-<div class="techItem">
-
-<div class="techLabel">
-HASHRATE MÁXIMO
-</div>
-
-<div class="techValue"
-     id="maxHashrate">
---
-</div>
-
-</div>
-
-
-<div class="techItem">
-
-<div class="techLabel">
-HASHRATE MEDIO
-</div>
-
-<div class="techValue"
-     id="sessionAverage">
---
-</div>
-
-</div>
-
-
-<div class="techItem">
-
-<div class="techLabel">
-TIEMPO MONITORIZADO
-</div>
-
-<div class="techValue"
-     id="monitorTime">
---
-</div>
-
-</div>
-
-
-<div class="techItem">
-
-<div class="techLabel">
-ACTUALIZACIONES
-</div>
-
-<div class="techValue"
-     id="updates">
---
-</div>
-
-</div>
-
-
-<div class="techItem">
-
-<div class="techLabel">
-ÚLTIMA CONSULTA
-</div>
-
-<div class="techValue"
-     id="lastUpdate">
---
-</div>
-
+<div class="panel-sub">
+Estimación para Bitaxe Gamma a 25 W
 </div>
 
 </div>
@@ -969,200 +1021,77 @@ ACTUALIZACIONES
 </div>
 
 
-<div class="panel">
-
-<div class="panelHeader">
-
-<div class="panelTitle">
-⚡ Minería
-</div>
-
-</div>
+<div class="stats">
 
 
-<div class="tech">
+<div class="stat">
 
-<div class="techItem">
-
-<div class="techLabel">
-CONSUMO DIARIO
-</div>
-
-<div class="techValue">
-0.60 kWh/día
-</div>
-
-</div>
-
-
-<div class="techItem">
-
-<div class="techLabel">
-CONSUMO MENSUAL
-</div>
-
-<div class="techValue">
-18 kWh/mes
-</div>
-
-</div>
-
-
-<div class="techItem">
-
-<div class="techLabel">
+<div class="stat-label">
 POTENCIA
 </div>
 
-<div class="techValue">
+<div class="stat-value">
 25 W
 </div>
 
 </div>
 
 
-<div class="techItem">
+<div class="stat">
 
-<div class="techLabel">
-ALGORITMO
+<div class="stat-label">
+ENERGÍA / DÍA
 </div>
 
-<div class="techValue">
-SHA-256
-</div>
-
-</div>
-
-
-<div class="techItem">
-
-<div class="techLabel">
-MONEDA
-</div>
-
-<div class="techValue">
-Bitcoin
+<div class="stat-value">
+0,60 kWh
 </div>
 
 </div>
 
 
-<div class="techItem">
+<div class="stat">
 
-<div class="techLabel">
-POOL
+<div class="stat-label">
+ENERGÍA / MES
 </div>
 
-<div class="techValue">
-Public Pool
-</div>
-
-</div>
-
-</div>
-
+<div class="stat-value">
+18 kWh
 </div>
 
 </div>
 
 
-<!-- TECHNICAL -->
+<div class="stat">
 
-<div class="panel">
-
-<div class="panelHeader">
-
-<div>
-
-<div class="panelTitle">
-🔧 Datos técnicos
+<div class="stat-label">
+EFICIENCIA ACTUAL
 </div>
 
-<div class="panelSub">
-Información detectada automáticamente desde la API
-</div>
-
+<div
+id="efficiency"
+class="stat-value">
+—
 </div>
 
 </div>
 
 
-<div class="tech">
-
-<div class="techItem">
-
-<div class="techLabel">
-API
 </div>
 
-<div class="techValue">
-Public Pool
-</div>
-
-</div>
+</section>
 
 
-<div class="techItem">
-
-<div class="techLabel">
-ENDPOINT
-</div>
-
-<div class="techValue">
-/api/client/{address}
-</div>
-
-</div>
-
-
-<div class="techItem">
-
-<div class="techLabel">
-INTERVALO
-</div>
-
-<div class="techValue">
-30 segundos
-</div>
-
-</div>
-
-
-<div class="techItem">
-
-<div class="techLabel">
-ALMACENAMIENTO
-</div>
-
-<div class="techValue">
-localStorage
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<br>
-
-
-<!-- RAW -->
+<!-- JSON -->
 
 <details class="panel">
 
-<summary style="
-cursor:pointer;
-font-size:13px;
-font-weight:600;
-">
-🧪 Respuesta JSON de Public Pool
+<summary>
+🧪 Ver respuesta JSON completa de Public Pool
 </summary>
 
-<br>
-
-<pre id="rawJson">
+<pre id="raw">
 Esperando datos...
 </pre>
 
@@ -1185,11 +1114,6 @@ Actualización automática cada 30 segundos
 
 <script>
 
-
-/* =====================================================
-   CONFIGURACIÓN
-===================================================== */
-
 const BTC_ADDRESS =
 "bc1qz8yh0y2wr4jdfmydcwpcsnl0m2h4k34zg2557j";
 
@@ -1197,215 +1121,226 @@ const API_URL =
 "https://public-pool.io:40557/api/client/" +
 BTC_ADDRESS;
 
-const REFRESH =
+const REFRESH_INTERVAL =
 30000;
 
 const POWER_WATTS =
 25;
 
 const STORAGE_KEY =
-"bitaxe_dashboard_history_v1";
+"bitaxe_public_pool_history_v1";
 
-
-/* =====================================================
-   VARIABLES
-===================================================== */
 
 let history = [];
-
-let updates = 0;
-
-let startTime = Date.now();
 
 let hashrateChart;
 
 let difficultyChart;
 
 
-/* =====================================================
-   UTILIDADES
-===================================================== */
+/* =========================
+   FORMATTERS
+========================= */
 
-function getValue(obj, keys) {
-
-    if (!obj)
-        return null;
-
-    for (const key of keys) {
-
-        if (
-            obj[key] !== undefined &&
-            obj[key] !== null
-        ) {
-
-            return obj[key];
-
-        }
-
-    }
-
-    return null;
-
-}
-
-
-function formatHashrate(value) {
+function formatHashrate(value){
 
     value = Number(value);
 
-    if (!value || isNaN(value))
-        return "--";
+    if(!value || isNaN(value))
+        return "—";
 
-    if (value >= 1e12)
-        return (value / 1e12).toFixed(3) + " TH/s";
+    if(value >= 1e12)
+        return (
+            value / 1e12
+        ).toFixed(3) + " TH/s";
 
-    if (value >= 1e9)
-        return (value / 1e9).toFixed(2) + " GH/s";
+    if(value >= 1e9)
+        return (
+            value / 1e9
+        ).toFixed(2) + " GH/s";
 
-    if (value >= 1e6)
-        return (value / 1e6).toFixed(2) + " MH/s";
+    if(value >= 1e6)
+        return (
+            value / 1e6
+        ).toFixed(2) + " MH/s";
 
-    if (value >= 1e3)
-        return (value / 1e3).toFixed(2) + " kH/s";
-
-    return Math.round(value) + " H/s";
-
+    return Math.round(value)
+        .toLocaleString("es-ES")
+        + " H/s";
 }
 
 
-function toTH(value) {
+function formatNumber(value){
 
-    value = Number(value);
-
-    if (!value || isNaN(value))
-        return 0;
-
-    return value / 1e12;
-
-}
-
-
-function formatNumber(value) {
-
-    if (
+    if(
         value === null ||
         value === undefined ||
-        isNaN(value)
+        isNaN(Number(value))
     )
-        return "--";
+        return "—";
 
     return Number(value)
         .toLocaleString(
             "es-ES",
             {
-                maximumFractionDigits: 4
+                maximumFractionDigits:0
             }
         );
-
 }
 
 
-function escapeHtml(text) {
+function escapeHTML(value){
 
-    return String(text)
-
+    return String(value)
         .replaceAll("&","&amp;")
         .replaceAll("<","&lt;")
         .replaceAll(">","&gt;")
         .replaceAll('"',"&quot;")
         .replaceAll("'","&#039;");
-
 }
 
 
-function getWorkers(data) {
+function timeAgo(timestamp){
 
-    if (Array.isArray(data))
-        return data;
+    if(!timestamp)
+        return "—";
 
-    if (Array.isArray(data.workers))
-        return data.workers;
+    const seconds =
+        Math.max(
+            0,
+            Math.floor(
+                (
+                    Date.now() -
+                    new Date(timestamp).getTime()
+                ) / 1000
+            )
+        );
 
-    if (Array.isArray(data.data))
-        return data.data;
+    if(seconds < 60)
+        return seconds + " s";
 
-    if (
-        data.data &&
-        Array.isArray(data.data.workers)
-    )
-        return data.data.workers;
+    if(seconds < 3600)
+        return (
+            Math.floor(seconds / 60)
+            + " min"
+        );
 
-    return [];
-
+    return (
+        Math.floor(seconds / 3600)
+        + " h "
+        +
+        Math.floor(
+            (seconds % 3600) / 60
+        )
+        + " min"
+    );
 }
 
 
-/* =====================================================
-   HISTORIAL
-===================================================== */
+/* =========================
+   STORAGE
+========================= */
 
-function loadHistory() {
+function loadHistory(){
 
-    try {
+    try{
 
-        const saved =
+        const stored =
             localStorage.getItem(
                 STORAGE_KEY
             );
 
-        if (saved) {
-
+        if(stored)
             history =
-                JSON.parse(saved);
+                JSON.parse(stored);
 
-        }
-
-    } catch(e) {
+    }catch(error){
 
         history = [];
 
     }
-
 }
 
 
-function saveHistory() {
+function saveHistory(){
 
-    try {
-
-        /*
-        Guardamos como máximo
-        1000 puntos.
-        */
+    try{
 
         history =
-            history.slice(-1000);
+            history.slice(-500);
 
         localStorage.setItem(
             STORAGE_KEY,
             JSON.stringify(history)
         );
 
-    } catch(e) {}
+    }catch(error){}
 
 }
 
 
-/* =====================================================
+/* =========================
    CHARTS
-===================================================== */
+========================= */
 
-function createCharts() {
+function createCharts(){
 
-    const ctx1 =
-        document
-        .getElementById(
-            "hashrateChart"
-        );
+    const options = {
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        animation:false,
+
+        plugins:{
+            legend:{
+                display:false
+            }
+        },
+
+        scales:{
+
+            x:{
+
+                ticks:{
+                    color:"#667789",
+                    maxTicksLimit:8
+                },
+
+                grid:{
+                    color:
+                    "rgba(255,255,255,.04)"
+                }
+
+            },
+
+            y:{
+
+                ticks:{
+                    color:"#667789"
+                },
+
+                grid:{
+                    color:
+                    "rgba(255,255,255,.04)"
+                }
+
+            }
+
+        }
+
+    };
+
 
     hashrateChart =
         new Chart(
-            ctx1,
+
+            document
+            .getElementById(
+                "hashrateChart"
+            ),
+
             {
 
                 type:"line",
@@ -1416,13 +1351,11 @@ function createCharts() {
 
                     datasets:[{
 
-                        label:"TH/s",
-
                         data:[],
 
                         borderWidth:2,
 
-                        tension:.35,
+                        tension:.3,
 
                         fill:true,
 
@@ -1432,70 +1365,21 @@ function createCharts() {
 
                 },
 
-                options:{
-
-                    responsive:true,
-
-                    maintainAspectRatio:false,
-
-                    animation:false,
-
-                    plugins:{
-
-                        legend:{
-                            display:false
-                        }
-
-                    },
-
-                    scales:{
-
-                        x:{
-                            display:true,
-
-                            ticks:{
-                                color:"#607080",
-                                maxTicksLimit:8
-                            },
-
-                            grid:{
-                                color:"rgba(255,255,255,.04)"
-                            }
-
-                        },
-
-                        y:{
-
-                            beginAtZero:false,
-
-                            ticks:{
-                                color:"#607080"
-                            },
-
-                            grid:{
-                                color:"rgba(255,255,255,.04)"
-                            }
-
-                        }
-
-                    }
-
-                }
+                options
 
             }
-        );
 
-
-    const ctx2 =
-        document
-        .getElementById(
-            "difficultyChart"
         );
 
 
     difficultyChart =
         new Chart(
-            ctx2,
+
+            document
+            .getElementById(
+                "difficultyChart"
+            ),
+
             {
 
                 type:"line",
@@ -1506,13 +1390,11 @@ function createCharts() {
 
                     datasets:[{
 
-                        label:"Difficulty",
-
                         data:[],
 
                         borderWidth:2,
 
-                        tension:.35,
+                        tension:.3,
 
                         fill:true,
 
@@ -1522,49 +1404,7 @@ function createCharts() {
 
                 },
 
-                options:{
-
-                    responsive:true,
-
-                    maintainAspectRatio:false,
-
-                    animation:false,
-
-                    plugins:{
-                        legend:{
-                            display:false
-                        }
-                    },
-
-                    scales:{
-
-                        x:{
-                            ticks:{
-                                color:"#607080",
-                                maxTicksLimit:6
-                            },
-
-                            grid:{
-                                color:"rgba(255,255,255,.04)"
-                            }
-
-                        },
-
-                        y:{
-
-                            ticks:{
-                                color:"#607080"
-                            },
-
-                            grid:{
-                                color:"rgba(255,255,255,.04)"
-                            }
-
-                        }
-
-                    }
-
-                }
+                options
 
             }
 
@@ -1573,565 +1413,79 @@ function createCharts() {
 }
 
 
-function updateCharts() {
+function updateCharts(){
 
-    const recent =
+    const data =
         history.slice(-100);
 
+
     const labels =
-        recent.map(
-            x => x.time
+        data.map(
+            item => item.time
         );
+
 
     const rates =
-        recent.map(
-            x => x.hashrateTH
-        );
-
-    const diffs =
-        recent.map(
-            x => x.difficulty || null
+        data.map(
+            item =>
+                item.hashrate / 1e12
         );
 
 
-    hashrateChart.data.labels =
+    const difficulties =
+        data.map(
+            item =>
+                item.difficulty || null
+        );
+
+
+    hashrateChart
+        .data
+        .labels =
         labels;
 
-    hashrateChart.data.datasets[0].data =
+
+    hashrateChart
+        .data
+        .datasets[0]
+        .data =
         rates;
+
 
     hashrateChart.update();
 
 
-    difficultyChart.data.labels =
+    difficultyChart
+        .data
+        .labels =
         labels;
 
-    difficultyChart.data.datasets[0].data =
-        diffs;
+
+    difficultyChart
+        .data
+        .datasets[0]
+        .data =
+        difficulties;
+
 
     difficultyChart.update();
 
 
     document.getElementById(
-        "chartPoints"
+        "points"
     ).textContent =
         history.length +
         " puntos";
-
 }
 
 
-/* =====================================================
-   PROCESS API
-===================================================== */
+/* =========================
+   API
+========================= */
 
-function processData(data) {
+async function loadData(){
 
-    document.getElementById(
-        "rawJson"
-    ).textContent =
-        JSON.stringify(
-            data,
-            null,
-            2
-        );
-
-
-    const workers =
-        getWorkers(data);
-
-
-    let totalHashrate = 0;
-
-    let bestDifficulty = 0;
-
-
-    /*
-       Workers
-    */
-
-    workers.forEach(worker => {
-
-        const hr =
-            getValue(
-                worker,
-                [
-                    "hashrate",
-                    "hashRate",
-                    "hash_rate"
-                ]
-            );
-
-        if (hr)
-            totalHashrate +=
-                Number(hr);
-
-
-        const diff =
-            getValue(
-                worker,
-                [
-                    "bestDifficulty",
-                    "bestDiff",
-                    "best_diff"
-                ]
-            );
-
-        if (
-            diff &&
-            Number(diff) >
-            bestDifficulty
-        ) {
-
-            bestDifficulty =
-                Number(diff);
-
-        }
-
-    });
-
-
-    /*
-       Hashrate directo de API
-    */
-
-    const directHashrate =
-        getValue(
-            data,
-            [
-                "hashrate",
-                "hashRate",
-                "hash_rate"
-            ]
-        );
-
-
-    if (
-        directHashrate !== null &&
-        !isNaN(directHashrate)
-    ) {
-
-        totalHashrate =
-            Number(directHashrate);
-
-    }
-
-
-    /*
-       Dificultad directa
-    */
-
-    const directDifficulty =
-        getValue(
-            data,
-            [
-                "bestDifficulty",
-                "bestDiff",
-                "best_diff"
-            ]
-        );
-
-
-    if (
-        directDifficulty !== null
-    ) {
-
-        bestDifficulty =
-            Number(directDifficulty);
-
-    }
-
-
-    /*
-       UI
-    */
-
-    document.getElementById(
-        "hashrate"
-    ).textContent =
-        formatHashrate(
-            totalHashrate
-        );
-
-
-    document.getElementById(
-        "workers"
-    ).textContent =
-        workers.length;
-
-
-    document.getElementById(
-        "bestDifficulty"
-    ).textContent =
-        bestDifficulty
-        ? formatNumber(
-            bestDifficulty
-          )
-        : "--";
-
-
-    /*
-       Eficiencia
-    */
-
-    const th =
-        toTH(totalHashrate);
-
-
-    if (th > 0) {
-
-        document.getElementById(
-            "efficiency"
-        ).textContent =
-            (
-                POWER_WATTS / th
-            ).toFixed(2);
-
-    }
-
-
-    /*
-       Historial
-    */
-
-    const now =
-        new Date();
-
-
-    history.push({
-
-        timestamp:
-            Date.now(),
-
-        time:
-            now.toLocaleTimeString(
-                "es-ES",
-                {
-                    hour:"2-digit",
-                    minute:"2-digit",
-                    second:"2-digit"
-                }
-            ),
-
-        hashrate:
-            totalHashrate,
-
-        hashrateTH:
-            toTH(totalHashrate),
-
-        difficulty:
-            bestDifficulty
-
-    });
-
-
-    saveHistory();
-
-    updateCharts();
-
-    updateStatistics();
-
-    renderWorkers(workers);
-
-}
-
-
-/* =====================================================
-   WORKERS
-===================================================== */
-
-function renderWorkers(workers) {
-
-    const table =
-        document.getElementById(
-            "workerTable"
-        );
-
-    table.innerHTML = "";
-
-
-    if (!workers.length) {
-
-        table.innerHTML = `
-        <tr>
-        <td colspan="5">
-        No se han detectado workers
-        </td>
-        </tr>`;
-
-        return;
-
-    }
-
-
-    let onlineCount = 0;
-
-
-    workers.forEach(worker => {
-
-        const name =
-            getValue(
-                worker,
-                [
-                    "worker",
-                    "workerName",
-                    "name",
-                    "id"
-                ]
-            ) ||
-            "Bitaxe";
-
-
-        const hr =
-            getValue(
-                worker,
-                [
-                    "hashrate",
-                    "hashRate",
-                    "hash_rate"
-                ]
-            );
-
-
-        const diff =
-            getValue(
-                worker,
-                [
-                    "bestDifficulty",
-                    "bestDiff",
-                    "best_diff"
-                ]
-            );
-
-
-        const last =
-            getValue(
-                worker,
-                [
-                    "lastSeen",
-                    "last_seen",
-                    "lastShare",
-                    "last_share"
-                ]
-            );
-
-
-        let online = true;
-
-
-        if (last) {
-
-            const t =
-                new Date(last)
-                .getTime();
-
-            if (
-                !isNaN(t) &&
-                Date.now() - t >
-                5 * 60 * 1000
-            ) {
-
-                online = false;
-
-            }
-
-        }
-
-
-        if (online)
-            onlineCount++;
-
-
-        const row =
-            document.createElement(
-                "tr"
-            );
-
-
-        row.innerHTML = `
-
-        <td class="workerName">
-            ${escapeHtml(name)}
-        </td>
-
-        <td class="${online
-            ? "online"
-            : "offline"}">
-
-            ${
-                online
-                ? '<span class="dotOnline"></span>Online'
-                : '● Offline'
-            }
-
-        </td>
-
-        <td>
-            ${formatHashrate(hr)}
-        </td>
-
-        <td>
-            ${
-                diff
-                ? formatNumber(diff)
-                : "--"
-            }
-        </td>
-
-        <td>
-            ${
-                last
-                ? escapeHtml(
-                    new Date(last)
-                    .toLocaleString(
-                        "es-ES"
-                    )
-                  )
-                : "--"
-            }
-        </td>
-
-        `;
-
-
-        table.appendChild(row);
-
-    });
-
-
-    document.getElementById(
-        "workerStatus"
-    ).textContent =
-        onlineCount +
-        "/" +
-        workers.length +
-        " online";
-
-}
-
-
-/* =====================================================
-   STATISTICS
-===================================================== */
-
-function updateStatistics() {
-
-    if (!history.length)
-        return;
-
-
-    const values =
-        history
-        .map(x => x.hashrateTH)
-        .filter(x => x > 0);
-
-
-    if (!values.length)
-        return;
-
-
-    const min =
-        Math.min(...values);
-
-    const max =
-        Math.max(...values);
-
-    const avg =
-        values.reduce(
-            (a,b) => a+b,
-            0
-        ) /
-        values.length;
-
-
-    document.getElementById(
-        "minHashrate"
-    ).textContent =
-        min.toFixed(3) +
-        " TH/s";
-
-
-    document.getElementById(
-        "maxHashrate"
-    ).textContent =
-        max.toFixed(3) +
-        " TH/s";
-
-
-    document.getElementById(
-        "sessionAverage"
-    ).textContent =
-        avg.toFixed(3) +
-        " TH/s";
-
-
-    document.getElementById(
-        "avgHashrate"
-    ).textContent =
-        avg.toFixed(3) +
-        " TH/s";
-
-
-    document.getElementById(
-        "updates"
-    ).textContent =
-        history.length;
-
-
-    const elapsed =
-        Date.now() -
-        startTime;
-
-
-    const minutes =
-        Math.floor(
-            elapsed / 60000
-        );
-
-
-    const hours =
-        Math.floor(
-            minutes / 60
-        );
-
-
-    document.getElementById(
-        "monitorTime"
-    ).textContent =
-        hours +
-        "h " +
-        (minutes % 60) +
-        "m";
-
-
-    document.getElementById(
-        "lastUpdate"
-    ).textContent =
-        new Date()
-        .toLocaleTimeString(
-            "es-ES"
-        );
-
-}
-
-
-/* =====================================================
-   LOAD API
-===================================================== */
-
-async function loadData() {
-
-    const error =
-        document.getElementById(
-            "error"
-        );
-
-
-    error.style.display =
-        "none";
-
-
-    try {
+    try{
 
         const response =
             await fetch(
@@ -2142,130 +1496,236 @@ async function loadData() {
             );
 
 
-        if (!response.ok)
+        if(!response.ok){
+
             throw new Error(
                 "HTTP " +
                 response.status
             );
+
+        }
 
 
         const data =
             await response.json();
 
 
-        console.log(
-            "Public Pool:",
-            data
-        );
-
-
         processData(data);
 
 
-        setOnline();
-
-        updates++;
-
-
-    } catch(errorObject) {
-
-        console.error(
-            errorObject
-        );
+        document
+        .getElementById(
+            "statusDot"
+        )
+        .classList
+        .remove("offline");
 
 
-        error.textContent =
+        document.getElementById(
+            "status"
+        ).textContent =
+            "API conectada · " +
+            new Date()
+            .toLocaleTimeString(
+                "es-ES"
+            );
+
+
+        document.getElementById(
+            "error"
+        ).style.display =
+            "none";
+
+
+    }catch(error){
+
+        console.error(error);
+
+
+        document
+        .getElementById(
+            "statusDot"
+        )
+        .classList
+        .add("offline");
+
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "API desconectada";
+
+
+        const errorBox =
+            document.getElementById(
+                "error"
+            );
+
+
+        errorBox.textContent =
             "No se han podido obtener " +
             "los datos de Public Pool: " +
-            errorObject.message;
+            error.message;
 
 
-        error.style.display =
+        errorBox.style.display =
             "block";
-
-
-        setOffline();
 
     }
 
 }
 
 
-/* =====================================================
-   STATUS
-===================================================== */
+/* =========================
+   PROCESS DATA
+========================= */
 
-function setOnline() {
+function processData(data){
 
-    document.getElementById(
-        "statusDot"
-    ).classList.remove(
-        "offline"
-    );
+    const accounting =
+        data.accounting || {};
 
-
-    document.getElementById(
-        "statusText"
-    ).textContent =
-        "API conectada";
-
-}
+    const workers =
+        data.workers || [];
 
 
-function setOffline() {
+    /*
+       HASHRATE REAL DEL WORKER
+    */
 
-    document.getElementById(
-        "statusDot"
-    ).classList.add(
-        "offline"
-    );
-
-
-    document.getElementById(
-        "statusText"
-    ).textContent =
-        "API desconectada";
-
-}
-
-
-/* =====================================================
-   COPY
-===================================================== */
-
-function copyAddress() {
-
-    navigator.clipboard
-        .writeText(
-            BTC_ADDRESS
+    const currentHashrate =
+        workers.reduce(
+            (total, worker) =>
+                total +
+                Number(
+                    worker.hashRate || 0
+                ),
+            0
         );
 
-}
+
+    /*
+       TOP KPI
+    */
+
+    document.getElementById(
+        "hashrate"
+    ).textContent =
+        formatHashrate(
+            currentHashrate
+        );
 
 
-/* =====================================================
-   START
-===================================================== */
-
-loadHistory();
-
-createCharts();
-
-updateCharts();
-
-updateStatistics();
-
-loadData();
+    document.getElementById(
+        "hashrate10"
+    ).textContent =
+        formatHashrate(
+            accounting.hashRateLast10Minutes
+        );
 
 
-setInterval(
-    loadData,
-    REFRESH
-);
+    document.getElementById(
+        "hashrateHour"
+    ).textContent =
+        formatHashrate(
+            accounting.hashRateLastHour
+        );
 
 
-</script>
+    document.getElementById(
+        "shares"
+    ).textContent =
+        formatNumber(
+            accounting.totalAcceptedShares
+        );
 
-</body>
-</html>
-```
+
+    document.getElementById(
+        "sharesSub"
+    ).textContent =
+        formatNumber(
+            accounting.acceptedSharesLastDay
+        ) +
+        " en las últimas 24 h";
+
+
+    document.getElementById(
+        "bestDifficulty"
+    ).textContent =
+        formatNumber(
+            accounting.bestSubmissionDifficulty
+        );
+
+
+    document.getElementById(
+        "workers"
+    ).textContent =
+        workers.length;
+
+
+    const onlineWorkers =
+        workers.filter(
+            worker =>
+                !worker.lastSeen ||
+                Date.now() -
+                new Date(
+                    worker.lastSeen
+                ).getTime()
+                <
+                5 * 60 * 1000
+        ).length;
+
+
+    document.getElementById(
+        "workersSub"
+    ).textContent =
+        onlineWorkers +
+        " online";
+
+
+    /* ACCOUNTING */
+
+    document.getElementById(
+        "totalShares"
+    ).textContent =
+        formatNumber(
+            accounting.totalAcceptedShares
+        );
+
+
+    document.getElementById(
+        "totalDifficulty"
+    ).textContent =
+        formatNumber(
+            accounting.totalCreditedDifficulty
+        );
+
+
+    document.getElementById(
+        "shares10"
+    ).textContent =
+        formatNumber(
+            accounting.acceptedSharesLast10Minutes
+        );
+
+
+    document.getElementById(
+        "difficulty10"
+    ).textContent =
+        formatNumber(
+            accounting.creditedDifficultyLast10Minutes
+        );
+
+
+    document.getElementById(
+        "sharesHour"
+    ).textContent =
+        formatNumber(
+            accounting.acceptedSharesLastHour
+        );
+
+
+    document.getElementById(
+        "difficultyHour"
+    ).textContent =
+        formatNumber(
