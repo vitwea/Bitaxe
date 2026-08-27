@@ -10,6 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
+
 :root{
     --bg:#070b12;
     --panel:#0d141e;
@@ -17,6 +18,7 @@
     --border:#1d2a38;
     --text:#eef4f8;
     --muted:#7f8e9e;
+
     --green:#39e58c;
     --blue:#4ca3ff;
     --orange:#ffb24d;
@@ -29,148 +31,245 @@
 }
 
 body{
+
     margin:0;
+
     background:
-        radial-gradient(circle at 15% 0%,rgba(61,139,255,.13),transparent 30%),
-        radial-gradient(circle at 90% 10%,rgba(57,229,140,.08),transparent 28%),
+        radial-gradient(
+            circle at 15% 0%,
+            rgba(61,139,255,.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(57,229,140,.08),
+            transparent 28%
+        ),
         var(--bg);
+
     color:var(--text);
-    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
 }
 
 .container{
+
     max-width:1450px;
+
     margin:auto;
+
     padding:26px;
 }
 
-/* HEADER */
+
+/* =========================
+   HEADER
+========================= */
 
 header{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     gap:20px;
+
     margin-bottom:22px;
 }
 
 .brand{
+
     display:flex;
+
     gap:14px;
+
     align-items:center;
 }
 
 .logo{
+
     width:56px;
+
     height:56px;
+
     border:1px solid var(--border);
+
     border-radius:16px;
 
     display:grid;
+
     place-items:center;
 
     font-size:28px;
 
-    background:linear-gradient(
-        145deg,
-        #172433,
-        #0b1119
-    );
+    background:
+        linear-gradient(
+            145deg,
+            #172433,
+            #0b1119
+        );
 
-    box-shadow:0 0 30px #0008;
+    box-shadow:
+        0 0 30px #0008;
 }
 
 h1{
+
     margin:0;
+
     font-size:27px;
 }
 
 .subtitle{
+
     color:var(--muted);
+
     font-size:12px;
+
     margin-top:4px;
 }
 
 .address{
+
     color:#5f7081;
+
     font-family:monospace;
+
     font-size:11px;
+
     margin-top:6px;
+
     word-break:break-all;
 }
 
 .header-right{
+
     text-align:right;
 }
 
 .status{
+
     display:flex;
+
     justify-content:flex-end;
+
     align-items:center;
+
     gap:8px;
+
     margin-bottom:10px;
 }
 
 .status-dot{
+
     width:10px;
+
     height:10px;
+
     border-radius:50%;
+
     background:var(--green);
-    box-shadow:0 0 12px var(--green);
+
+    box-shadow:
+        0 0 12px var(--green);
 }
 
 .status-dot.offline{
+
     background:var(--red);
-    box-shadow:0 0 12px var(--red);
+
+    box-shadow:
+        0 0 12px var(--red);
 }
 
 .buttons{
+
     display:flex;
+
     gap:8px;
+
     justify-content:flex-end;
 }
 
 button,
 .button{
+
     border:1px solid var(--border);
+
     background:var(--panel2);
+
     color:var(--text);
+
     padding:9px 13px;
+
     border-radius:8px;
+
     cursor:pointer;
+
     text-decoration:none;
+
     font-size:12px;
 }
 
 button:hover,
 .button:hover{
+
     background:#172433;
 }
 
-/* ERROR */
+
+/* =========================
+   ERROR
+========================= */
 
 .error{
+
     display:none;
+
     padding:12px;
+
     margin-bottom:15px;
+
     border-radius:10px;
+
     border:1px solid #71313a;
+
     background:#32151a;
+
     color:#ff9aa2;
 }
 
-/* KPI */
+
+/* =========================
+   KPI
+========================= */
 
 .kpis{
+
     display:grid;
-    grid-template-columns:repeat(6,1fr);
+
+    grid-template-columns:
+        repeat(6,1fr);
+
     gap:12px;
+
     margin-bottom:14px;
 }
 
 .card,
 .panel{
+
     border:1px solid var(--border);
+
     border-radius:13px;
 
     background:
@@ -180,30 +279,43 @@ button:hover,
             #ffffff01
         );
 
-    box-shadow:0 12px 35px #0003;
+    box-shadow:
+        0 12px 35px #0003;
 }
 
 .card{
+
     padding:17px;
+
     min-height:108px;
 }
 
 .label{
+
     color:var(--muted);
+
     font-size:10px;
+
     text-transform:uppercase;
+
     letter-spacing:.7px;
+
     margin-bottom:10px;
 }
 
 .value{
+
     font-size:23px;
+
     font-weight:750;
 }
 
 .small{
+
     color:var(--muted);
+
     font-size:11px;
+
     margin-top:6px;
 }
 
@@ -223,144 +335,299 @@ button:hover,
     color:var(--purple);
 }
 
-/* GRID */
+
+/* =========================
+   GRID
+========================= */
 
 .grid{
+
     display:grid;
-    grid-template-columns:2fr 1fr;
+
+    grid-template-columns:
+        2fr 1fr;
+
     gap:14px;
+
     margin-bottom:14px;
 }
 
 .panel{
+
     padding:18px;
 }
 
 .panel-header{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     margin-bottom:14px;
 }
 
 .panel-title{
+
     font-size:15px;
+
     font-weight:650;
 }
 
 .panel-sub{
+
     color:var(--muted);
+
     font-size:11px;
 }
 
 .chart{
+
     height:300px;
 }
 
-/* WORKER */
+
+/* =========================
+   RECORD PANEL
+========================= */
+
+.record-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:20px;
+
+    margin-bottom:18px;
+}
+
+.record-main{
+
+    text-align:right;
+}
+
+.record-number{
+
+    font-size:28px;
+
+    font-weight:800;
+
+    color:var(--orange);
+}
+
+.record-label{
+
+    font-size:10px;
+
+    color:var(--muted);
+
+    text-transform:uppercase;
+
+    letter-spacing:.6px;
+}
+
+.record-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:8px;
+
+    margin-bottom:14px;
+}
+
+.record-stat{
+
+    padding:11px;
+
+    border:1px solid var(--border);
+
+    border-radius:9px;
+
+    background:#ffffff04;
+}
+
+.record-stat-label{
+
+    color:var(--muted);
+
+    font-size:9px;
+
+    text-transform:uppercase;
+
+    margin-bottom:5px;
+}
+
+.record-stat-value{
+
+    font-family:monospace;
+
+    font-size:13px;
+}
+
+
+/* =========================
+   WORKERS
+========================= */
 
 table{
+
     width:100%;
+
     border-collapse:collapse;
 }
 
 th{
+
     color:var(--muted);
+
     font-size:10px;
+
     text-transform:uppercase;
+
     text-align:left;
+
     padding:9px;
-    border-bottom:1px solid var(--border);
+
+    border-bottom:
+        1px solid var(--border);
 }
 
 td{
+
     padding:13px 9px;
-    border-bottom:1px solid #ffffff09;
+
+    border-bottom:
+        1px solid #ffffff09;
+
     font-size:12px;
 }
 
 .worker{
+
     font-weight:700;
 }
 
 .online{
+
     color:var(--green);
 }
 
 .offline{
+
     color:var(--red);
 }
 
-/* STATS */
+
+/* =========================
+   STATS
+========================= */
 
 .stats{
+
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+
+    grid-template-columns:
+        repeat(4,1fr);
+
     gap:8px;
 }
 
 .stat{
+
     padding:12px;
+
     background:#ffffff04;
+
     border:1px solid var(--border);
+
     border-radius:9px;
 }
 
 .stat-label{
+
     font-size:10px;
+
     color:var(--muted);
+
     margin-bottom:5px;
 }
 
 .stat-value{
+
     font-family:monospace;
+
     font-size:13px;
+
     word-break:break-word;
 }
 
-.round{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-}
 
-/* JSON */
+/* =========================
+   JSON
+========================= */
 
 details summary{
+
     cursor:pointer;
+
     font-weight:650;
 }
 
 pre{
+
     max-height:450px;
+
     overflow:auto;
 
     background:#05080d;
+
     border:1px solid var(--border);
+
     border-radius:9px;
 
     padding:14px;
 
     color:#9db0c1;
+
     font-family:monospace;
+
     font-size:11px;
 }
 
-/* FOOTER */
+
+/* =========================
+   FOOTER
+========================= */
 
 footer{
+
     text-align:center;
+
     color:#506071;
+
     font-size:10px;
+
     padding:20px 0;
 }
 
-/* MOBILE */
+
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:1100px){
 
     .kpis{
-        grid-template-columns:repeat(3,1fr);
+
+        grid-template-columns:
+            repeat(3,1fr);
     }
 
 }
@@ -368,30 +635,48 @@ footer{
 @media(max-width:800px){
 
     .container{
+
         padding:14px;
     }
 
     header{
+
         flex-direction:column;
+
         align-items:flex-start;
     }
 
     .header-right{
+
         text-align:left;
     }
 
     .status,
     .buttons{
+
         justify-content:flex-start;
     }
 
     .grid{
+
         grid-template-columns:1fr;
     }
 
-    .round,
+    .record-grid,
     .stats{
-        grid-template-columns:repeat(2,1fr);
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .record-header{
+
+        flex-direction:column;
+    }
+
+    .record-main{
+
+        text-align:left;
     }
 
 }
@@ -399,31 +684,41 @@ footer{
 @media(max-width:520px){
 
     .kpis{
-        grid-template-columns:repeat(2,1fr);
+
+        grid-template-columns:
+            repeat(2,1fr);
     }
 
     .value{
+
         font-size:19px;
     }
 
     .panel{
+
         padding:13px;
     }
 
     th:nth-child(5),
     td:nth-child(5){
+
         display:none;
     }
 
 }
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="container">
 
+
 <header>
+
 
 <div>
 
@@ -435,7 +730,9 @@ footer{
 
 <div>
 
-<h1>Bitaxe Mining Dashboard</h1>
+<h1>
+Bitaxe Mining Dashboard
+</h1>
 
 <div class="subtitle">
 Public Pool · Solo Bitcoin Mining
@@ -445,12 +742,17 @@ Public Pool · Solo Bitcoin Mining
 
 </div>
 
-<div class="address" id="address"></div>
+
+<div
+class="address"
+id="address">
+</div>
 
 </div>
 
 
 <div class="header-right">
+
 
 <div class="status">
 
@@ -498,7 +800,9 @@ class="error">
 </div>
 
 
-<!-- KPI -->
+<!-- =========================
+     KPI
+========================= -->
 
 <section class="kpis">
 
@@ -525,7 +829,7 @@ Bitaxe
 <div class="card">
 
 <div class="label">
-Hashrate últimos 10 min
+Hashrate · 10 min
 </div>
 
 <div
@@ -544,7 +848,7 @@ Accounting
 <div class="card">
 
 <div class="label">
-Hashrate última hora
+Hashrate · 1 hora
 </div>
 
 <div
@@ -594,7 +898,7 @@ class="value orange">
 </div>
 
 <div class="small">
-Mejor submission
+Récord actual
 </div>
 
 </div>
@@ -620,15 +924,21 @@ class="small">
 
 </div>
 
+
 </section>
 
 
-<!-- CHARTS -->
+<!-- =========================
+     CHARTS
+========================= -->
 
 <div class="grid">
 
 
+<!-- HASHRATE -->
+
 <section class="panel">
+
 
 <div class="panel-header">
 
@@ -639,13 +949,13 @@ class="small">
 </div>
 
 <div class="panel-sub">
-Historial desde que abriste el dashboard
+Evolución durante la sesión
 </div>
 
 </div>
 
 <div
-id="points"
+id="hashratePoints"
 class="panel-sub">
 0 puntos
 </div>
@@ -655,25 +965,31 @@ class="panel-sub">
 
 <div class="chart">
 
-<canvas id="hashrateChart"></canvas>
+<canvas
+id="hashrateChart">
+</canvas>
 
 </div>
+
 
 </section>
 
 
+<!-- RECORD HISTORY -->
+
 <section class="panel">
+
 
 <div class="panel-header">
 
 <div>
 
 <div class="panel-title">
-🎯 Mejor dificultad
+🎯 Historial de submissions
 </div>
 
 <div class="panel-sub">
-Evolución del récord
+Nuevos récords detectados
 </div>
 
 </div>
@@ -681,22 +997,118 @@ Evolución del récord
 </div>
 
 
-<div class="chart">
+<div class="record-header">
 
-<canvas id="difficultyChart"></canvas>
+
+<div>
+
+<div
+class="record-label">
+🏆 Mejor dificultad de la sesión
+</div>
+
+<div
+id="sessionRecord"
+class="record-number">
+—
+</div>
 
 </div>
+
+
+<div class="record-main">
+
+<div
+class="record-label">
+Récords detectados
+</div>
+
+<div
+id="recordCount"
+class="value">
+0
+</div>
+
+</div>
+
+
+</div>
+
+
+<div class="record-grid">
+
+
+<div class="record-stat">
+
+<div class="record-stat-label">
+Primer récord
+</div>
+
+<div
+id="firstRecord"
+class="record-stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="record-stat">
+
+<div class="record-stat-label">
+Última mejora
+</div>
+
+<div
+id="lastRecord"
+class="record-stat-value">
+—
+</div>
+
+</div>
+
+
+<div class="record-stat">
+
+<div class="record-stat-label">
+Mejora total
+</div>
+
+<div
+id="recordImprovement"
+class="record-stat-value">
+—
+</div>
+
+</div>
+
+
+</div>
+
+
+<div
+class="chart">
+
+<canvas
+id="difficultyChart">
+</canvas>
+
+</div>
+
 
 </section>
 
 </div>
 
 
-<!-- WORKER -->
+<!-- =========================
+     WORKERS
+========================= -->
 
 <section
 class="panel"
 style="margin-bottom:14px">
+
 
 <div class="panel-header">
 
@@ -711,6 +1123,7 @@ Estado de los dispositivos conectados
 </div>
 
 </div>
+
 
 <div
 id="workerStatus"
@@ -727,37 +1140,59 @@ class="panel-sub">
 
 <tr>
 
-<th>Worker</th>
-<th>Estado</th>
-<th>Hashrate</th>
-<th>Mejor dificultad</th>
-<th>Última conexión</th>
+<th>
+Worker
+</th>
+
+<th>
+Estado
+</th>
+
+<th>
+Hashrate
+</th>
+
+<th>
+Mejor dificultad
+</th>
+
+<th>
+Última conexión
+</th>
 
 </tr>
 
 </thead>
 
-<tbody id="workerTable">
+
+<tbody
+id="workerTable">
 
 <tr>
+
 <td colspan="5">
 Cargando...
 </td>
+
 </tr>
 
 </tbody>
 
 </table>
 
+
 </section>
 
 
-<!-- ACCOUNTING -->
+<!-- =========================
+     ACCOUNTING
+========================= -->
 
 <div class="grid">
 
 
 <section class="panel">
+
 
 <div class="panel-header">
 
@@ -768,7 +1203,7 @@ Cargando...
 </div>
 
 <div class="panel-sub">
-Estadísticas de tu cuenta Public Pool
+Estadísticas de Public Pool
 </div>
 
 </div>
@@ -908,16 +1343,17 @@ class="stat-value">
 
 <section class="panel">
 
+
 <div class="panel-header">
 
 <div>
 
 <div class="panel-title">
-🏆 Récord & actividad
+🏆 Actividad
 </div>
 
 <div class="panel-sub">
-Información disponible actualmente
+Información disponible
 </div>
 
 </div>
@@ -925,7 +1361,7 @@ Información disponible actualmente
 </div>
 
 
-<div class="round">
+<div class="stats">
 
 
 <div class="stat">
@@ -998,11 +1434,14 @@ class="stat-value">
 <br>
 
 
-<!-- ENERGY -->
+<!-- =========================
+     ENERGY
+========================= -->
 
 <section
 class="panel"
 style="margin-bottom:14px">
+
 
 <div class="panel-header">
 
@@ -1013,7 +1452,7 @@ style="margin-bottom:14px">
 </div>
 
 <div class="panel-sub">
-Estimación para Bitaxe Gamma a 25 W
+Estimación usando 25 W
 </div>
 
 </div>
@@ -1066,7 +1505,7 @@ ENERGÍA / MES
 <div class="stat">
 
 <div class="stat-label">
-EFICIENCIA ACTUAL
+EFICIENCIA
 </div>
 
 <div
@@ -1083,7 +1522,9 @@ class="stat-value">
 </section>
 
 
-<!-- JSON -->
+<!-- =========================
+     RAW JSON
+========================= -->
 
 <details class="panel">
 
@@ -1091,7 +1532,8 @@ class="stat-value">
 🧪 Ver respuesta JSON completa de Public Pool
 </summary>
 
-<pre id="raw">
+<pre
+id="raw">
 Esperando datos...
 </pre>
 
@@ -1114,24 +1556,59 @@ Actualización automática cada 30 segundos
 
 <script>
 
+
+/* =========================
+   CONFIG
+========================= */
+
+
 const BTC_ADDRESS =
 "bc1qz8yh0y2wr4jdfmydcwpcsnl0m2h4k34zg2557j";
+
 
 const API_URL =
 "https://public-pool.io:40557/api/client/" +
 BTC_ADDRESS;
 
+
 const REFRESH_INTERVAL =
 30000;
+
 
 const POWER_WATTS =
 25;
 
-const STORAGE_KEY =
-"bitaxe_public_pool_history_v1";
+
+/*
+
+Historial de hashrate
+
+*/
+
+const HASHRATE_STORAGE =
+"bitaxe_hashrate_history_v2";
 
 
-let history = [];
+/*
+
+Historial de récords.
+
+MUY IMPORTANTE:
+
+Aquí NO guardamos cada consulta.
+
+Solo guardamos una entrada cuando
+bestSubmissionDifficulty mejora.
+
+*/
+
+const RECORD_STORAGE =
+"bitaxe_submission_records_v2";
+
+
+let hashrateHistory = [];
+
+let submissionRecords = [];
 
 let hashrateChart;
 
@@ -1142,31 +1619,55 @@ let difficultyChart;
    FORMATTERS
 ========================= */
 
+
 function formatHashrate(value){
 
     value = Number(value);
 
-    if(!value || isNaN(value))
+    if(
+        !value ||
+        isNaN(value)
+    ){
+
         return "—";
 
-    if(value >= 1e12)
+    }
+
+
+    if(value >= 1e12){
+
         return (
             value / 1e12
-        ).toFixed(3) + " TH/s";
+        ).toFixed(3)
+        + " TH/s";
 
-    if(value >= 1e9)
+    }
+
+
+    if(value >= 1e9){
+
         return (
             value / 1e9
-        ).toFixed(2) + " GH/s";
+        ).toFixed(2)
+        + " GH/s";
 
-    if(value >= 1e6)
+    }
+
+
+    if(value >= 1e6){
+
         return (
             value / 1e6
-        ).toFixed(2) + " MH/s";
+        ).toFixed(2)
+        + " MH/s";
+
+    }
+
 
     return Math.round(value)
         .toLocaleString("es-ES")
         + " H/s";
+
 }
 
 
@@ -1176,8 +1677,12 @@ function formatNumber(value){
         value === null ||
         value === undefined ||
         isNaN(Number(value))
-    )
+    ){
+
         return "—";
+
+    }
+
 
     return Number(value)
         .toLocaleString(
@@ -1186,54 +1691,58 @@ function formatNumber(value){
                 maximumFractionDigits:0
             }
         );
+
+}
+
+
+function formatDifficulty(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        isNaN(Number(value))
+    ){
+
+        return "—";
+
+    }
+
+
+    return Number(value)
+        .toLocaleString(
+            "es-ES",
+            {
+                maximumFractionDigits:0
+            }
+        );
+
 }
 
 
 function escapeHTML(value){
 
     return String(value)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-}
-
-
-function timeAgo(timestamp){
-
-    if(!timestamp)
-        return "—";
-
-    const seconds =
-        Math.max(
-            0,
-            Math.floor(
-                (
-                    Date.now() -
-                    new Date(timestamp).getTime()
-                ) / 1000
-            )
-        );
-
-    if(seconds < 60)
-        return seconds + " s";
-
-    if(seconds < 3600)
-        return (
-            Math.floor(seconds / 60)
-            + " min"
-        );
-
-    return (
-        Math.floor(seconds / 3600)
-        + " h "
-        +
-        Math.floor(
-            (seconds % 3600) / 60
+        .replaceAll(
+            "&",
+            "&amp;"
         )
-        + " min"
-    );
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
 }
 
 
@@ -1241,24 +1750,56 @@ function timeAgo(timestamp){
    STORAGE
 ========================= */
 
+
 function loadHistory(){
 
     try{
 
         const stored =
             localStorage.getItem(
-                STORAGE_KEY
+                HASHRATE_STORAGE
             );
 
-        if(stored)
-            history =
-                JSON.parse(stored);
+
+        if(stored){
+
+            hashrateHistory =
+                JSON.parse(
+                    stored
+                );
+
+        }
 
     }catch(error){
 
-        history = [];
+        hashrateHistory = [];
 
     }
+
+
+    try{
+
+        const stored =
+            localStorage.getItem(
+                RECORD_STORAGE
+            );
+
+
+        if(stored){
+
+            submissionRecords =
+                JSON.parse(
+                    stored
+                );
+
+        }
+
+    }catch(error){
+
+        submissionRecords = [];
+
+    }
+
 }
 
 
@@ -1266,12 +1807,39 @@ function saveHistory(){
 
     try{
 
-        history =
-            history.slice(-500);
+        hashrateHistory =
+            hashrateHistory
+            .slice(-500);
+
 
         localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(history)
+            HASHRATE_STORAGE,
+            JSON.stringify(
+                hashrateHistory
+            )
+        );
+
+    }catch(error){}
+
+
+    try{
+
+        /*
+        Guardamos bastantes récords,
+        pero tampoco queremos crear
+        un localStorage enorme.
+        */
+
+        submissionRecords =
+            submissionRecords
+            .slice(-1000);
+
+
+        localStorage.setItem(
+            RECORD_STORAGE,
+            JSON.stringify(
+                submissionRecords
+            )
         );
 
     }catch(error){}
@@ -1280,12 +1848,14 @@ function saveHistory(){
 
 
 /* =========================
-   CHARTS
+   CHART CREATION
 ========================= */
+
 
 function createCharts(){
 
-    const options = {
+
+    const commonOptions = {
 
         responsive:true,
 
@@ -1294,9 +1864,11 @@ function createCharts(){
         animation:false,
 
         plugins:{
+
             legend:{
                 display:false
             }
+
         },
 
         scales:{
@@ -1304,13 +1876,18 @@ function createCharts(){
             x:{
 
                 ticks:{
+
                     color:"#667789",
+
                     maxTicksLimit:8
+
                 },
 
                 grid:{
+
                     color:
                     "rgba(255,255,255,.04)"
+
                 }
 
             },
@@ -1318,12 +1895,16 @@ function createCharts(){
             y:{
 
                 ticks:{
+
                     color:"#667789"
+
                 },
 
                 grid:{
+
                     color:
                     "rgba(255,255,255,.04)"
+
                 }
 
             }
@@ -1333,7 +1914,10 @@ function createCharts(){
     };
 
 
+    /* HASHRATE */
+
     hashrateChart =
+
         new Chart(
 
             document
@@ -1365,14 +1949,18 @@ function createCharts(){
 
                 },
 
-                options
+                options:
+                    commonOptions
 
             }
 
         );
 
 
+    /* DIFFICULTY */
+
     difficultyChart =
+
         new Chart(
 
             document
@@ -1388,23 +1976,53 @@ function createCharts(){
 
                     labels:[],
 
-                    datasets:[{
+                    datasets:[
 
-                        data:[],
+                        {
 
-                        borderWidth:2,
+                            label:
+                            "Difficulty",
 
-                        tension:.3,
+                            data:[],
 
-                        fill:true,
+                            borderWidth:2,
 
-                        pointRadius:0
+                            tension:.25,
 
-                    }]
+                            fill:false,
+
+                            pointRadius:4,
+
+                            pointHoverRadius:7
+
+                        },
+
+                        {
+
+                            label:
+                            "Session record",
+
+                            data:[],
+
+                            borderWidth:1,
+
+                            borderDash:[
+                                5,
+                                5
+                            ],
+
+                            pointRadius:0,
+
+                            fill:false
+
+                        }
+
+                    ]
 
                 },
 
-                options
+                options:
+                    commonOptions
 
             }
 
@@ -1413,29 +2031,29 @@ function createCharts(){
 }
 
 
-function updateCharts(){
+/* =========================
+   HASHRATE CHART
+========================= */
+
+
+function updateHashrateChart(){
 
     const data =
-        history.slice(-100);
+        hashrateHistory
+        .slice(-100);
 
 
     const labels =
         data.map(
-            item => item.time
+            item =>
+                item.time
         );
 
 
-    const rates =
+    const values =
         data.map(
             item =>
                 item.hashrate / 1e12
-        );
-
-
-    const difficulties =
-        data.map(
-            item =>
-                item.difficulty || null
         );
 
 
@@ -1449,10 +2067,89 @@ function updateCharts(){
         .data
         .datasets[0]
         .data =
-        rates;
+        values;
 
 
     hashrateChart.update();
+
+
+    document.getElementById(
+        "hashratePoints"
+    ).textContent =
+        hashrateHistory.length +
+        " puntos";
+
+}
+
+
+/* =========================
+   SUBMISSION / RECORD CHART
+========================= */
+
+
+function updateDifficultyChart(){
+
+
+    const records =
+        submissionRecords
+        .slice(-100);
+
+
+    if(!records.length){
+
+        difficultyChart
+            .data
+            .labels = [];
+
+        difficultyChart
+            .data
+            .datasets[0]
+            .data = [];
+
+        difficultyChart
+            .data
+            .datasets[1]
+            .data = [];
+
+        difficultyChart.update();
+
+        return;
+
+    }
+
+
+    const labels =
+        records.map(
+            record =>
+                record.time
+        );
+
+
+    const difficulties =
+        records.map(
+            record =>
+                record.difficulty
+        );
+
+
+    /*
+    El récord máximo se mantiene como
+    línea horizontal desde el primer
+    punto hasta el último.
+
+    */
+
+    const sessionRecord =
+        Math.max(
+            ...difficulties
+        );
+
+
+    const recordLine =
+        records.map(
+            () =>
+                sessionRecord
+        );
 
 
     difficultyChart
@@ -1468,14 +2165,248 @@ function updateCharts(){
         difficulties;
 
 
+    difficultyChart
+        .data
+        .datasets[1]
+        .data =
+        recordLine;
+
+
     difficultyChart.update();
+
+}
+
+
+/* =========================
+   RECORD UI
+========================= */
+
+
+function updateRecordUI(){
+
+    if(!submissionRecords.length){
+
+        document.getElementById(
+            "sessionRecord"
+        ).textContent =
+            "—";
+
+
+        document.getElementById(
+            "recordCount"
+        ).textContent =
+            "0";
+
+
+        return;
+
+    }
+
+
+    const difficulties =
+        submissionRecords.map(
+            item =>
+                Number(
+                    item.difficulty
+                )
+        );
+
+
+    const maximum =
+        Math.max(
+            ...difficulties
+        );
+
+
+    const first =
+        Number(
+            submissionRecords[0]
+            .difficulty
+        );
+
+
+    const last =
+        Number(
+            submissionRecords[
+                submissionRecords.length - 1
+            ]
+            .difficulty
+        );
 
 
     document.getElementById(
-        "points"
+        "sessionRecord"
     ).textContent =
-        history.length +
-        " puntos";
+        formatDifficulty(
+            maximum
+        );
+
+
+    document.getElementById(
+        "recordCount"
+    ).textContent =
+        submissionRecords.length;
+
+
+    document.getElementById(
+        "firstRecord"
+    ).textContent =
+        formatDifficulty(
+            first
+        );
+
+
+    document.getElementById(
+        "lastRecord"
+    ).textContent =
+        formatDifficulty(
+            last
+        );
+
+
+    if(first > 0){
+
+        const improvement =
+            (
+                (
+                    maximum -
+                    first
+                )
+                /
+                first
+            )
+            * 100;
+
+
+        document.getElementById(
+            "recordImprovement"
+        ).textContent =
+            "+" +
+            improvement.toFixed(2) +
+            "%";
+
+    }
+
+
+    updateDifficultyChart();
+
+}
+
+
+/* =========================
+   DETECT NEW RECORD
+========================= */
+
+
+function processSubmissionDifficulty(
+    currentDifficulty
+){
+
+    currentDifficulty =
+        Number(
+            currentDifficulty
+        );
+
+
+    if(
+        !currentDifficulty ||
+        isNaN(currentDifficulty)
+    ){
+
+        return;
+
+    }
+
+
+    /*
+    Si nunca hemos guardado nada,
+    guardamos el primer valor.
+
+    */
+
+    if(
+        submissionRecords.length === 0
+    ){
+
+        addRecord(
+            currentDifficulty
+        );
+
+        return;
+
+    }
+
+
+    const lastRecord =
+        Number(
+            submissionRecords[
+                submissionRecords.length - 1
+            ].difficulty
+        );
+
+
+    /*
+    SOLO guardamos un punto si
+    realmente ha aparecido una
+    dificultad superior.
+
+    */
+
+    if(
+        currentDifficulty >
+        lastRecord
+    ){
+
+        addRecord(
+            currentDifficulty
+        );
+
+    }
+
+}
+
+
+/* =========================
+   ADD RECORD
+========================= */
+
+
+function addRecord(
+    difficulty
+){
+
+    const now =
+        new Date();
+
+
+    submissionRecords.push({
+
+        timestamp:
+            Date.now(),
+
+        time:
+            now.toLocaleTimeString(
+                "es-ES",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    second:"2-digit"
+                }
+            ),
+
+        difficulty:
+            Number(
+                difficulty
+            )
+
+    });
+
+
+    saveHistory();
+
+
+    updateRecordUI();
+
 }
 
 
@@ -1483,9 +2414,11 @@ function updateCharts(){
    API
 ========================= */
 
+
 async function loadData(){
 
     try{
+
 
         const response =
             await fetch(
@@ -1510,7 +2443,9 @@ async function loadData(){
             await response.json();
 
 
-        processData(data);
+        processData(
+            data
+        );
 
 
         document
@@ -1518,7 +2453,9 @@ async function loadData(){
             "statusDot"
         )
         .classList
-        .remove("offline");
+        .remove(
+            "offline"
+        );
 
 
         document.getElementById(
@@ -1539,7 +2476,10 @@ async function loadData(){
 
     }catch(error){
 
-        console.error(error);
+
+        console.error(
+            error
+        );
 
 
         document
@@ -1547,7 +2487,9 @@ async function loadData(){
             "statusDot"
         )
         .classList
-        .add("offline");
+        .add(
+            "offline"
+        );
 
 
         document.getElementById(
@@ -1577,25 +2519,33 @@ async function loadData(){
 
 
 /* =========================
-   PROCESS DATA
+   PROCESS API DATA
 ========================= */
 
-function processData(data){
+
+function processData(
+    data
+){
 
     const accounting =
         data.accounting || {};
+
 
     const workers =
         data.workers || [];
 
 
     /*
-       HASHRATE REAL DEL WORKER
+    HASHRATE ACTUAL
+
     */
 
     const currentHashrate =
         workers.reduce(
-            (total, worker) =>
+            (
+                total,
+                worker
+            ) =>
                 total +
                 Number(
                     worker.hashRate || 0
@@ -1605,7 +2555,7 @@ function processData(data){
 
 
     /*
-       TOP KPI
+    KPI
     */
 
     document.getElementById(
@@ -1620,7 +2570,8 @@ function processData(data){
         "hashrate10"
     ).textContent =
         formatHashrate(
-            accounting.hashRateLast10Minutes
+            accounting
+            .hashRateLast10Minutes
         );
 
 
@@ -1628,7 +2579,8 @@ function processData(data){
         "hashrateHour"
     ).textContent =
         formatHashrate(
-            accounting.hashRateLastHour
+            accounting
+            .hashRateLastHour
         );
 
 
@@ -1636,7 +2588,8 @@ function processData(data){
         "shares"
     ).textContent =
         formatNumber(
-            accounting.totalAcceptedShares
+            accounting
+            .totalAcceptedShares
         );
 
 
@@ -1644,16 +2597,19 @@ function processData(data){
         "sharesSub"
     ).textContent =
         formatNumber(
-            accounting.acceptedSharesLastDay
-        ) +
-        " en las últimas 24 h";
+            accounting
+            .acceptedSharesLastDay
+        )
+        +
+        " en 24 h";
 
 
     document.getElementById(
         "bestDifficulty"
     ).textContent =
-        formatNumber(
-            accounting.bestSubmissionDifficulty
+        formatDifficulty(
+            accounting
+            .bestSubmissionDifficulty
         );
 
 
@@ -1665,14 +2621,27 @@ function processData(data){
 
     const onlineWorkers =
         workers.filter(
-            worker =>
-                !worker.lastSeen ||
-                Date.now() -
-                new Date(
-                    worker.lastSeen
-                ).getTime()
+            worker => {
+
+                if(
+                    !worker.lastSeen
+                ){
+
+                    return true;
+
+                }
+
+
+                return (
+                    Date.now() -
+                    new Date(
+                        worker.lastSeen
+                    ).getTime()
+                )
                 <
-                5 * 60 * 1000
+                5 * 60 * 1000;
+
+            }
         ).length;
 
 
@@ -1683,13 +2652,16 @@ function processData(data){
         " online";
 
 
-    /* ACCOUNTING */
+    /*
+    ACCOUNTING
+    */
 
     document.getElementById(
         "totalShares"
     ).textContent =
         formatNumber(
-            accounting.totalAcceptedShares
+            accounting
+            .totalAcceptedShares
         );
 
 
@@ -1697,7 +2669,8 @@ function processData(data){
         "totalDifficulty"
     ).textContent =
         formatNumber(
-            accounting.totalCreditedDifficulty
+            accounting
+            .totalCreditedDifficulty
         );
 
 
@@ -1705,7 +2678,8 @@ function processData(data){
         "shares10"
     ).textContent =
         formatNumber(
-            accounting.acceptedSharesLast10Minutes
+            accounting
+            .acceptedSharesLast10Minutes
         );
 
 
@@ -1713,7 +2687,8 @@ function processData(data){
         "difficulty10"
     ).textContent =
         formatNumber(
-            accounting.creditedDifficultyLast10Minutes
+            accounting
+            .creditedDifficultyLast10Minutes
         );
 
 
@@ -1721,7 +2696,8 @@ function processData(data){
         "sharesHour"
     ).textContent =
         formatNumber(
-            accounting.acceptedSharesLastHour
+            accounting
+            .acceptedSharesLastHour
         );
 
 
@@ -1729,7 +2705,8 @@ function processData(data){
         "difficultyHour"
     ).textContent =
         formatNumber(
-            accounting.creditedDifficultyLastHour
+            accounting
+            .creditedDifficultyLastHour
         );
 
 
@@ -1737,7 +2714,8 @@ function processData(data){
         "sharesDay"
     ).textContent =
         formatNumber(
-            accounting.acceptedSharesLastDay
+            accounting
+            .acceptedSharesLastDay
         );
 
 
@@ -1745,17 +2723,21 @@ function processData(data){
         "difficultyDay"
     ).textContent =
         formatNumber(
-            accounting.creditedDifficultyLastDay
+            accounting
+            .creditedDifficultyLastDay
         );
 
 
-    /* ACTIVITY */
+    /*
+    ACTIVITY
+    */
 
     document.getElementById(
         "bestSubmission"
     ).textContent =
-        formatNumber(
-            accounting.bestSubmissionDifficulty
+        formatDifficulty(
+            accounting
+            .bestSubmissionDifficulty
         );
 
 
@@ -1764,12 +2746,16 @@ function processData(data){
     ).textContent =
         accounting.latestShareAt
         ?
+
         new Date(
             accounting.latestShareAt
-        ).toLocaleString(
+        )
+        .toLocaleString(
             "es-ES"
         )
+
         :
+
         "—";
 
 
@@ -1777,20 +2763,27 @@ function processData(data){
         "blockCandidates"
     ).textContent =
         formatNumber(
-            accounting.blockCandidateCount
+            accounting
+            .blockCandidateCount
         );
 
 
     document.getElementById(
         "expectedPayout"
     ).textContent =
+
         data.expectedPayout === null
+
         ?
+
         "—"
+
         :
+
         Number(
             data.expectedPayout
-        ).toLocaleString(
+        )
+        .toLocaleString(
             "es-ES",
             {
                 maximumFractionDigits:8
@@ -1798,16 +2791,22 @@ function processData(data){
         );
 
 
-    /* EFICIENCIA */
+    /*
+    EFICIENCIA
+    */
 
-    if(currentHashrate > 0){
+    if(
+        currentHashrate > 0
+    ){
 
         const th =
-            currentHashrate / 1e12;
+            currentHashrate /
+            1e12;
 
 
         const efficiency =
-            POWER_WATTS / th;
+            POWER_WATTS /
+            th;
 
 
         document.getElementById(
@@ -1820,18 +2819,31 @@ function processData(data){
     }
 
 
-    /* WORKERS */
+    /*
+    WORKERS
+    */
 
-    renderWorkers(workers);
+    renderWorkers(
+        workers
+    );
 
 
-    /* HISTORIAL */
+    /*
+    HISTORIAL DE HASHRATE
+
+    Guardamos una medición
+    cada vez que se consulta.
+
+    */
 
     const now =
         new Date();
 
 
-    history.push({
+    hashrateHistory.push({
+
+        timestamp:
+            Date.now(),
 
         time:
             now.toLocaleTimeString(
@@ -1843,26 +2855,34 @@ function processData(data){
                 }
             ),
 
-        timestamp:
-            Date.now(),
-
         hashrate:
-            currentHashrate,
-
-        difficulty:
-            Number(
-                accounting.bestSubmissionDifficulty
-            ) || 0
+            currentHashrate
 
     });
 
 
+    /*
+    DETECTAR NUEVO RÉCORD
+
+    */
+
+    processSubmissionDifficulty(
+
+        accounting
+        .bestSubmissionDifficulty
+
+    );
+
+
     saveHistory();
 
-    updateCharts();
+
+    updateHashrateChart();
 
 
-    /* RAW JSON */
+    /*
+    JSON
+    */
 
     document.getElementById(
         "raw"
@@ -1880,7 +2900,10 @@ function processData(data){
    WORKERS
 ========================= */
 
-function renderWorkers(workers){
+
+function renderWorkers(
+    workers
+){
 
     const table =
         document.getElementById(
@@ -1891,137 +2914,270 @@ function renderWorkers(workers){
     table.innerHTML = "";
 
 
-    if(!workers.length){
+    if(
+        !workers.length
+    ){
 
         table.innerHTML =
+
         `
         <tr>
+
             <td colspan="5">
+
                 No hay workers conectados.
+
             </td>
+
         </tr>
         `;
 
         return;
+
     }
 
 
-    workers.forEach(worker => {
-
-        const online =
-            !worker.lastSeen ||
-            Date.now() -
-            new Date(
-                worker.lastSeen
-            ).getTime()
-            <
-            5 * 60 * 1000;
+    workers.forEach(
+        worker => {
 
 
-        const row =
-            document.createElement(
-                "tr"
-            );
+            const online =
 
+                !worker.lastSeen
 
-        row.innerHTML = `
+                ||
 
-        <td class="worker">
-            ${escapeHTML(worker.name)}
-        </td>
-
-        <td class="${
-            online
-            ? "online"
-            : "offline"
-        }">
-
-            ${
-                online
-                ? "● Online"
-                : "● Offline"
-            }
-
-        </td>
-
-        <td>
-            ${formatHashrate(
-                worker.hashRate
-            )}
-        </td>
-
-        <td>
-            ${formatNumber(
-                worker.bestDifficulty
-            )}
-        </td>
-
-        <td>
-
-            ${
-                worker.lastSeen
-                ?
-                escapeHTML(
+                (
+                    Date.now() -
                     new Date(
                         worker.lastSeen
-                    ).toLocaleString(
-                        "es-ES"
-                    )
+                    ).getTime()
                 )
-                :
-                "—"
-            }
-
-            <span
-            style="
-                color:#667789;
-                margin-left:5px;
-            ">
-
-            ${
-                worker.lastSeen
-                ?
-                "(" +
-                timeAgo(
-                    worker.lastSeen
-                ) +
-                ")"
-                :
-                ""
-            }
-
-            </span>
-
-        </td>
-
-        `;
+                <
+                5 * 60 * 1000;
 
 
-        table.appendChild(row);
+            const row =
+                document
+                .createElement(
+                    "tr"
+                );
 
-    });
+
+            row.innerHTML = `
+
+                <td class="worker">
+
+                    ${escapeHTML(
+                        worker.name
+                    )}
+
+                </td>
+
+
+                <td class="${
+                    online
+                    ? "online"
+                    : "offline"
+                }">
+
+                    ${
+                        online
+                        ? "● Online"
+                        : "● Offline"
+                    }
+
+                </td>
+
+
+                <td>
+
+                    ${formatHashrate(
+                        worker.hashRate
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${formatDifficulty(
+                        worker.bestDifficulty
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${
+                        worker.lastSeen
+
+                        ?
+
+                        escapeHTML(
+                            new Date(
+                                worker.lastSeen
+                            )
+                            .toLocaleString(
+                                "es-ES"
+                            )
+                        )
+
+                        :
+
+                        "—"
+                    }
+
+
+                    <span
+                    style="
+                        color:#667789;
+                        margin-left:5px;
+                    "
+                    >
+
+                    ${
+                        worker.lastSeen
+
+                        ?
+
+                        "(" +
+                        timeAgo(
+                            worker.lastSeen
+                        ) +
+                        ")"
+
+                        :
+
+                        ""
+
+                    }
+
+                    </span>
+
+                </td>
+
+            `;
+
+
+            table.appendChild(
+                row
+            );
+
+        }
+    );
 
 }
 
 
 /* =========================
-   COPY ADDRESS
+   TIME AGO
 ========================= */
+
+
+function timeAgo(
+    timestamp
+){
+
+    if(!timestamp)
+        return "—";
+
+
+    const seconds =
+
+        Math.max(
+            0,
+
+            Math.floor(
+
+                (
+                    Date.now() -
+                    new Date(
+                        timestamp
+                    ).getTime()
+                )
+                /
+                1000
+
+            )
+        );
+
+
+    if(
+        seconds < 60
+    ){
+
+        return (
+            seconds +
+            " s"
+        );
+
+    }
+
+
+    if(
+        seconds < 3600
+    ){
+
+        return (
+            Math.floor(
+                seconds / 60
+            )
+            +
+            " min"
+        );
+
+    }
+
+
+    return (
+
+        Math.floor(
+            seconds / 3600
+        )
+
+        +
+
+        " h "
+
+        +
+
+        Math.floor(
+            (
+                seconds % 3600
+            ) / 60
+        )
+
+        +
+
+        " min"
+
+    );
+
+}
+
+
+/* =========================
+   COPY
+========================= */
+
 
 function copyAddress(){
 
     navigator
-        .clipboard
-        .writeText(
-            BTC_ADDRESS
-        );
+    .clipboard
+    .writeText(
+        BTC_ADDRESS
+    );
 
 }
 
 
 /* =========================
-   INIT
+   INITIALIZATION
 ========================= */
+
 
 document.getElementById(
     "address"
@@ -2032,22 +3188,32 @@ document.getElementById(
 document.getElementById(
     "poolLink"
 ).href =
-    "https://web.public-pool.io/#/app/" +
+
+    "https://web.public-pool.io/#/app/"
+    +
     BTC_ADDRESS;
 
 
 loadHistory();
 
+
 createCharts();
 
-updateCharts();
+
+updateHashrateChart();
+
+
+updateRecordUI();
+
 
 loadData();
+
 
 setInterval(
     loadData,
     REFRESH_INTERVAL
 );
+
 
 </script>
 
