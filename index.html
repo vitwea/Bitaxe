@@ -1510,4 +1510,3703 @@ footer{
 
 <!-- =====================================================
      RECORDS
-================================================
+===================================================== -->
+
+<section
+    id="records"
+    class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-title">
+                🏆 Récords de dificultad
+            </div>
+
+            <div class="section-description">
+                Historial de tus mejores dificultades detectadas
+            </div>
+
+        </div>
+
+        <div class="section-badge">
+            TOP 15
+        </div>
+
+    </div>
+
+
+    <div class="grid-2">
+
+        <!-- =================================================
+             RECORD PERSONAL
+        ================================================= -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Récord personal
+                    </div>
+
+                    <div class="panel-sub">
+                        Mejor dificultad observada
+                    </div>
+
+                </div>
+
+                <div>
+                    🥇
+                </div>
+
+            </div>
+
+
+            <div class="record-hero">
+
+                <div class="record-label">
+                    🏆 Tu récord observado
+                </div>
+
+                <div
+                    id="sessionRecord"
+                    class="record-value">
+                    —
+                </div>
+
+                <div
+                    id="recordMeta"
+                    class="record-meta">
+                    Todavía no hay historial
+                </div>
+
+                <div
+                    id="newRecord"
+                    class="new-record">
+                    🔥 NUEVO RÉCORD
+                </div>
+
+            </div>
+
+
+            <div class="ranking-note">
+
+                Cada vez que la API devuelva una dificultad
+                superior al máximo registrado por este navegador,
+                se almacena automáticamente con fecha, hora y
+                hashrate aproximado.
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             TIMELINE
+        ================================================= -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        📈 Evolución del récord
+                    </div>
+
+                    <div class="panel-sub">
+                        Mejora porcentual entre récord y récord
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="recordProgressList"
+                class="record-timeline">
+
+                <div class="timeline-empty">
+                    Esperando récords...
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         TOP 15
+    ================================================= -->
+
+    <div
+        class="panel"
+        style="margin-top:10px;">
+
+        <div class="panel-header">
+
+            <div>
+
+                <div class="panel-title">
+                    TOP 15 · Mejores dificultades
+                </div>
+
+                <div class="panel-sub">
+                    Pulsa sobre cualquier resultado para ver
+                    cuándo se obtuvo
+                </div>
+
+            </div>
+
+            <button
+                onclick="clearRanking()"
+                title="Borrar historial">
+                🗑️
+            </button>
+
+        </div>
+
+
+        <div
+            id="ranking"
+            class="ranking">
+
+            <div class="empty-ranking">
+                Esperando datos...
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PERFORMANCE
+===================================================== -->
+
+<section
+    id="performance"
+    class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-title">
+                ⚡ Rendimiento
+            </div>
+
+            <div class="section-description">
+                Evolución del hashrate capturada por este navegador
+            </div>
+
+        </div>
+
+        <div class="section-badge">
+            HISTORIAL LOCAL
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <div class="panel-title">
+                    Hashrate
+                </div>
+
+                <div class="panel-sub">
+                    Historial de lecturas realizadas cada 30 segundos
+                </div>
+
+            </div>
+
+            <div class="chart-summary">
+
+                <div
+                    class="chart-pill"
+                    id="chartPoints">
+                    0 puntos
+                </div>
+
+                <div
+                    class="chart-pill"
+                    id="chartRange">
+                    —
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart">
+
+            <canvas id="hashrateChart"></canvas>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     WORKERS
+===================================================== -->
+
+<section
+    id="workers"
+    class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-title">
+                ⛏️ Workers
+            </div>
+
+            <div class="section-description">
+                Estado y rendimiento de tus dispositivos
+            </div>
+
+        </div>
+
+        <div
+            id="workerStatus"
+            class="section-badge">
+            —
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Worker</th>
+                    <th>Estado</th>
+                    <th>Hashrate</th>
+                    <th>Mejor dificultad</th>
+                    <th>Sesión iniciada</th>
+                    <th>Último contacto</th>
+                </tr>
+
+            </thead>
+
+            <tbody id="workerTable">
+
+                <tr>
+                    <td colspan="6">
+                        Cargando...
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     NETWORK
+===================================================== -->
+
+<section
+    id="network"
+    class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-title">
+                🌐 Bitcoin Network
+            </div>
+
+            <div class="section-description">
+                Información global de la red y del pool cuando está disponible
+            </div>
+
+        </div>
+
+        <div
+            id="networkStatus"
+            class="section-badge">
+            —
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="network-highlight">
+
+            <div class="network-big">
+
+                <div class="network-big-label">
+                    Block height
+                </div>
+
+                <div
+                    id="blockHeight"
+                    class="network-big-value cyan">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="network-big">
+
+                <div class="network-big-label">
+                    Network difficulty
+                </div>
+
+                <div
+                    id="networkDifficulty"
+                    class="network-big-value orange">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="network-big">
+
+                <div class="network-big-label">
+                    Network hashrate
+                </div>
+
+                <div
+                    id="networkHashrate"
+                    class="network-big-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="network-big">
+
+                <div class="network-big-label">
+                    Pool hashrate
+                </div>
+
+                <div
+                    id="poolHashrate"
+                    class="network-big-value green">
+                    —
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Pool miners
+                </div>
+
+                <div
+                    id="poolMiners"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Pool blocks
+                </div>
+
+                <div
+                    id="poolBlocks"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Último bloque
+                </div>
+
+                <div
+                    id="poolLastBlock"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Actualizado
+                </div>
+
+                <div
+                    id="networkUpdated"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ACCOUNTING
+===================================================== -->
+
+<section
+    id="accounting"
+    class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-title">
+                📊 Accounting
+            </div>
+
+            <div class="section-description">
+                Shares y dificultad acreditada de tu dirección
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Shares totales
+                </div>
+
+                <div
+                    id="totalShares"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Dificultad acreditada
+                </div>
+
+                <div
+                    id="totalDifficulty"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Shares · 10 min
+                </div>
+
+                <div
+                    id="shares10"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Dificultad · 10 min
+                </div>
+
+                <div
+                    id="difficulty10"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Shares · 1 h
+                </div>
+
+                <div
+                    id="sharesHour"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Dificultad · 1 h
+                </div>
+
+                <div
+                    id="difficultyHour"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Shares · 24 h
+                </div>
+
+                <div
+                    id="sharesDay"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Dificultad · 24 h
+                </div>
+
+                <div
+                    id="difficultyDay"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ACTIVITY
+===================================================== -->
+
+<section
+    id="activity"
+    class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-title">
+                🎯 Actividad del minero
+            </div>
+
+            <div class="section-description">
+                Actividad reciente y estado de la ronda actual
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Mejor submission
+                </div>
+
+                <div
+                    id="bestSubmission"
+                    class="stat-value orange">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Último share
+                </div>
+
+                <div
+                    id="latestShare"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Desde último share
+                </div>
+
+                <div
+                    id="sinceShare"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Candidatos de bloque
+                </div>
+
+                <div
+                    id="blockCandidates"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Work desde último bloque
+                </div>
+
+                <div
+                    id="workSinceBlock"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Round actual
+                </div>
+
+                <div
+                    id="roundShares"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Dificultad round
+                </div>
+
+                <div
+                    id="roundDifficulty"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Expected payout
+                </div>
+
+                <div
+                    id="expectedPayout"
+                    class="stat-value">
+                    —
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ENERGY
+===================================================== -->
+
+<section
+    id="energy"
+    class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-title">
+                🔌 Energía & eficiencia
+            </div>
+
+            <div class="section-description">
+                Estimaciones basadas en un consumo configurado de 25 W
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="energy-grid">
+
+            <div class="energy-item">
+
+                <div class="energy-label">
+                    Potencia
+                </div>
+
+                <div class="energy-value">
+                    25 W
+                </div>
+
+            </div>
+
+
+            <div class="energy-item">
+
+                <div class="energy-label">
+                    Energía / hora
+                </div>
+
+                <div class="energy-value">
+                    0,025 kWh
+                </div>
+
+            </div>
+
+
+            <div class="energy-item">
+
+                <div class="energy-label">
+                    Energía / día
+                </div>
+
+                <div class="energy-value">
+                    0,600 kWh
+                </div>
+
+            </div>
+
+
+            <div class="energy-item">
+
+                <div class="energy-label">
+                    Energía / 30 días
+                </div>
+
+                <div class="energy-value">
+                    18,0 kWh
+                </div>
+
+            </div>
+
+
+            <div class="energy-item">
+
+                <div class="energy-label">
+                    Eficiencia actual
+                </div>
+
+                <div
+                    id="efficiency"
+                    class="energy-value green">
+                    —
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     DIAGNOSTICS
+===================================================== -->
+
+<section
+    id="diagnostics"
+    class="section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-title">
+                🧪 Diagnóstico
+            </div>
+
+            <div class="section-description">
+                Datos originales recibidos desde las APIs
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <details class="panel">
+
+        <summary>
+            Ver JSON completo de las APIs
+        </summary>
+
+        <pre id="raw">
+Esperando datos...
+        </pre>
+
+    </details>
+
+</section>
+
+
+<footer>
+
+    Bitaxe Solo Mining Dashboard
+
+    <br>
+
+    Public Pool · Actualización automática cada 30 segundos
+
+    <br><br>
+
+    Los datos históricos de récords y hashrate
+    se almacenan únicamente en este navegador.
+
+</footer>
+
+</div>
+
+
+<!-- =====================================================
+     RECORD MODAL
+===================================================== -->
+
+<div
+    id="recordModal"
+    class="modal"
+    onclick="closeModalOutside(event)">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div class="modal-title">
+                🏆 Detalle del récord
+            </div>
+
+            <button
+                class="modal-close"
+                onclick="closeRecordModal()">
+                ✕
+            </button>
+
+        </div>
+
+
+        <div
+            id="modalDifficulty"
+            class="modal-difficulty">
+            —
+        </div>
+
+
+        <div class="modal-grid">
+
+            <div class="modal-stat">
+
+                <div class="modal-stat-label">
+                    Fecha
+                </div>
+
+                <div
+                    id="modalDate"
+                    class="modal-stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="modal-stat">
+
+                <div class="modal-stat-label">
+                    Hora exacta
+                </div>
+
+                <div
+                    id="modalTime"
+                    class="modal-stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="modal-stat">
+
+                <div class="modal-stat-label">
+                    Hashrate
+                </div>
+
+                <div
+                    id="modalHashrate"
+                    class="modal-stat-value">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="modal-stat">
+
+                <div class="modal-stat-label">
+                    Mejora respecto al anterior
+                </div>
+
+                <div
+                    id="modalImprovement"
+                    class="modal-stat-value green">
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="modal-stat">
+
+                <div class="modal-stat-label">
+                    Timestamp exacto
+                </div>
+
+                <div
+                    id="modalTimestamp"
+                    class="modal-stat-value">
+                    —
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   CONFIGURATION
+========================================================= */
+
+const BTC_ADDRESS =
+"bc1qz8yh0y2wr4jdfmydcwpcsnl0m2h4k34zg2557j";
+
+
+const API_BASE =
+"https://public-pool.io:40557/api";
+
+
+const CLIENT_API =
+API_BASE +
+"/client/" +
+BTC_ADDRESS;
+
+
+const POOL_API =
+API_BASE +
+"/pool";
+
+
+const NETWORK_API =
+API_BASE +
+"/network";
+
+
+const REFRESH_INTERVAL =
+30000;
+
+
+const POWER_WATTS =
+25;
+
+
+/*
+   IMPORTANTE:
+   Se mantienen las mismas claves que ya utilizabas.
+   Por tanto, los récords existentes siguen disponibles.
+*/
+
+const HASH_HISTORY_KEY =
+"bitaxe_hashrate_history_v5";
+
+
+const RANKING_KEY =
+"bitaxe_record_ranking_v5";
+
+
+const MAX_HASH_POINTS =
+500;
+
+
+const MAX_RECORDS =
+15;
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let hashrateHistory = [];
+
+let ranking = [];
+
+let currentClientData = null;
+
+let currentPoolData = null;
+
+let currentNetworkData = null;
+
+let hashChart = null;
+
+let lastShareTimestamp = null;
+
+let recordFlashTimer = null;
+
+
+/* =========================================================
+   FORMATTERS
+========================================================= */
+
+function number(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        isNaN(Number(value))
+    ){
+        return "—";
+    }
+
+    return Number(value)
+        .toLocaleString(
+            "es-ES",
+            {
+                maximumFractionDigits:0
+            }
+        );
+}
+
+
+function difficulty(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        isNaN(Number(value))
+    ){
+        return "—";
+    }
+
+    return Number(value)
+        .toLocaleString(
+            "es-ES",
+            {
+                maximumFractionDigits:0
+            }
+        );
+}
+
+
+function hashrate(value){
+
+    value = Number(value);
+
+    if(!value || isNaN(value)){
+        return "—";
+    }
+
+    if(value >= 1e15){
+
+        return (
+            value / 1e15
+        ).toFixed(2)
+        + " PH/s";
+
+    }
+
+    if(value >= 1e12){
+
+        return (
+            value / 1e12
+        ).toFixed(3)
+        + " TH/s";
+
+    }
+
+    if(value >= 1e9){
+
+        return (
+            value / 1e9
+        ).toFixed(2)
+        + " GH/s";
+
+    }
+
+    if(value >= 1e6){
+
+        return (
+            value / 1e6
+        ).toFixed(2)
+        + " MH/s";
+
+    }
+
+    return (
+        Math.round(value)
+    )
+    .toLocaleString("es-ES")
+    + " H/s";
+}
+
+
+function shortHashrate(value){
+
+    value = Number(value);
+
+    if(!value || isNaN(value)){
+        return "—";
+    }
+
+    if(value >= 1e12){
+
+        return (
+            value / 1e12
+        ).toFixed(2)
+        + " TH/s";
+
+    }
+
+    if(value >= 1e9){
+
+        return (
+            value / 1e9
+        ).toFixed(2)
+        + " GH/s";
+
+    }
+
+    return (
+        Math.round(value)
+    )
+    .toLocaleString("es-ES")
+    + " H/s";
+}
+
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+
+/* =========================================================
+   RECORD DATE HELPERS
+========================================================= */
+
+
+/*
+   Convierte un récord antiguo que quizá no tenga timestamp
+   a una estructura compatible con la nueva timeline.
+*/
+
+function normalizeRecord(record){
+
+    if(!record || typeof record !== "object"){
+        return null;
+    }
+
+
+    const diff =
+        Number(record.difficulty);
+
+
+    if(
+        !diff ||
+        isNaN(diff)
+    ){
+        return null;
+    }
+
+
+    let timestamp =
+        Number(record.timestamp);
+
+
+    /*
+       Los récords nuevos ya tienen timestamp.
+
+       Los antiguos pueden no tenerlo.
+       En ese caso intentamos reconstruirlo.
+    */
+
+    if(
+        !timestamp ||
+        isNaN(timestamp)
+    ){
+
+        if(
+            record.date &&
+            record.time
+        ){
+
+            const parsed =
+                new Date(
+                    record.date +
+                    " " +
+                    record.time
+                ).getTime();
+
+
+            if(!isNaN(parsed)){
+                timestamp = parsed;
+            }
+
+        }
+
+    }
+
+
+    return {
+
+        difficulty:diff,
+
+        hashrate:
+            Number(record.hashrate || 0),
+
+        timestamp:
+            timestamp || null,
+
+        date:
+            record.date || (
+                timestamp
+                ?
+                new Date(timestamp)
+                    .toLocaleDateString("es-ES")
+                :
+                "—"
+            ),
+
+        time:
+            record.time || (
+                timestamp
+                ?
+                new Date(timestamp)
+                    .toLocaleTimeString(
+                        "es-ES",
+                        {
+                            hour:"2-digit",
+                            minute:"2-digit",
+                            second:"2-digit"
+                        }
+                    )
+                :
+                "—"
+            )
+
+    };
+
+}
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function loadStorage(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(
+                HASH_HISTORY_KEY
+            );
+
+        if(raw){
+            hashrateHistory =
+                JSON.parse(raw);
+        }
+
+    }catch{
+
+        hashrateHistory = [];
+
+    }
+
+
+    try{
+
+        const raw =
+            localStorage.getItem(
+                RANKING_KEY
+            );
+
+        if(raw){
+
+            const parsed =
+                JSON.parse(raw);
+
+
+            if(Array.isArray(parsed)){
+
+                ranking =
+                    parsed
+                    .map(normalizeRecord)
+                    .filter(Boolean);
+
+            }
+
+        }
+
+    }catch{
+
+        ranking = [];
+
+    }
+
+
+    if(!Array.isArray(hashrateHistory)){
+        hashrateHistory = [];
+    }
+
+    if(!Array.isArray(ranking)){
+        ranking = [];
+    }
+
+
+    /*
+       Normalizamos y eliminamos duplicados exactos.
+    */
+
+    const unique =
+        new Map();
+
+
+    ranking.forEach(
+        record => {
+
+            const key =
+                String(
+                    record.difficulty
+                );
+
+
+            if(!unique.has(key)){
+
+                unique.set(
+                    key,
+                    record
+                );
+
+            }
+
+        }
+    );
+
+
+    ranking =
+        Array.from(
+            unique.values()
+        );
+
+
+    saveStorage();
+
+}
+
+
+function saveStorage(){
+
+    try{
+
+        hashrateHistory =
+            hashrateHistory.slice(
+                -MAX_HASH_POINTS
+            );
+
+        localStorage.setItem(
+            HASH_HISTORY_KEY,
+            JSON.stringify(
+                hashrateHistory
+            )
+        );
+
+    }catch{}
+
+
+    try{
+
+        ranking =
+            ranking
+            .sort(
+                (a,b) =>
+                    Number(b.difficulty) -
+                    Number(a.difficulty)
+            )
+            .slice(
+                0,
+                MAX_RECORDS
+            );
+
+
+        localStorage.setItem(
+            RANKING_KEY,
+            JSON.stringify(
+                ranking
+            )
+        );
+
+    }catch{}
+
+}
+
+
+/* =========================================================
+   CHART
+========================================================= */
+
+function createChart(){
+
+    const ctx =
+        document.getElementById(
+            "hashrateChart"
+        );
+
+
+    hashChart =
+        new Chart(
+            ctx,
+            {
+
+                type:"line",
+
+                data:{
+
+                    labels:[],
+
+                    datasets:[{
+
+                        label:"Hashrate",
+
+                        data:[],
+
+                        borderWidth:2,
+
+                        tension:.35,
+
+                        fill:true,
+
+                        pointRadius:0,
+
+                        pointHoverRadius:4
+
+                    }]
+
+                },
+
+                options:{
+
+                    responsive:true,
+
+                    maintainAspectRatio:false,
+
+                    animation:false,
+
+                    interaction:{
+                        intersect:false,
+                        mode:"index"
+                    },
+
+                    plugins:{
+
+                        legend:{
+                            display:false
+                        },
+
+                        tooltip:{
+
+                            callbacks:{
+
+                                label:
+                                    context => {
+
+                                        return (
+                                            " " +
+                                            shortHashrate(
+                                                Number(
+                                                    context.raw
+                                                ) * 1e12
+                                            )
+                                        );
+
+                                    }
+
+                            }
+
+                        }
+
+                    },
+
+                    scales:{
+
+                        x:{
+
+                            ticks:{
+                                color:"#617282",
+                                maxTicksLimit:8
+                            },
+
+                            grid:{
+                                color:
+                                "rgba(255,255,255,.035)"
+                            }
+
+                        },
+
+                        y:{
+
+                            beginAtZero:false,
+
+                            ticks:{
+
+                                color:"#617282",
+
+                                callback:
+                                    value =>
+                                        Number(value)
+                                        .toFixed(2)
+                                        + " TH/s"
+
+                            },
+
+                            grid:{
+                                color:
+                                "rgba(255,255,255,.035)"
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+}
+
+
+function updateChart(){
+
+    if(!hashChart){
+        return;
+    }
+
+
+    const data =
+        hashrateHistory.slice(
+            -150
+        );
+
+
+    hashChart.data.labels =
+        data.map(
+            item => item.time
+        );
+
+
+    hashChart.data.datasets[0].data =
+        data.map(
+            item =>
+                Number(
+                    item.hashrate
+                ) / 1e12
+        );
+
+
+    hashChart.update();
+
+
+    document.getElementById(
+        "chartPoints"
+    ).textContent =
+        hashrateHistory.length +
+        " puntos";
+
+
+    if(data.length){
+
+        document.getElementById(
+            "chartRange"
+        ).textContent =
+            data[0].time +
+            " → " +
+            data[data.length - 1].time;
+
+    }
+
+}
+
+
+/* =========================================================
+   RECORDS
+========================================================= */
+
+function observeRecord(
+    newDifficulty,
+    currentHashrate
+){
+
+    const diff =
+        Number(newDifficulty);
+
+
+    if(
+        !diff ||
+        isNaN(diff)
+    ){
+        return false;
+    }
+
+
+    /*
+       Buscamos el máximo existente.
+    */
+
+    const knownMax =
+        ranking.length
+        ?
+        Math.max(
+            ...ranking.map(
+                item =>
+                    Number(item.difficulty)
+            )
+        )
+        :
+        0;
+
+
+    /*
+       Si no supera el récord actual,
+       no se registra.
+    */
+
+    if(diff <= knownMax){
+
+        return false;
+
+    }
+
+
+    const now =
+        new Date();
+
+
+    const record = {
+
+        difficulty:diff,
+
+        hashrate:
+            Number(currentHashrate || 0),
+
+        timestamp:
+            Date.now(),
+
+        date:
+            now.toLocaleDateString(
+                "es-ES"
+            ),
+
+        time:
+            now.toLocaleTimeString(
+                "es-ES",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    second:"2-digit"
+                }
+            )
+
+    };
+
+
+    ranking.push(
+        record
+    );
+
+
+    /*
+       Importante:
+       mantenemos únicamente los 15 mejores.
+    */
+
+    ranking =
+        ranking
+        .sort(
+            (a,b) =>
+                Number(b.difficulty) -
+                Number(a.difficulty)
+        )
+        .slice(
+            0,
+            MAX_RECORDS
+        );
+
+
+    saveStorage();
+
+    renderRanking();
+
+    renderRecordProgress();
+
+    showNewRecord();
+
+    return true;
+
+}
+
+
+function showNewRecord(){
+
+    const badge =
+        document.getElementById(
+            "newRecord"
+        );
+
+
+    badge.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        recordFlashTimer
+    );
+
+
+    recordFlashTimer =
+        setTimeout(
+            () => {
+
+                badge.classList.remove(
+                    "show"
+                );
+
+            },
+            10000
+        );
+
+}
+
+
+/* =========================================================
+   CALCULATE RECORD IMPROVEMENT
+========================================================= */
+
+
+/*
+   Calcula la mejora porcentual de un récord respecto
+   al récord inmediatamente anterior.
+
+   Ejemplo:
+
+   10.000 → 12.000
+
+   mejora =
+   (12.000 - 10.000) / 10.000 × 100
+   = 20%
+*/
+
+function calculateImprovement(
+    current,
+    previous
+){
+
+    current =
+        Number(current);
+
+
+    previous =
+        Number(previous);
+
+
+    if(
+        !previous ||
+        isNaN(previous) ||
+        isNaN(current)
+    ){
+
+        return null;
+
+    }
+
+
+    return (
+        (
+            current -
+            previous
+        ) /
+        previous
+    ) *
+    100;
+
+}
+
+
+/* =========================================================
+   CHRONOLOGICAL RECORDS
+========================================================= */
+
+function getChronologicalRecords(){
+
+    /*
+       La ranking principal está ordenada por dificultad.
+
+       Para la timeline necesitamos orden cronológico.
+
+       Los récords sin timestamp se colocan al principio
+       porque pertenecen a un historial antiguo del que
+       no conocemos la hora exacta.
+    */
+
+    return ranking
+        .map(
+            (record,index) => ({
+                ...record,
+                originalIndex:index
+            })
+        )
+        .sort(
+            (a,b) => {
+
+                const ta =
+                    Number(
+                        a.timestamp || 0
+                    );
+
+                const tb =
+                    Number(
+                        b.timestamp || 0
+                    );
+
+
+                return ta - tb;
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   RECORD TIMELINE
+========================================================= */
+
+function renderRecordProgress(){
+
+    const container =
+        document.getElementById(
+            "recordProgressList"
+        );
+
+
+    if(!ranking.length){
+
+        container.innerHTML = `
+
+            <div class="timeline-empty">
+
+                🏆 Todavía no hay récords registrados.
+
+                <br><br>
+
+                Cuando encuentres una dificultad
+                superior a tu récord actual aparecerá
+                aquí automáticamente.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const chronological =
+        getChronologicalRecords();
+
+
+    container.innerHTML = "";
+
+
+    chronological.forEach(
+        (item,index) => {
+
+            /*
+               Buscamos el récord anterior en el tiempo.
+            */
+
+            const previous =
+                index > 0
+                ?
+                chronological[index - 1]
+                :
+                null;
+
+
+            const improvement =
+                previous
+                ?
+                calculateImprovement(
+                    item.difficulty,
+                    previous.difficulty
+                )
+                :
+                null;
+
+
+            const div =
+                document.createElement(
+                    "div"
+                );
+
+
+            div.className =
+                "timeline-item";
+
+
+            div.onclick =
+                () =>
+                    openRecordModal(
+                        item,
+                        index + 1,
+                        improvement
+                    );
+
+
+            const improvementHTML =
+                improvement !== null
+                ?
+                `
+                    <span class="timeline-improvement">
+                        +${improvement.toFixed(2)}%
+                    </span>
+                `
+                :
+                `
+                    <span class="timeline-first">
+                        RÉCORD INICIAL
+                    </span>
+                `;
+
+
+            const timestampText =
+                item.timestamp
+                ?
+                new Date(
+                    item.timestamp
+                ).toLocaleString(
+                    "es-ES",
+                    {
+                        day:"2-digit",
+                        month:"2-digit",
+                        year:"numeric",
+                        hour:"2-digit",
+                        minute:"2-digit",
+                        second:"2-digit"
+                    }
+                )
+                :
+                (
+                    item.date +
+                    " · " +
+                    item.time
+                );
+
+
+            div.innerHTML = `
+
+                <div class="timeline-dot">
+                    ${index === 0 ? "🏆" : "↑"}
+                </div>
+
+
+                <div class="timeline-content">
+
+                    <div class="timeline-top">
+
+                        <div class="timeline-record">
+
+                            ${difficulty(
+                                item.difficulty
+                            )}
+
+                        </div>
+
+                        ${improvementHTML}
+
+                    </div>
+
+
+                    <div class="timeline-date">
+
+                        🕐 ${escapeHTML(
+                            timestampText
+                        )}
+
+                    </div>
+
+
+                    <div class="timeline-details">
+
+                        <span>
+                            Récord #${index + 1}
+                        </span>
+
+                        ${
+                            item.hashrate
+                            ?
+                            `
+                                <span class="timeline-hash">
+                                    ⚡ ${shortHashrate(
+                                        item.hashrate
+                                    )}
+                                </span>
+                            `
+                            :
+                            ""
+                        }
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                div
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   RANKING
+========================================================= */
+
+function renderRanking(){
+
+    const container =
+        document.getElementById(
+            "ranking"
+        );
+
+
+    if(!ranking.length){
+
+        document.getElementById(
+            "sessionRecord"
+        ).textContent =
+            "—";
+
+
+        document.getElementById(
+            "recordMeta"
+        ).textContent =
+            "Todavía no hay historial";
+
+
+        container.innerHTML = `
+
+            <div class="empty-ranking">
+
+                ⏳ Esperando el primer récord...
+
+                <br><br>
+
+                El dashboard guardará aquí
+                cada nuevo máximo detectado.
+
+            </div>
+
+        `;
+
+        renderRecordProgress();
+
+        return;
+
+    }
+
+
+    ranking =
+        ranking
+        .sort(
+            (a,b) =>
+                Number(b.difficulty) -
+                Number(a.difficulty)
+        );
+
+
+    const best =
+        ranking[0];
+
+
+    document.getElementById(
+        "sessionRecord"
+    ).textContent =
+        difficulty(
+            best.difficulty
+        );
+
+
+    document.getElementById(
+        "recordMeta"
+    ).textContent =
+        "Conseguido el " +
+        best.date +
+        " a las " +
+        best.time +
+        (
+            best.hashrate
+            ?
+            " · " +
+            shortHashrate(
+                best.hashrate
+            )
+            :
+            ""
+        );
+
+
+    const maximum =
+        Number(
+            best.difficulty
+        );
+
+
+    container.innerHTML = "";
+
+
+    ranking
+    .slice(
+        0,
+        MAX_RECORDS
+    )
+    .forEach(
+        (item,index) => {
+
+            const position =
+                index + 1;
+
+
+            const percentage =
+                Math.max(
+                    2,
+                    (
+                        Number(item.difficulty) /
+                        maximum
+                    ) * 100
+                );
+
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "rank-row" +
+                (
+                    position === 1
+                    ? " first"
+                    : ""
+                );
+
+
+            row.onclick =
+                () =>
+                    openRecordModal(
+                        item,
+                        position
+                    );
+
+
+            const medal =
+                position === 1
+                ? "🥇"
+                : position === 2
+                ? "🥈"
+                : position === 3
+                ? "🥉"
+                : "#" + position;
+
+
+            row.innerHTML = `
+
+                <div class="rank-position">
+                    ${medal}
+                </div>
+
+
+                <div>
+
+                    <div class="rank-difficulty">
+                        ${difficulty(
+                            item.difficulty
+                        )}
+                    </div>
+
+                    <div class="rank-bar">
+
+                        <div
+                            class="rank-bar-inner"
+                            style="
+                                width:${percentage}%
+                            ">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="rank-date">
+
+                    ${escapeHTML(
+                        item.date
+                    )}
+
+                    <br>
+
+                    ${escapeHTML(
+                        item.time
+                    )}
+
+                </div>
+
+
+                <div class="rank-hash">
+
+                    ${
+                        item.hashrate
+                        ?
+                        shortHashrate(
+                            item.hashrate
+                        )
+                        :
+                        "—"
+                    }
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    renderRecordProgress();
+
+}
+
+
+/* =========================================================
+   RECORD MODAL
+========================================================= */
+
+function openRecordModal(
+    record,
+    position,
+    improvement = null
+){
+
+    document.getElementById(
+        "modalDifficulty"
+    ).textContent =
+        difficulty(
+            record.difficulty
+        );
+
+
+    document.getElementById(
+        "modalDate"
+    ).textContent =
+        record.date || "—";
+
+
+    document.getElementById(
+        "modalTime"
+    ).textContent =
+        record.time || "—";
+
+
+    document.getElementById(
+        "modalHashrate"
+    ).textContent =
+        record.hashrate
+        ?
+        shortHashrate(
+            record.hashrate
+        )
+        :
+        "—";
+
+
+    /*
+       Si no se pasó la mejora desde la timeline,
+       calculamos el récord anterior cronológicamente.
+    */
+
+    if(improvement === null){
+
+        const chronological =
+            getChronologicalRecords();
+
+
+        const index =
+            chronological.findIndex(
+                item =>
+                    Number(
+                        item.difficulty
+                    ) ===
+                    Number(
+                        record.difficulty
+                    ) &&
+                    (
+                        !record.timestamp ||
+                        Number(
+                            item.timestamp
+                        ) ===
+                        Number(
+                            record.timestamp
+                        )
+                    )
+            );
+
+
+        if(index > 0){
+
+            improvement =
+                calculateImprovement(
+                    record.difficulty,
+                    chronological[index - 1].difficulty
+                );
+
+        }
+
+    }
+
+
+    document.getElementById(
+        "modalImprovement"
+    ).textContent =
+        improvement !== null &&
+        improvement !== undefined
+        ?
+        "+" +
+        improvement.toFixed(2) +
+        "%"
+        :
+        "Récord inicial";
+
+
+    document.getElementById(
+        "modalTimestamp"
+    ).textContent =
+        record.timestamp
+        ?
+        new Date(
+            record.timestamp
+        ).toLocaleString(
+            "es-ES",
+            {
+                day:"2-digit",
+                month:"2-digit",
+                year:"numeric",
+                hour:"2-digit",
+                minute:"2-digit",
+                second:"2-digit"
+            }
+        )
+        :
+        "No disponible en registro antiguo";
+
+
+    document.getElementById(
+        "recordModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+function closeRecordModal(){
+
+    document.getElementById(
+        "recordModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+function closeModalOutside(event){
+
+    if(
+        event.target.id ===
+        "recordModal"
+    ){
+
+        closeRecordModal();
+
+    }
+
+}
+
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Escape"){
+
+            closeRecordModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   WORKERS
+========================================================= */
+
+function renderWorkers(
+    workers
+){
+
+    const table =
+        document.getElementById(
+            "workerTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if(
+        !workers ||
+        !workers.length
+    ){
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+                    No hay workers conectados.
+                </td>
+
+            </tr>
+
+        `;
+
+
+        document.getElementById(
+            "workerStatus"
+        ).textContent =
+            "0 workers";
+
+
+        return;
+
+    }
+
+
+    let onlineCount = 0;
+
+
+    workers.forEach(
+        worker => {
+
+            const lastSeen =
+                worker.lastSeen
+                ?
+                new Date(
+                    worker.lastSeen
+                )
+                :
+                null;
+
+
+            const online =
+                !lastSeen ||
+                (
+                    Date.now() -
+                    lastSeen.getTime()
+                )
+                <
+                5 * 60 * 1000;
+
+
+            if(online){
+                onlineCount++;
+            }
+
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+
+                <td class="worker-name">
+
+                    ${escapeHTML(
+                        worker.name ||
+                        "worker"
+                    )}
+
+                </td>
+
+
+                <td class="${
+                    online
+                    ? "online"
+                    : "offline"
+                }">
+
+                    ${
+                        online
+                        ? "● ONLINE"
+                        : "● OFFLINE"
+                    }
+
+                </td>
+
+
+                <td>
+
+                    ${hashrate(
+                        worker.hashRate
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${difficulty(
+                        worker.bestDifficulty
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${
+                        worker.startTime
+                        ?
+                        new Date(
+                            worker.startTime
+                        ).toLocaleString(
+                            "es-ES"
+                        )
+                        :
+                        "—"
+                    }
+
+                </td>
+
+
+                <td>
+
+                    ${
+                        worker.lastSeen
+                        ?
+                        timeAgo(
+                            worker.lastSeen
+                        )
+                        :
+                        "—"
+                    }
+
+                </td>
+
+            `;
+
+
+            table.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "workerStatus"
+    ).textContent =
+        onlineCount +
+        "/" +
+        workers.length +
+        " online";
+
+}
+
+
+/* =========================================================
+   CLIENT
+========================================================= */
+
+function processClientData(
+    data
+){
+
+    currentClientData =
+        data;
+
+
+    const accounting =
+        data.accounting ||
+        {};
+
+
+    const workers =
+        Array.isArray(
+            data.workers
+        )
+        ?
+        data.workers
+        :
+        [];
+
+
+    const currentHashrate =
+        workers.reduce(
+            (
+                total,
+                worker
+            ) =>
+                total +
+                Number(
+                    worker.hashRate || 0
+                ),
+            0
+        );
+
+
+    /* Overview */
+
+    document.getElementById(
+        "hashrate"
+    ).textContent =
+        hashrate(
+            currentHashrate
+        );
+
+
+    document.getElementById(
+        "hashrate10"
+    ).textContent =
+        hashrate(
+            accounting.hashRateLast10Minutes
+        );
+
+
+    document.getElementById(
+        "hashrateHour"
+    ).textContent =
+        hashrate(
+            accounting.hashRateLastHour
+        );
+
+
+    document.getElementById(
+        "shares"
+    ).textContent =
+        number(
+            accounting.totalAcceptedShares
+        );
+
+
+    document.getElementById(
+        "sharesSub"
+    ).textContent =
+        number(
+            accounting.acceptedSharesLastDay
+        ) +
+        " en 24 h";
+
+
+    document.getElementById(
+        "bestDifficulty"
+    ).textContent =
+        difficulty(
+            accounting.bestSubmissionDifficulty
+        );
+
+
+    document.getElementById(
+        "workers"
+    ).textContent =
+        workers.length;
+
+
+    document.getElementById(
+        "workersSub"
+    ).textContent =
+        workers.length === 1
+        ?
+        "1 worker"
+        :
+        workers.length +
+        " workers";
+
+
+    /* Accounting */
+
+    document.getElementById(
+        "totalShares"
+    ).textContent =
+        number(
+            accounting.totalAcceptedShares
+        );
+
+
+    document.getElementById(
+        "totalDifficulty"
+    ).textContent =
+        number(
+            accounting.totalCreditedDifficulty
+        );
+
+
+    document.getElementById(
+        "shares10"
+    ).textContent =
+        number(
+            accounting.acceptedSharesLast10Minutes
+        );
+
+
+    document.getElementById(
+        "difficulty10"
+    ).textContent =
+        number(
+            accounting.creditedDifficultyLast10Minutes
+        );
+
+
+    document.getElementById(
+        "sharesHour"
+    ).textContent =
+        number(
+            accounting.acceptedSharesLastHour
+        );
+
+
+    document.getElementById(
+        "difficultyHour"
+    ).textContent =
+        number(
+            accounting.creditedDifficultyLastHour
+        );
+
+
+    document.getElementById(
+        "sharesDay"
+    ).textContent =
+        number(
+            accounting.acceptedSharesLastDay
+        );
+
+
+    document.getElementById(
+        "difficultyDay"
+    ).textContent =
+        number(
+            accounting.creditedDifficultyLastDay
+        );
+
+
+    /* Activity */
+
+    document.getElementById(
+        "bestSubmission"
+    ).textContent =
+        difficulty(
+            accounting.bestSubmissionDifficulty
+        );
+
+
+    lastShareTimestamp =
+        accounting.latestShareAt
+        ?
+        new Date(
+            accounting.latestShareAt
+        )
+        :
+        null;
+
+
+    document.getElementById(
+        "latestShare"
+    ).textContent =
+        lastShareTimestamp
+        ?
+        lastShareTimestamp.toLocaleString(
+            "es-ES"
+        )
+        :
+        "—";
+
+
+    document.getElementById(
+        "blockCandidates"
+    ).textContent =
+        number(
+            accounting.blockCandidateCount
+        );
+
+
+    document.getElementById(
+        "workSinceBlock"
+    ).textContent =
+        number(
+            accounting.workSinceLastBlock
+        );
+
+
+    document.getElementById(
+        "roundShares"
+    ).textContent =
+        number(
+            accounting.currentRoundAcceptedShares
+        );
+
+
+    document.getElementById(
+        "roundDifficulty"
+    ).textContent =
+        number(
+            accounting.currentRoundNetworkDifficulty
+        );
+
+
+    document.getElementById(
+        "expectedPayout"
+    ).textContent =
+        data.expectedPayout === null
+        ?
+        "—"
+        :
+        String(
+            data.expectedPayout
+        );
+
+
+    /* Workers */
+
+    renderWorkers(
+        workers
+    );
+
+
+    /* Hashrate history */
+
+    const now =
+        new Date();
+
+
+    hashrateHistory.push({
+
+        timestamp:
+            Date.now(),
+
+        time:
+            now.toLocaleTimeString(
+                "es-ES",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit",
+                    second:"2-digit"
+                }
+            ),
+
+        hashrate:
+            currentHashrate
+
+    });
+
+
+    /* Record */
+
+    observeRecord(
+
+        accounting.bestSubmissionDifficulty,
+
+        currentHashrate
+
+    );
+
+
+    /* Efficiency */
+
+    if(currentHashrate > 0){
+
+        const th =
+            currentHashrate / 1e12;
+
+
+        const jth =
+            POWER_WATTS / th;
+
+
+        document.getElementById(
+            "efficiency"
+        ).textContent =
+            jth.toFixed(2) +
+            " J/TH";
+
+    }
+
+
+    saveStorage();
+
+    updateChart();
+
+    updateSinceShare();
+
+}
+
+
+/* =========================================================
+   NETWORK
+========================================================= */
+
+function processNetworkData(
+    data
+){
+
+    currentNetworkData =
+        data;
+
+
+    const height =
+        data.blocks ??
+        data.blockHeight ??
+        data.height;
+
+
+    const diff =
+        data.difficulty ??
+        data.networkDifficulty;
+
+
+    const networkHash =
+        data.networkhashps ??
+        data.networkHashrate ??
+        data.hashrate;
+
+
+    document.getElementById(
+        "blockHeight"
+    ).textContent =
+        number(
+            height
+        );
+
+
+    document.getElementById(
+        "networkDifficulty"
+    ).textContent =
+        difficulty(
+            diff
+        );
+
+
+    document.getElementById(
+        "networkHashrate"
+    ).textContent =
+        hashrate(
+            networkHash
+        );
+
+
+    document.getElementById(
+        "networkStatus"
+    ).textContent =
+        "Conectado";
+
+
+    document.getElementById(
+        "networkUpdated"
+    ).textContent =
+        new Date()
+        .toLocaleTimeString(
+            "es-ES"
+        );
+
+}
+
+
+/* =========================================================
+   POOL
+========================================================= */
+
+function processPoolData(
+    data
+){
+
+    currentPoolData =
+        data;
+
+
+    const poolHash =
+        data.hashrate ??
+        data.hashRate ??
+        data.totalHashrate;
+
+
+    const miners =
+        data.miners ??
+        data.minerCount ??
+        data.workers;
+
+
+    const blocks =
+        data.blocksFound ??
+        data.blocks ??
+        data.blockCount;
+
+
+    const lastBlock =
+        data.lastBlock ??
+        data.latestBlock ??
+        data.lastFoundBlock;
+
+
+    document.getElementById(
+        "poolHashrate"
+    ).textContent =
+        hashrate(
+            poolHash
+        );
+
+
+    document.getElementById(
+        "poolMiners"
+    ).textContent =
+        number(
+            miners
+        );
+
+
+    document.getElementById(
+        "poolBlocks"
+    ).textContent =
+        number(
+            blocks
+        );
+
+
+    document.getElementById(
+        "poolLastBlock"
+    ).textContent =
+        lastBlock
+        ?
+        typeof lastBlock === "object"
+        ?
+        JSON.stringify(
+            lastBlock
+        )
+        :
+        String(
+            lastBlock
+        )
+        :
+        "—";
+
+}
+
+
+/* =========================================================
+   TIME
+========================================================= */
+
+function updateSinceShare(){
+
+    const element =
+        document.getElementById(
+            "sinceShare"
+        );
+
+
+    if(!lastShareTimestamp){
+
+        element.textContent =
+            "—";
+
+        return;
+
+    }
+
+
+    const seconds =
+        Math.max(
+            0,
+            Math.floor(
+                (
+                    Date.now() -
+                    lastShareTimestamp.getTime()
+                ) / 1000
+            )
+        );
+
+
+    if(seconds < 60){
+
+        element.textContent =
+            seconds +
+            " s";
+
+        return;
+
+    }
+
+
+    if(seconds < 3600){
+
+        element.textContent =
+            Math.floor(
+                seconds / 60
+            ) +
+            " min";
+
+        return;
+
+    }
+
+
+    element.textContent =
+        Math.floor(
+            seconds / 3600
+        ) +
+        " h " +
+        Math.floor(
+            (
+                seconds % 3600
+            ) / 60
+        ) +
+        " min";
+
+}
+
+
+function timeAgo(timestamp){
+
+    const date =
+        new Date(
+            timestamp
+        );
+
+
+    const seconds =
+        Math.max(
+            0,
+            Math.floor(
+                (
+                    Date.now() -
+                    date.getTime()
+                ) / 1000
+            )
+        );
+
+
+    if(seconds < 60){
+        return seconds + " s";
+    }
+
+
+    if(seconds < 3600){
+
+        return (
+            Math.floor(
+                seconds / 60
+            ) +
+            " min"
+        );
+
+    }
+
+
+    return (
+        Math.floor(
+            seconds / 3600
+        ) +
+        " h " +
+        Math.floor(
+            (
+                seconds % 3600
+            ) / 60
+        ) +
+        " min"
+    );
+
+}
+
+
+/* =========================================================
+   FETCH
+========================================================= */
+
+async function fetchJSON(
+    url
+){
+
+    const response =
+        await fetch(
+            url,
+            {
+                cache:"no-store"
+            }
+        );
+
+
+    if(!response.ok){
+
+        throw new Error(
+            "HTTP " +
+            response.status +
+            " · " +
+            url
+        );
+
+    }
+
+
+    return response.json();
+
+}
+
+
+/* =========================================================
+   LOAD CLIENT
+========================================================= */
+
+async function loadClient(){
+
+    const data =
+        await fetchJSON(
+            CLIENT_API
+        );
+
+
+    processClientData(
+        data
+    );
+
+
+    return data;
+
+}
+
+
+/* =========================================================
+   LOAD NETWORK
+========================================================= */
+
+async function loadNetwork(){
+
+    try{
+
+        const data =
+            await fetchJSON(
+                NETWORK_API
+            );
+
+
+        processNetworkData(
+            data
+        );
+
+
+        return data;
+
+    }catch(error){
+
+        console.warn(
+            "Network API:",
+            error
+        );
+
+
+        document.getElementById(
+            "networkStatus"
+        ).textContent =
+            "No disponible";
+
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD POOL
+========================================================= */
+
+async function loadPool(){
+
+    try{
+
+        const data =
+            await fetchJSON(
+                POOL_API
+            );
+
+
+        processPoolData(
+            data
+        );
+
+
+        return data;
+
+    }catch(error){
+
+        console.warn(
+            "Pool API:",
+            error
+        );
+
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD ALL
+========================================================= */
+
+async function loadAll(){
+
+    try{
+
+        const results =
+            await Promise.all([
+                loadClient(),
+                loadPool(),
+                loadNetwork()
+            ]);
+
+
+        document
+        .getElementById(
+            "statusDot"
+        )
+        .classList
+        .remove(
+            "offline"
+        );
+
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "ONLINE · " +
+            new Date()
+            .toLocaleTimeString(
+                "es-ES"
+            );
+
+
+        document.getElementById(
+            "error"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "raw"
+        ).textContent =
+            JSON.stringify(
+                {
+                    client:
+                        results[0],
+
+                    pool:
+                        results[1],
+
+                    network:
+                        results[2]
+                },
+                null,
+                2
+            );
+
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+
+        document
+        .getElementById(
+            "statusDot"
+        )
+        .classList
+        .add(
+            "offline"
+        );
+
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "API OFFLINE";
+
+
+        const errorBox =
+            document.getElementById(
+                "error"
+            );
+
+
+        errorBox.textContent =
+            "No se han podido obtener " +
+            "los datos principales de Public Pool. " +
+            error.message;
+
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =========================================================
+   COPY ADDRESS
+========================================================= */
+
+function copyAddress(){
+
+    if(
+        navigator.clipboard
+    ){
+
+        navigator.clipboard
+        .writeText(
+            BTC_ADDRESS
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CLEAR RECORDS
+========================================================= */
+
+function clearRanking(){
+
+    if(
+        !confirm(
+            "¿Borrar todos los récords observados guardados en este navegador?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    ranking = [];
+
+
+    localStorage.removeItem(
+        RANKING_KEY
+    );
+
+
+    renderRanking();
+
+    renderRecordProgress();
+
+}
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+document.getElementById(
+    "address"
+).textContent =
+    BTC_ADDRESS;
+
+
+document.getElementById(
+    "poolLink"
+).href =
+    "https://web.public-pool.io/#/app/" +
+    BTC_ADDRESS;
+
+
+loadStorage();
+
+createChart();
+
+renderRanking();
+
+updateChart();
+
+loadAll();
+
+
+setInterval(
+    loadAll,
+    REFRESH_INTERVAL
+);
+
+
+setInterval(
+    updateSinceShare,
+    1000
+);
+
+</script>
+
+</body>
+</html>
