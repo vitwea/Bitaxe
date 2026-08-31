@@ -612,169 +612,116 @@ h1{
 ========================================================= */
 
 .record-timeline{
-    position:relative;
-
-    max-height:480px;
-    overflow-y:auto;
-
-    padding:8px 4px 8px 4px;
-}
-
-.record-timeline::before{
-    content:"";
-
-    position:absolute;
-
-    left:18px;
-    top:18px;
-    bottom:18px;
-
-    width:2px;
-
-    background:
-        linear-gradient(
-            to top,
-            var(--border),
-            var(--blue),
-            var(--orange)
-        );
-
-    border-radius:4px;
+    display:flex;
+    flex-direction:column;
+    gap:0;
 }
 
 .timeline-item{
     position:relative;
 
     display:grid;
+    grid-template-columns:32px 1fr;
+    gap:11px;
 
-    grid-template-columns:38px 1fr;
-
-    gap:10px;
-
-    margin-bottom:14px;
+    padding-bottom:17px;
 }
 
 .timeline-item:last-child{
-    margin-bottom:0;
+    padding-bottom:0;
+}
+
+.timeline-line{
+    position:absolute;
+
+    left:15px;
+    top:25px;
+    bottom:0;
+
+    width:2px;
+
+    background:#263442;
+}
+
+.timeline-item:last-child .timeline-line{
+    display:none;
 }
 
 .timeline-dot{
     position:relative;
+    z-index:2;
 
-    width:28px;
-    height:28px;
+    width:30px;
+    height:30px;
 
     display:grid;
     place-items:center;
 
     border-radius:50%;
 
-    border:2px solid var(--border);
+    border:1px solid #2d4050;
 
-    background:#0b1118;
+    background:#101923;
 
-    z-index:2;
+    color:#8b9baa;
 
-    font-size:11px;
+    font-size:10px;
+    font-weight:900;
 }
 
-.timeline-item.first .timeline-dot{
-    border-color:var(--blue);
-    color:var(--blue);
+.timeline-item.latest .timeline-dot{
+    border-color:#694c20;
 
-    box-shadow:
-        0 0 14px rgba(77,163,255,.22);
-}
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,173,69,.20),
+            #101923
+        );
 
-.timeline-item.current .timeline-dot{
-    border-color:var(--orange);
     color:var(--orange);
-
-    box-shadow:
-        0 0 18px rgba(255,173,69,.30);
 }
 
-.timeline-card{
-    padding:11px 12px;
+.timeline-content{
+    padding:10px 11px;
 
     border:1px solid #ffffff08;
     border-radius:9px;
 
-    background:#ffffff03;
-
-    transition:.15s;
+    background:#ffffff02;
 
     cursor:pointer;
+
+    transition:.15s;
 }
 
-.timeline-card:hover{
+.timeline-content:hover{
     background:#ffffff07;
     border-color:#2c4052;
     transform:translateX(2px);
 }
 
-.timeline-item.current .timeline-card{
-    border-color:#694c20;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,173,69,.08),
-            rgba(255,173,69,.015)
-        );
-}
-
 .timeline-top{
     display:flex;
     justify-content:space-between;
-    align-items:flex-start;
-    gap:8px;
-}
-
-.timeline-position{
-    color:#8b9aa8;
-    font-size:9px;
-    text-transform:uppercase;
-    letter-spacing:.5px;
+    align-items:center;
+    gap:10px;
 }
 
 .timeline-difficulty{
-    margin-top:3px;
-
-    color:#edf3f7;
+    color:#e5edf2;
 
     font-family:monospace;
-    font-size:15px;
-    font-weight:900;
-}
-
-.timeline-item.current .timeline-difficulty{
-    color:var(--orange);
+    font-size:13px;
+    font-weight:850;
 }
 
 .timeline-improvement{
-    padding:4px 6px;
-
-    border-radius:6px;
-
     color:var(--green);
 
-    background:rgba(57,229,140,.08);
-
-    border:1px solid rgba(57,229,140,.15);
-
     font-family:monospace;
-    font-size:9px;
+    font-size:10px;
     font-weight:800;
-
-    white-space:nowrap;
-}
-
-.timeline-first{
-    color:var(--blue);
-
-    font-size:9px;
-    font-weight:700;
 }
 
 .timeline-meta{
@@ -782,7 +729,7 @@ h1{
     flex-wrap:wrap;
     gap:8px;
 
-    margin-top:7px;
+    margin-top:5px;
 
     color:#718191;
 
@@ -790,24 +737,34 @@ h1{
 }
 
 .timeline-meta span{
-    display:inline-flex;
-    align-items:center;
-    gap:3px;
+    padding-right:8px;
+    border-right:1px solid #273542;
 }
 
-.timeline-arrow{
-    color:#4f6272;
+.timeline-meta span:last-child{
+    border-right:0;
 }
 
-.timeline-current{
-    margin-top:7px;
+.timeline-bar{
+    height:4px;
 
-    color:var(--orange);
+    margin-top:8px;
 
-    font-size:8px;
-    font-weight:800;
-    text-transform:uppercase;
-    letter-spacing:.6px;
+    overflow:hidden;
+
+    border-radius:5px;
+
+    background:#18232e;
+}
+
+.timeline-bar-inner{
+    height:100%;
+
+    border-radius:5px;
+
+    background:var(--orange);
+
+    transition:width .3s;
 }
 
 /* =========================================================
@@ -1214,10 +1171,11 @@ footer{
         height:240px;
     }
 
-    .record-timeline{
-        max-height:420px;
+    .timeline-top{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:3px;
     }
-
 }
 
 @media(max-width:500px){
@@ -1250,14 +1208,19 @@ footer{
         grid-template-columns:1fr;
     }
 
-    .timeline-top{
-        flex-direction:column;
+    .timeline-item{
+        grid-template-columns:28px 1fr;
+        gap:8px;
     }
 
-    .timeline-improvement{
-        align-self:flex-start;
+    .timeline-dot{
+        width:28px;
+        height:28px;
     }
 
+    .timeline-line{
+        left:13px;
+    }
 }
 
 /* =========================================================
@@ -1550,7 +1513,7 @@ footer{
             </div>
 
             <div class="section-description">
-                Historial y evolución de tus mejores dificultades detectadas
+                Historial de tus 15 mejores récords detectados por el dashboard
             </div>
 
         </div>
@@ -1563,6 +1526,10 @@ footer{
 
 
     <div class="grid-2">
+
+        <!-- =================================================
+             RECORD PERSONAL
+        ================================================== -->
 
         <div class="panel">
 
@@ -1627,7 +1594,7 @@ footer{
 
         <!-- =================================================
              EVOLUCIÓN DEL RÉCORD
-        ================================================= -->
+        ================================================== -->
 
         <div class="panel">
 
@@ -1640,7 +1607,7 @@ footer{
                     </div>
 
                     <div class="panel-sub">
-                        Del primer récord al más reciente · abajo → arriba
+                        De más antiguo a más reciente · nuevos récords hacia arriba
                     </div>
 
                 </div>
@@ -1663,6 +1630,10 @@ footer{
     </div>
 
 
+    <!-- =====================================================
+         RANKING DE DIFICULTAD
+    ====================================================== -->
+
     <div
         class="panel"
         style="margin-top:10px;">
@@ -1672,11 +1643,11 @@ footer{
             <div>
 
                 <div class="panel-title">
-                    TOP 15 · Mejores dificultades
+                    📊 Ranking de dificultad
                 </div>
 
                 <div class="panel-sub">
-                    Pulsa sobre cualquier resultado para ver cuándo se obtuvo
+                    Los 15 récords históricos guardados por este navegador
                 </div>
 
             </div>
@@ -2852,6 +2823,10 @@ function loadStorage(){
 }
 
 
+/* =========================================================
+   SAVE STORAGE
+========================================================= */
+
 function saveStorage(){
 
     try{
@@ -3119,9 +3094,8 @@ function observeRecord(
 
 
     /*
-       Importante:
-       Si la API devuelve un récord que ya conocemos,
-       no lo volvemos a guardar.
+       Si la API devuelve un valor igual o inferior
+       al máximo ya guardado, no se crea otro registro.
     */
 
     if(diff <= knownMax){
@@ -3228,7 +3202,7 @@ function showNewRecord(){
 
 
 /* =========================================================
-   RANKING
+   RANKING DE DIFICULTAD
 ========================================================= */
 
 function renderRanking(){
@@ -3454,7 +3428,7 @@ function renderRanking(){
 
 
 /* =========================================================
-   RECORD TIMELINE
+   EVOLUCIÓN DEL RÉCORD
 ========================================================= */
 
 function renderRecordProgress(){
@@ -3481,14 +3455,17 @@ function renderRecordProgress(){
 
 
     /*
-       El ranking principal está ordenado de mayor
-       a menor dificultad.
+       El ranking está ordenado de mayor a menor.
+       Para la evolución queremos justamente lo contrario:
 
-       Para la timeline hacemos una COPIA y la
-       ordenamos cronológicamente:
+       PRIMERO abajo
+       ↓
+       siguientes récords
+       ↓
+       RÉCORD ACTUAL arriba
 
-       primero → abajo
-       último → arriba
+       Por eso invertimos el array para mostrar
+       la evolución cronológica.
     */
 
     const chronological =
@@ -3500,158 +3477,139 @@ function renderRecordProgress(){
         );
 
 
+    const maximum =
+        Math.max(
+            ...ranking.map(
+                item =>
+                    Number(item.difficulty)
+            )
+        );
+
+
     container.innerHTML = "";
 
 
-    chronological
-    .forEach(
+    chronological.forEach(
         (item,index) => {
 
             const previous =
                 index > 0
                 ?
-                chronological[index - 1]
+                Number(
+                    chronological[index - 1].difficulty
+                )
                 :
                 null;
 
 
-            let improvement = null;
+            let improvementText =
+                "Primer récord";
 
 
             if(previous){
 
-                const previousDifficulty =
-                    Number(
-                        previous.difficulty
-                    );
-
-                const currentDifficulty =
-                    Number(
-                        item.difficulty
-                    );
-
-
-                if(
-                    previousDifficulty > 0 &&
-                    currentDifficulty > previousDifficulty
-                ){
-
-                    improvement =
+                const improvement =
+                    (
                         (
-                            (
-                                currentDifficulty -
-                                previousDifficulty
-                            ) /
-                            previousDifficulty
-                        ) *
-                        100;
+                            Number(item.difficulty) -
+                            previous
+                        ) /
+                        previous
+                    ) * 100;
 
-                }
+
+                improvementText =
+                    "+" +
+                    improvement.toFixed(1) +
+                    "%";
 
             }
 
 
-            const isFirst =
-                index === 0;
+            const percentage =
+                Math.max(
+                    4,
+                    (
+                        Number(item.difficulty) /
+                        maximum
+                    ) * 100
+                );
 
 
-            const isCurrent =
-                index === chronological.length - 1;
-
-
-            const itemDiv =
+            const itemElement =
                 document.createElement(
                     "div"
                 );
 
 
-            itemDiv.className =
+            itemElement.className =
                 "timeline-item" +
                 (
-                    isFirst
-                    ? " first"
-                    : ""
-                ) +
-                (
-                    isCurrent
-                    ? " current"
+                    index === chronological.length - 1
+                    ? " latest"
                     : ""
                 );
 
 
-            const dot =
-                isCurrent
-                ? "🏆"
-                : isFirst
-                ? "1"
-                : String(index + 1);
+            itemElement.onclick =
+                () =>
+                    openRecordModal(
+                        item,
+                        chronological.length - index
+                    );
 
 
-            itemDiv.innerHTML = `
+            const position =
+                index + 1;
 
-                <div class="timeline-dot">
-                    ${dot}
+
+            itemElement.innerHTML = `
+
+                <div>
+
+                    <div class="timeline-dot">
+
+                        ${
+                            index === chronological.length - 1
+                            ? "🏆"
+                            : position
+                        }
+
+                    </div>
+
+                    ${
+                        index !== chronological.length - 1
+                        ?
+                        `<div class="timeline-line"></div>`
+                        :
+                        ""
+                    }
+
                 </div>
 
 
-                <div
-                    class="timeline-card"
-                    onclick="openRecordModal(
-                        ranking.find(
-                            r =>
-                                Number(r.timestamp) ===
-                                Number(${Number(item.timestamp || 0)})
-                        ) || ${JSON.stringify(item).replace(/"/g,'&quot;')},
-                        ${index + 1}
-                    )">
+                <div class="timeline-content">
 
                     <div class="timeline-top">
 
-                        <div>
+                        <div class="timeline-difficulty">
 
-                            <div class="timeline-position">
-
-                                ${
-                                    isFirst
-                                    ? "Primer récord"
-                                    : isCurrent
-                                    ? "Récord actual"
-                                    : "Récord #" + (index + 1)
-                                }
-
-                            </div>
-
-
-                            <div class="timeline-difficulty">
-
-                                ${difficulty(
-                                    item.difficulty
-                                )}
-
-                            </div>
+                            ${difficulty(
+                                item.difficulty
+                            )}
 
                         </div>
 
 
-                        ${
-                            improvement !== null
-                            ?
-                            `
-                                <div class="timeline-improvement">
+                        <div class="timeline-improvement">
 
-                                    +${improvement.toFixed(1)}%
+                            ${
+                                escapeHTML(
+                                    improvementText
+                                )
+                            }
 
-                                </div>
-                            `
-                            :
-                            `
-                                <div class="timeline-first">
-
-                                    Punto de partida
-
-                                </div>
-                            `
-                        }
+                        </div>
 
                     </div>
 
@@ -3659,27 +3617,30 @@ function renderRecordProgress(){
                     <div class="timeline-meta">
 
                         <span>
-                            📅 ${escapeHTML(
-                                item.date || "—"
-                            )}
+                            ${
+                                escapeHTML(
+                                    item.date || "—"
+                                )
+                            }
                         </span>
 
                         <span>
-                            🕐 ${escapeHTML(
-                                item.time || "—"
-                            )}
+                            ${
+                                escapeHTML(
+                                    item.time || "—"
+                                )
+                            }
                         </span>
-
 
                         ${
                             item.hashrate
                             ?
                             `
-                                <span>
-                                    ⚡ ${shortHashrate(
-                                        item.hashrate
-                                    )}
-                                </span>
+                            <span>
+                                ${shortHashrate(
+                                    item.hashrate
+                                )}
+                            </span>
                             `
                             :
                             ""
@@ -3688,53 +3649,30 @@ function renderRecordProgress(){
                     </div>
 
 
-                    ${
-                        previous && improvement !== null
-                        ?
-                        `
-                            <div
-                                style="
-                                    margin-top:6px;
-                                    color:#596977;
-                                    font-size:8px;
-                                ">
+                    <div class="timeline-bar">
 
-                                Desde ${difficulty(
-                                    previous.difficulty
-                                )}
+                        <div
+                            class="timeline-bar-inner"
+                            style="
+                                width:${percentage}%
+                            ">
+                        </div>
 
-                                <span class="timeline-arrow">
-                                    →
-                                </span>
-
-                                +${improvement.toFixed(1)}%
-
-                            </div>
-                        `
-                        :
-                        ""
-                    }
-
-
-                    ${
-                        isCurrent
-                        ?
-                        `
-                            <div class="timeline-current">
-                                🏆 Mejor récord registrado
-                            </div>
-                        `
-                        :
-                        ""
-                    }
+                    </div>
 
                 </div>
 
             `;
 
 
-            container.appendChild(
-                itemDiv
+            /*
+               insertBefore hace que el último récord
+               aparezca arriba y el primero abajo.
+            */
+
+            container.insertBefore(
+                itemElement,
+                container.firstChild
             );
 
         }
@@ -4349,7 +4287,6 @@ function processClientData(
     updateChart();
 
     updateSinceShare();
-
 
 }
 
