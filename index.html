@@ -492,187 +492,6 @@ h1{
     50%{
         box-shadow:0 0 22px rgba(57,229,140,.45);
     }
-
-}
-
-/* =========================================================
-   RECORD TIMELINE
-========================================================= */
-
-.record-timeline{
-    position:relative;
-
-    max-height:390px;
-    overflow-y:auto;
-
-    padding:3px 5px 5px 3px;
-}
-
-.record-timeline::before{
-    content:"";
-
-    position:absolute;
-
-    left:12px;
-    top:8px;
-    bottom:8px;
-
-    width:2px;
-
-    background:
-        linear-gradient(
-            to bottom,
-            var(--orange),
-            #25415a
-        );
-
-    opacity:.65;
-}
-
-.timeline-item{
-    position:relative;
-
-    display:grid;
-    grid-template-columns:25px 1fr;
-
-    gap:9px;
-
-    margin-bottom:13px;
-
-    cursor:pointer;
-}
-
-.timeline-item:last-child{
-    margin-bottom:0;
-}
-
-.timeline-dot{
-    position:relative;
-
-    z-index:2;
-
-    width:19px;
-    height:19px;
-
-    margin-top:2px;
-
-    display:grid;
-    place-items:center;
-
-    border-radius:50%;
-
-    border:2px solid var(--bg);
-
-    background:#26394a;
-
-    box-shadow:
-        0 0 0 1px var(--border);
-}
-
-.timeline-item:first-child .timeline-dot{
-    background:var(--orange);
-    box-shadow:
-        0 0 13px rgba(255,173,69,.45);
-}
-
-.timeline-content{
-    padding:10px 11px;
-
-    border:1px solid #ffffff08;
-    border-radius:9px;
-
-    background:#ffffff03;
-
-    transition:.15s;
-}
-
-.timeline-item:hover .timeline-content{
-    background:#ffffff08;
-    border-color:#2c4052;
-    transform:translateX(2px);
-}
-
-.timeline-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-}
-
-.timeline-record{
-    color:var(--orange);
-
-    font-family:monospace;
-    font-size:12px;
-    font-weight:900;
-}
-
-.timeline-improvement{
-    padding:3px 6px;
-
-    border-radius:5px;
-
-    color:var(--green);
-
-    background:rgba(57,229,140,.08);
-    border:1px solid rgba(57,229,140,.14);
-
-    font-family:monospace;
-    font-size:9px;
-    font-weight:800;
-
-    white-space:nowrap;
-}
-
-.timeline-first{
-    padding:3px 6px;
-
-    border-radius:5px;
-
-    color:var(--orange);
-
-    background:rgba(255,173,69,.08);
-    border:1px solid rgba(255,173,69,.14);
-
-    font-size:9px;
-    font-weight:800;
-}
-
-.timeline-date{
-    margin-top:5px;
-
-    color:#8b9aa7;
-
-    font-size:9px;
-}
-
-.timeline-details{
-    display:flex;
-    gap:12px;
-
-    margin-top:5px;
-
-    color:#596a79;
-
-    font-size:9px;
-}
-
-.timeline-hash{
-    color:var(--green);
-    font-family:monospace;
-}
-
-.timeline-empty{
-    padding:35px 10px;
-
-    text-align:center;
-
-    color:var(--muted);
-
-    border:1px dashed var(--border);
-    border-radius:9px;
-
-    font-size:11px;
 }
 
 /* =========================================================
@@ -786,6 +605,209 @@ h1{
     border-radius:9px;
 
     font-size:11px;
+}
+
+/* =========================================================
+   RECORD TIMELINE
+========================================================= */
+
+.record-timeline{
+    position:relative;
+
+    max-height:480px;
+    overflow-y:auto;
+
+    padding:8px 4px 8px 4px;
+}
+
+.record-timeline::before{
+    content:"";
+
+    position:absolute;
+
+    left:18px;
+    top:18px;
+    bottom:18px;
+
+    width:2px;
+
+    background:
+        linear-gradient(
+            to top,
+            var(--border),
+            var(--blue),
+            var(--orange)
+        );
+
+    border-radius:4px;
+}
+
+.timeline-item{
+    position:relative;
+
+    display:grid;
+
+    grid-template-columns:38px 1fr;
+
+    gap:10px;
+
+    margin-bottom:14px;
+}
+
+.timeline-item:last-child{
+    margin-bottom:0;
+}
+
+.timeline-dot{
+    position:relative;
+
+    width:28px;
+    height:28px;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:50%;
+
+    border:2px solid var(--border);
+
+    background:#0b1118;
+
+    z-index:2;
+
+    font-size:11px;
+}
+
+.timeline-item.first .timeline-dot{
+    border-color:var(--blue);
+    color:var(--blue);
+
+    box-shadow:
+        0 0 14px rgba(77,163,255,.22);
+}
+
+.timeline-item.current .timeline-dot{
+    border-color:var(--orange);
+    color:var(--orange);
+
+    box-shadow:
+        0 0 18px rgba(255,173,69,.30);
+}
+
+.timeline-card{
+    padding:11px 12px;
+
+    border:1px solid #ffffff08;
+    border-radius:9px;
+
+    background:#ffffff03;
+
+    transition:.15s;
+
+    cursor:pointer;
+}
+
+.timeline-card:hover{
+    background:#ffffff07;
+    border-color:#2c4052;
+    transform:translateX(2px);
+}
+
+.timeline-item.current .timeline-card{
+    border-color:#694c20;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,173,69,.08),
+            rgba(255,173,69,.015)
+        );
+}
+
+.timeline-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:8px;
+}
+
+.timeline-position{
+    color:#8b9aa8;
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.timeline-difficulty{
+    margin-top:3px;
+
+    color:#edf3f7;
+
+    font-family:monospace;
+    font-size:15px;
+    font-weight:900;
+}
+
+.timeline-item.current .timeline-difficulty{
+    color:var(--orange);
+}
+
+.timeline-improvement{
+    padding:4px 6px;
+
+    border-radius:6px;
+
+    color:var(--green);
+
+    background:rgba(57,229,140,.08);
+
+    border:1px solid rgba(57,229,140,.15);
+
+    font-family:monospace;
+    font-size:9px;
+    font-weight:800;
+
+    white-space:nowrap;
+}
+
+.timeline-first{
+    color:var(--blue);
+
+    font-size:9px;
+    font-weight:700;
+}
+
+.timeline-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+
+    margin-top:7px;
+
+    color:#718191;
+
+    font-size:9px;
+}
+
+.timeline-meta span{
+    display:inline-flex;
+    align-items:center;
+    gap:3px;
+}
+
+.timeline-arrow{
+    color:#4f6272;
+}
+
+.timeline-current{
+    margin-top:7px;
+
+    color:var(--orange);
+
+    font-size:8px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.6px;
 }
 
 /* =========================================================
@@ -1192,10 +1214,10 @@ footer{
         height:240px;
     }
 
-    .timeline-details{
-        flex-direction:column;
-        gap:3px;
+    .record-timeline{
+        max-height:420px;
     }
+
 }
 
 @media(max-width:500px){
@@ -1229,10 +1251,13 @@ footer{
     }
 
     .timeline-top{
-        align-items:flex-start;
         flex-direction:column;
-        gap:5px;
     }
+
+    .timeline-improvement{
+        align-self:flex-start;
+    }
+
 }
 
 /* =========================================================
@@ -1525,7 +1550,7 @@ footer{
             </div>
 
             <div class="section-description">
-                Historial de tus mejores dificultades detectadas
+                Historial y evolución de tus mejores dificultades detectadas
             </div>
 
         </div>
@@ -1538,10 +1563,6 @@ footer{
 
 
     <div class="grid-2">
-
-        <!-- =================================================
-             RECORD PERSONAL
-        ================================================= -->
 
         <div class="panel">
 
@@ -1595,10 +1616,9 @@ footer{
 
             <div class="ranking-note">
 
-                Cada vez que la API devuelva una dificultad
-                superior al máximo registrado por este navegador,
-                se almacena automáticamente con fecha, hora y
-                hashrate aproximado.
+                Cada vez que la API devuelva una dificultad superior
+                al máximo registrado por este navegador, se almacena
+                automáticamente con fecha, hora y hashrate aproximado.
 
             </div>
 
@@ -1606,7 +1626,7 @@ footer{
 
 
         <!-- =================================================
-             TIMELINE
+             EVOLUCIÓN DEL RÉCORD
         ================================================= -->
 
         <div class="panel">
@@ -1620,7 +1640,7 @@ footer{
                     </div>
 
                     <div class="panel-sub">
-                        Mejora porcentual entre récord y récord
+                        Del primer récord al más reciente · abajo → arriba
                     </div>
 
                 </div>
@@ -1632,7 +1652,7 @@ footer{
                 id="recordProgressList"
                 class="record-timeline">
 
-                <div class="timeline-empty">
+                <div class="empty-ranking">
                     Esperando récords...
                 </div>
 
@@ -1642,10 +1662,6 @@ footer{
 
     </div>
 
-
-    <!-- =================================================
-         TOP 15
-    ================================================= -->
 
     <div
         class="panel"
@@ -1660,8 +1676,7 @@ footer{
                 </div>
 
                 <div class="panel-sub">
-                    Pulsa sobre cualquier resultado para ver
-                    cuándo se obtuvo
+                    Pulsa sobre cualquier resultado para ver cuándo se obtuvo
                 </div>
 
             </div>
@@ -2518,7 +2533,7 @@ Esperando datos...
             <div class="modal-stat">
 
                 <div class="modal-stat-label">
-                    Hora exacta
+                    Hora
                 </div>
 
                 <div
@@ -2548,22 +2563,7 @@ Esperando datos...
             <div class="modal-stat">
 
                 <div class="modal-stat-label">
-                    Mejora respecto al anterior
-                </div>
-
-                <div
-                    id="modalImprovement"
-                    class="modal-stat-value green">
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="modal-stat">
-
-                <div class="modal-stat-label">
-                    Timestamp exacto
+                    Timestamp
                 </div>
 
                 <div
@@ -2618,12 +2618,6 @@ const REFRESH_INTERVAL =
 const POWER_WATTS =
 25;
 
-
-/*
-   IMPORTANTE:
-   Se mantienen las mismas claves que ya utilizabas.
-   Por tanto, los récords existentes siguen disponibles.
-*/
 
 const HASH_HISTORY_KEY =
 "bitaxe_hashrate_history_v5";
@@ -2804,115 +2798,6 @@ function escapeHTML(value){
 
 
 /* =========================================================
-   RECORD DATE HELPERS
-========================================================= */
-
-
-/*
-   Convierte un récord antiguo que quizá no tenga timestamp
-   a una estructura compatible con la nueva timeline.
-*/
-
-function normalizeRecord(record){
-
-    if(!record || typeof record !== "object"){
-        return null;
-    }
-
-
-    const diff =
-        Number(record.difficulty);
-
-
-    if(
-        !diff ||
-        isNaN(diff)
-    ){
-        return null;
-    }
-
-
-    let timestamp =
-        Number(record.timestamp);
-
-
-    /*
-       Los récords nuevos ya tienen timestamp.
-
-       Los antiguos pueden no tenerlo.
-       En ese caso intentamos reconstruirlo.
-    */
-
-    if(
-        !timestamp ||
-        isNaN(timestamp)
-    ){
-
-        if(
-            record.date &&
-            record.time
-        ){
-
-            const parsed =
-                new Date(
-                    record.date +
-                    " " +
-                    record.time
-                ).getTime();
-
-
-            if(!isNaN(parsed)){
-                timestamp = parsed;
-            }
-
-        }
-
-    }
-
-
-    return {
-
-        difficulty:diff,
-
-        hashrate:
-            Number(record.hashrate || 0),
-
-        timestamp:
-            timestamp || null,
-
-        date:
-            record.date || (
-                timestamp
-                ?
-                new Date(timestamp)
-                    .toLocaleDateString("es-ES")
-                :
-                "—"
-            ),
-
-        time:
-            record.time || (
-                timestamp
-                ?
-                new Date(timestamp)
-                    .toLocaleTimeString(
-                        "es-ES",
-                        {
-                            hour:"2-digit",
-                            minute:"2-digit",
-                            second:"2-digit"
-                        }
-                    )
-                :
-                "—"
-            )
-
-    };
-
-}
-
-
-/* =========================================================
    STORAGE
 ========================================================= */
 
@@ -2945,20 +2830,8 @@ function loadStorage(){
             );
 
         if(raw){
-
-            const parsed =
+            ranking =
                 JSON.parse(raw);
-
-
-            if(Array.isArray(parsed)){
-
-                ranking =
-                    parsed
-                    .map(normalizeRecord)
-                    .filter(Boolean);
-
-            }
-
         }
 
     }catch{
@@ -2975,45 +2848,6 @@ function loadStorage(){
     if(!Array.isArray(ranking)){
         ranking = [];
     }
-
-
-    /*
-       Normalizamos y eliminamos duplicados exactos.
-    */
-
-    const unique =
-        new Map();
-
-
-    ranking.forEach(
-        record => {
-
-            const key =
-                String(
-                    record.difficulty
-                );
-
-
-            if(!unique.has(key)){
-
-                unique.set(
-                    key,
-                    record
-                );
-
-            }
-
-        }
-    );
-
-
-    ranking =
-        Array.from(
-            unique.values()
-        );
-
-
-    saveStorage();
 
 }
 
@@ -3050,7 +2884,6 @@ function saveStorage(){
                 0,
                 MAX_RECORDS
             );
-
 
         localStorage.setItem(
             RANKING_KEY,
@@ -3272,10 +3105,6 @@ function observeRecord(
     }
 
 
-    /*
-       Buscamos el máximo existente.
-    */
-
     const knownMax =
         ranking.length
         ?
@@ -3290,8 +3119,9 @@ function observeRecord(
 
 
     /*
-       Si no supera el récord actual,
-       no se registra.
+       Importante:
+       Si la API devuelve un récord que ya conocemos,
+       no lo volvemos a guardar.
     */
 
     if(diff <= knownMax){
@@ -3337,11 +3167,6 @@ function observeRecord(
         record
     );
 
-
-    /*
-       Importante:
-       mantenemos únicamente los 15 mejores.
-    */
 
     ranking =
         ranking
@@ -3398,302 +3223,6 @@ function showNewRecord(){
             },
             10000
         );
-
-}
-
-
-/* =========================================================
-   CALCULATE RECORD IMPROVEMENT
-========================================================= */
-
-
-/*
-   Calcula la mejora porcentual de un récord respecto
-   al récord inmediatamente anterior.
-
-   Ejemplo:
-
-   10.000 → 12.000
-
-   mejora =
-   (12.000 - 10.000) / 10.000 × 100
-   = 20%
-*/
-
-function calculateImprovement(
-    current,
-    previous
-){
-
-    current =
-        Number(current);
-
-
-    previous =
-        Number(previous);
-
-
-    if(
-        !previous ||
-        isNaN(previous) ||
-        isNaN(current)
-    ){
-
-        return null;
-
-    }
-
-
-    return (
-        (
-            current -
-            previous
-        ) /
-        previous
-    ) *
-    100;
-
-}
-
-
-/* =========================================================
-   CHRONOLOGICAL RECORDS
-========================================================= */
-
-function getChronologicalRecords(){
-
-    /*
-       La ranking principal está ordenada por dificultad.
-
-       Para la timeline necesitamos orden cronológico.
-
-       Los récords sin timestamp se colocan al principio
-       porque pertenecen a un historial antiguo del que
-       no conocemos la hora exacta.
-    */
-
-    return ranking
-        .map(
-            (record,index) => ({
-                ...record,
-                originalIndex:index
-            })
-        )
-        .sort(
-            (a,b) => {
-
-                const ta =
-                    Number(
-                        a.timestamp || 0
-                    );
-
-                const tb =
-                    Number(
-                        b.timestamp || 0
-                    );
-
-
-                return ta - tb;
-
-            }
-        );
-
-}
-
-
-/* =========================================================
-   RECORD TIMELINE
-========================================================= */
-
-function renderRecordProgress(){
-
-    const container =
-        document.getElementById(
-            "recordProgressList"
-        );
-
-
-    if(!ranking.length){
-
-        container.innerHTML = `
-
-            <div class="timeline-empty">
-
-                🏆 Todavía no hay récords registrados.
-
-                <br><br>
-
-                Cuando encuentres una dificultad
-                superior a tu récord actual aparecerá
-                aquí automáticamente.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const chronological =
-        getChronologicalRecords();
-
-
-    container.innerHTML = "";
-
-
-    chronological.forEach(
-        (item,index) => {
-
-            /*
-               Buscamos el récord anterior en el tiempo.
-            */
-
-            const previous =
-                index > 0
-                ?
-                chronological[index - 1]
-                :
-                null;
-
-
-            const improvement =
-                previous
-                ?
-                calculateImprovement(
-                    item.difficulty,
-                    previous.difficulty
-                )
-                :
-                null;
-
-
-            const div =
-                document.createElement(
-                    "div"
-                );
-
-
-            div.className =
-                "timeline-item";
-
-
-            div.onclick =
-                () =>
-                    openRecordModal(
-                        item,
-                        index + 1,
-                        improvement
-                    );
-
-
-            const improvementHTML =
-                improvement !== null
-                ?
-                `
-                    <span class="timeline-improvement">
-                        +${improvement.toFixed(2)}%
-                    </span>
-                `
-                :
-                `
-                    <span class="timeline-first">
-                        RÉCORD INICIAL
-                    </span>
-                `;
-
-
-            const timestampText =
-                item.timestamp
-                ?
-                new Date(
-                    item.timestamp
-                ).toLocaleString(
-                    "es-ES",
-                    {
-                        day:"2-digit",
-                        month:"2-digit",
-                        year:"numeric",
-                        hour:"2-digit",
-                        minute:"2-digit",
-                        second:"2-digit"
-                    }
-                )
-                :
-                (
-                    item.date +
-                    " · " +
-                    item.time
-                );
-
-
-            div.innerHTML = `
-
-                <div class="timeline-dot">
-                    ${index === 0 ? "🏆" : "↑"}
-                </div>
-
-
-                <div class="timeline-content">
-
-                    <div class="timeline-top">
-
-                        <div class="timeline-record">
-
-                            ${difficulty(
-                                item.difficulty
-                            )}
-
-                        </div>
-
-                        ${improvementHTML}
-
-                    </div>
-
-
-                    <div class="timeline-date">
-
-                        🕐 ${escapeHTML(
-                            timestampText
-                        )}
-
-                    </div>
-
-
-                    <div class="timeline-details">
-
-                        <span>
-                            Récord #${index + 1}
-                        </span>
-
-                        ${
-                            item.hashrate
-                            ?
-                            `
-                                <span class="timeline-hash">
-                                    ⚡ ${shortHashrate(
-                                        item.hashrate
-                                    )}
-                                </span>
-                            `
-                            :
-                            ""
-                        }
-
-                    </div>
-
-                </div>
-
-            `;
-
-
-            container.appendChild(
-                div
-            );
-
-        }
-    );
 
 }
 
@@ -3925,13 +3454,302 @@ function renderRanking(){
 
 
 /* =========================================================
+   RECORD TIMELINE
+========================================================= */
+
+function renderRecordProgress(){
+
+    const container =
+        document.getElementById(
+            "recordProgressList"
+        );
+
+
+    if(!ranking.length){
+
+        container.innerHTML = `
+
+            <div class="empty-ranking">
+                Todavía no hay récords registrados.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /*
+       El ranking principal está ordenado de mayor
+       a menor dificultad.
+
+       Para la timeline hacemos una COPIA y la
+       ordenamos cronológicamente:
+
+       primero → abajo
+       último → arriba
+    */
+
+    const chronological =
+        [...ranking]
+        .sort(
+            (a,b) =>
+                Number(a.timestamp || 0) -
+                Number(b.timestamp || 0)
+        );
+
+
+    container.innerHTML = "";
+
+
+    chronological
+    .forEach(
+        (item,index) => {
+
+            const previous =
+                index > 0
+                ?
+                chronological[index - 1]
+                :
+                null;
+
+
+            let improvement = null;
+
+
+            if(previous){
+
+                const previousDifficulty =
+                    Number(
+                        previous.difficulty
+                    );
+
+                const currentDifficulty =
+                    Number(
+                        item.difficulty
+                    );
+
+
+                if(
+                    previousDifficulty > 0 &&
+                    currentDifficulty > previousDifficulty
+                ){
+
+                    improvement =
+                        (
+                            (
+                                currentDifficulty -
+                                previousDifficulty
+                            ) /
+                            previousDifficulty
+                        ) *
+                        100;
+
+                }
+
+            }
+
+
+            const isFirst =
+                index === 0;
+
+
+            const isCurrent =
+                index === chronological.length - 1;
+
+
+            const itemDiv =
+                document.createElement(
+                    "div"
+                );
+
+
+            itemDiv.className =
+                "timeline-item" +
+                (
+                    isFirst
+                    ? " first"
+                    : ""
+                ) +
+                (
+                    isCurrent
+                    ? " current"
+                    : ""
+                );
+
+
+            const dot =
+                isCurrent
+                ? "🏆"
+                : isFirst
+                ? "1"
+                : String(index + 1);
+
+
+            itemDiv.innerHTML = `
+
+                <div class="timeline-dot">
+                    ${dot}
+                </div>
+
+
+                <div
+                    class="timeline-card"
+                    onclick="openRecordModal(
+                        ranking.find(
+                            r =>
+                                Number(r.timestamp) ===
+                                Number(${Number(item.timestamp || 0)})
+                        ) || ${JSON.stringify(item).replace(/"/g,'&quot;')},
+                        ${index + 1}
+                    )">
+
+                    <div class="timeline-top">
+
+                        <div>
+
+                            <div class="timeline-position">
+
+                                ${
+                                    isFirst
+                                    ? "Primer récord"
+                                    : isCurrent
+                                    ? "Récord actual"
+                                    : "Récord #" + (index + 1)
+                                }
+
+                            </div>
+
+
+                            <div class="timeline-difficulty">
+
+                                ${difficulty(
+                                    item.difficulty
+                                )}
+
+                            </div>
+
+                        </div>
+
+
+                        ${
+                            improvement !== null
+                            ?
+                            `
+                                <div class="timeline-improvement">
+
+                                    +${improvement.toFixed(1)}%
+
+                                </div>
+                            `
+                            :
+                            `
+                                <div class="timeline-first">
+
+                                    Punto de partida
+
+                                </div>
+                            `
+                        }
+
+                    </div>
+
+
+                    <div class="timeline-meta">
+
+                        <span>
+                            📅 ${escapeHTML(
+                                item.date || "—"
+                            )}
+                        </span>
+
+                        <span>
+                            🕐 ${escapeHTML(
+                                item.time || "—"
+                            )}
+                        </span>
+
+
+                        ${
+                            item.hashrate
+                            ?
+                            `
+                                <span>
+                                    ⚡ ${shortHashrate(
+                                        item.hashrate
+                                    )}
+                                </span>
+                            `
+                            :
+                            ""
+                        }
+
+                    </div>
+
+
+                    ${
+                        previous && improvement !== null
+                        ?
+                        `
+                            <div
+                                style="
+                                    margin-top:6px;
+                                    color:#596977;
+                                    font-size:8px;
+                                ">
+
+                                Desde ${difficulty(
+                                    previous.difficulty
+                                )}
+
+                                <span class="timeline-arrow">
+                                    →
+                                </span>
+
+                                +${improvement.toFixed(1)}%
+
+                            </div>
+                        `
+                        :
+                        ""
+                    }
+
+
+                    ${
+                        isCurrent
+                        ?
+                        `
+                            <div class="timeline-current">
+                                🏆 Mejor récord registrado
+                            </div>
+                        `
+                        :
+                        ""
+                    }
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                itemDiv
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
    RECORD MODAL
 ========================================================= */
 
 function openRecordModal(
     record,
-    position,
-    improvement = null
+    position
 ){
 
     document.getElementById(
@@ -3966,64 +3784,6 @@ function openRecordModal(
         "—";
 
 
-    /*
-       Si no se pasó la mejora desde la timeline,
-       calculamos el récord anterior cronológicamente.
-    */
-
-    if(improvement === null){
-
-        const chronological =
-            getChronologicalRecords();
-
-
-        const index =
-            chronological.findIndex(
-                item =>
-                    Number(
-                        item.difficulty
-                    ) ===
-                    Number(
-                        record.difficulty
-                    ) &&
-                    (
-                        !record.timestamp ||
-                        Number(
-                            item.timestamp
-                        ) ===
-                        Number(
-                            record.timestamp
-                        )
-                    )
-            );
-
-
-        if(index > 0){
-
-            improvement =
-                calculateImprovement(
-                    record.difficulty,
-                    chronological[index - 1].difficulty
-                );
-
-        }
-
-    }
-
-
-    document.getElementById(
-        "modalImprovement"
-    ).textContent =
-        improvement !== null &&
-        improvement !== undefined
-        ?
-        "+" +
-        improvement.toFixed(2) +
-        "%"
-        :
-        "Récord inicial";
-
-
     document.getElementById(
         "modalTimestamp"
     ).textContent =
@@ -4032,18 +3792,10 @@ function openRecordModal(
         new Date(
             record.timestamp
         ).toLocaleString(
-            "es-ES",
-            {
-                day:"2-digit",
-                month:"2-digit",
-                year:"numeric",
-                hour:"2-digit",
-                minute:"2-digit",
-                second:"2-digit"
-            }
+            "es-ES"
         )
         :
-        "No disponible en registro antiguo";
+        "—";
 
 
     document.getElementById(
@@ -4597,6 +4349,7 @@ function processClientData(
     updateChart();
 
     updateSinceShare();
+
 
 }
 
