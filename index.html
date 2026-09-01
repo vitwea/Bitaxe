@@ -1,1488 +1,1833 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0"
-<meta name="theme-color" content="#070b10"
-Bitaxe Solo Mining Dashboard
-<div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070b10">
+<title>Bitaxe Solo Mining Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #070b10;
+    --bg-card: #0d131c;
+    --bg-elevated: #121a26;
+    --border: #1c2838;
+    --border-hover: #2a3a50;
+    --text: #e8eef7;
+    --text-dim: #8b9cb3;
+    --text-muted: #5a6d85;
+    --green: #22c55e;
+    --green-dim: rgba(34, 197, 94, 0.15);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59, 130, 246, 0.15);
+    --orange: #f59e0b;
+    --orange-dim: rgba(245, 158, 11, 0.15);
+    --purple: #a855f7;
+    --purple-dim: rgba(168, 85, 247, 0.15);
+    --cyan: #06b6d4;
+    --red: #ef4444;
+    --yellow: #eab308;
+    --gold: #fbbf24;
+    --silver: #94a3b8;
+    --bronze: #cd7f32;
+    --radius: 14px;
+    --radius-sm: 10px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.35);
+  }
 
-    <div class="brand">
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        <div class="logo">
-            ⛏️
-        </div>
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
 
-        <div>
+  /* ─── HEADER ─── */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(7, 11, 16, 0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
 
-            <h1>
-                Bitaxe Solo Mining
-            </h1>
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
 
-            <div class="subtitle">
-                Personal Bitcoin Mining Dashboard · Public Pool
-            </div>
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #1a2332, #0f172a);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
 
-        </div>
+  .brand-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
 
-    </div>
+  .brand-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
 
-    <div
-        class="address"
-        id="address">
-    </div>
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--green-dim);
+    color: var(--green);
+    border: 1px solid rgba(34,197,94,0.25);
+  }
 
-</div>
+  .status-pill.offline {
+    background: rgba(239,68,68,0.12);
+    color: var(--red);
+    border-color: rgba(239,68,68,0.25);
+  }
 
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 2s infinite;
+  }
 
-<div class="header-right">
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
 
-    <div class="status">
+  .topbar-hashrate {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+  }
 
-        <div
-            id="statusDot"
-            class="status-dot">
-        </div>
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 
-        <span id="status">
-            Conectando...
-        </span>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
 
-    </div>
+  .btn:hover {
+    border-color: var(--border-hover);
+    background: #1a2433;
+  }
 
+  .btn-primary {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
 
-    <div class="buttons">
+  .btn-primary:hover {
+    background: #2563eb;
+  }
 
-        <button onclick="loadAll()">
-            ↻ Actualizar
-        </button>
+  /* ─── LAYOUT ─── */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
 
-        <button onclick="copyAddress()">
-            📋 BTC
-        </button>
+  /* ─── ADDRESS BAR ─── */
+  .address-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    flex-wrap: wrap;
+  }
 
-        <a
-            id="poolLink"
-            class="button"
-            target="_blank">
+  .address-bar input {
+    flex: 1;
+    min-width: 200px;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    outline: none;
+  }
 
-            Public Pool ↗
+  .address-bar input::placeholder {
+    color: var(--text-muted);
+  }
 
-        </a>
+  /* ─── ALERT BANNER ─── */
+  .alert-banner {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    animation: slideIn 0.3s ease;
+  }
 
-    </div>
+  .alert-banner.show { display: flex; }
 
-</div>
+  .alert-banner.record {
+    background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(59,130,246,0.15));
+    border: 1px solid rgba(168,85,247,0.4);
+    color: #d8b4fe;
+  }
 
-<a href="#overview">
-    Overview
-</a>
+  .alert-banner.block {
+    background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(6,182,212,0.15));
+    border: 1px solid rgba(34,197,94,0.5);
+    color: #86efac;
+  }
 
-<a href="#records">
-    🏆 Récords
-</a>
+  .alert-banner.warn {
+    background: rgba(234,179,8,0.12);
+    border: 1px solid rgba(234,179,8,0.35);
+    color: #fde047;
+  }
 
-<a href="#performance">
-    ⚡ Rendimiento
-</a>
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-<a href="#workers">
-    ⛏️ Workers
-</a>
+  /* ─── KPI GRID ─── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
 
-<a href="#network">
-    🌐 Red
-</a>
+  .kpi {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    transition: border-color 0.2s;
+  }
 
-<a href="#accounting">
-    📊 Accounting
-</a>
+  .kpi:hover { border-color: var(--border-hover); }
 
-<a href="#activity">
-    🎯 Actividad
-</a>
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 
-<a href="#energy">
-    🔌 Energía
-</a>
+  .kpi-value {
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
 
-<a href="#diagnostics">
-    🧪 Diagnóstico
-</a>
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
 
-<div class="section-heading">
+  .green { color: var(--green); }
+  .blue { color: var(--blue); }
+  .orange { color: var(--orange); }
+  .purple { color: var(--purple); }
+  .cyan { color: var(--cyan); }
+  .gold { color: var(--gold); }
 
+  /* ─── SECTION ─── */
+  .section {
+    margin-bottom: 28px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .badge.live {
+    background: var(--green-dim);
+    border-color: rgba(34,197,94,0.3);
+    color: var(--green);
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+
+  /* ─── DISTANCE TO BLOCK ─── */
+  .distance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 18px;
+  }
+
+  @media (max-width: 600px) {
+    .distance-grid { grid-template-columns: 1fr; }
+  }
+
+  .distance-stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .distance-stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+  }
+
+  .progress-wrap {
+    margin: 16px 0 8px;
+  }
+
+  .progress-track {
+    height: 14px;
+    background: var(--bg);
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .progress-bar {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--orange), var(--gold));
+    transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    min-width: 2px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+
+  .progress-pct {
+    font-weight: 700;
+    color: var(--orange);
+    font-size: 15px;
+  }
+
+  .distance-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 14px;
+    line-height: 1.55;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ─── PERSONAL RECORD ─── */
+  .record-hero {
+    background: linear-gradient(135deg, rgba(251,191,36,0.08), rgba(168,85,247,0.06));
+    border: 1px solid rgba(251,191,36,0.25);
+    border-radius: var(--radius);
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .record-hero-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .record-trophy {
+    width: 52px;
+    height: 52px;
+    background: rgba(251,191,36,0.12);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+  }
+
+  .record-hero-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: -0.03em;
+  }
+
+  .record-hero-meta {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .record-delta {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-dim);
+    padding: 6px 12px;
+    border-radius: 8px;
+  }
+
+  /* ─── TOP RECORDS ─── */
+  .records-list {
+    max-height: 320px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .records-list::-webkit-scrollbar { width: 5px; }
+  .records-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .record-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  .record-item:hover { background: var(--bg-elevated); }
+
+  .record-rank {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .record-rank.gold { background: rgba(251,191,36,0.15); color: var(--gold); }
+  .record-rank.silver { background: rgba(148,163,184,0.15); color: var(--silver); }
+  .record-rank.bronze { background: rgba(205,127,50,0.15); color: var(--bronze); }
+  .record-rank.normal { background: var(--bg); color: var(--text-muted); font-size: 12px; }
+
+  .record-diff {
+    font-size: 16px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    flex: 1;
+  }
+
+  .record-time {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* ─── CHART ─── */
+  .chart-wrap {
+    position: relative;
+    height: 260px;
+  }
+
+  /* ─── PROBABILITY TABLE ─── */
+  .prob-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .prob-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .prob-table td {
+    padding: 11px 12px;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    border-bottom: 1px solid rgba(28,40,56,0.6);
+  }
+
+  .prob-table tr:last-child td { border-bottom: none; }
+
+  .prob-table td:last-child {
+    font-weight: 700;
+    color: var(--cyan);
+  }
+
+  /* ─── WEEKLY STATS ─── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .stat-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+  }
+
+  .stat-box-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+
+  .stat-box-value {
+    font-size: 18px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ─── COLLAPSIBLE ─── */
+  details.tech-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  details.tech-panel summary {
+    padding: 16px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+
+  details.tech-panel summary::-webkit-details-marker { display: none; }
+
+  details.tech-panel summary::after {
+    content: '▾';
+    margin-left: auto;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+
+  details.tech-panel[open] summary::after {
+    transform: rotate(180deg);
+  }
+
+  .tech-body {
+    padding: 0 20px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  /* ─── WORKERS TABLE ─── */
+  .table-wrap { overflow-x: auto; }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  table.data-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  table.data-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid rgba(28,40,56,0.5);
+    white-space: nowrap;
+  }
+
+  table.data-table tr:last-child td { border-bottom: none; }
+
+  .worker-online {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--green);
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .worker-online::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+
+  .worker-offline {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  .worker-offline::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+  }
+
+  /* ─── NETWORK HIGHLIGHT ─── */
+  .network-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .network-big {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    text-align: center;
+  }
+
+  .network-big-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+
+  .network-big-value {
+    font-size: 20px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    text-align: center;
+    padding: 30px 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .modal-title { font-size: 15px; font-weight: 700; }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .modal-difficulty {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 18px;
+    text-align: center;
+  }
+
+  .modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .modal-stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+  }
+
+  .modal-stat-value {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  /* ─── TWO COL ─── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 800px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="logo-icon">⛏️</div>
     <div>
-
-        <div class="section-title">
-            Overview
-        </div>
-
-        <div class="section-description">
-            Estado general de tu operación de solo mining
-        </div>
-
+      <div class="brand-title">BITAXE SOLO MINING</div>
+      <div class="brand-sub">Personal Dashboard · Public Pool</div>
     </div>
-
-    <div class="section-badge">
-        LIVE
+    <div id="statusPill" class="status-pill offline">
+      <span class="status-dot"></span>
+      <span id="statusText">Conectando...</span>
     </div>
+    <div class="topbar-hashrate" id="topHashrate">—</div>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn" onclick="loadAll()">↻ Actualizar</button>
+    <button class="btn" onclick="copyAddress()">📋 BTC</button>
+    <a id="poolLink" class="btn" target="_blank" href="#">Public Pool ↗</a>
+  </div>
+</header>
 
-</div>
+<div class="container">
 
+  <!-- ADDRESS -->
+  <div class="address-bar">
+    <span style="font-size:13px;color:var(--text-muted);white-space:nowrap;">Dirección</span>
+    <input type="text" id="addressInput" placeholder="bc1q... o dirección de tu worker" spellcheck="false">
+    <button class="btn btn-primary" onclick="setAddress()">Guardar</button>
+  </div>
 
-<div class="kpis">
+  <!-- ALERT BANNER -->
+  <div id="alertBanner" class="alert-banner"></div>
 
+  <!-- KPI GRID -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">⚡ Hashrate actual</div>
+      <div class="kpi-value green" id="kpiHashrate">—</div>
+      <div class="kpi-sub" id="kpiHashrateSub">Suma de workers</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">🧱 Mejor dificultad</div>
+      <div class="kpi-value orange" id="kpiBestDiff">—</div>
+      <div class="kpi-sub">Mejor share observado</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">🎯 % de red</div>
+      <div class="kpi-value purple" id="kpiPctNetwork">—</div>
+      <div class="kpi-sub">Tu mejor / dificultad red</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">🎲 Prob. bloque / día</div>
+      <div class="kpi-value cyan" id="kpiProbDay">—</div>
+      <div class="kpi-sub">Con hashrate actual</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">⏱️ Tiempo medio</div>
+      <div class="kpi-value blue" id="kpiExpectedTime">—</div>
+      <div class="kpi-sub">Esperado estadístico</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">🌐 Dificultad Bitcoin</div>
+      <div class="kpi-value" id="kpiNetDiff">—</div>
+      <div class="kpi-sub">Dificultad de red actual</div>
+    </div>
+  </div>
 
+  <!-- DISTANCE TO BLOCK -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">🎯 Distancia al bloque</div>
+        <div class="section-desc">Tu mejor share comparado con la dificultad de red</div>
+      </div>
+      <div class="badge" id="distanceBadge">CALCULANDO</div>
+    </div>
     <div class="card">
-
-        <div class="label">
-            Hashrate actual
-        </div>
-
-        <div
-            id="hashrate"
-            class="value green">
-
-            —
-
-        </div>
-
-        <div class="small">
-            Suma de workers
-        </div>
-
-    </div>
-
-
-    <div class="card">
-
-        <div class="label">
-            Hashrate · 10 min
-        </div>
-
-        <div
-            id="hashrate10"
-            class="value blue">
-
-            —
-
-        </div>
-
-        <div class="small">
-            Media reciente
-        </div>
-
-    </div>
-
-
-    <div class="card">
-
-        <div class="label">
-            Hashrate · 1 hora
-        </div>
-
-        <div
-            id="hashrateHour"
-            class="value blue">
-
-            —
-
-        </div>
-
-        <div class="small">
-            Media de la hora
-        </div>
-
-    </div>
-
-
-    <div class="card">
-
-        <div class="label">
-            Shares aceptadas
-        </div>
-
-        <div
-            id="shares"
-            class="value">
-
-            —
-
-        </div>
-
-        <div
-            id="sharesSub"
-            class="small">
-
-            —
-
-        </div>
-
-    </div>
-
-
-    <div class="card">
-
-        <div class="label">
-            Mejor dificultad
-        </div>
-
-        <div
-            id="bestDifficulty"
-            class="value orange">
-
-            —
-
-        </div>
-
-        <div class="small">
-            Mejor share observado
-        </div>
-
-    </div>
-
-
-    <div class="card">
-
-        <div class="label">
-            Workers
-        </div>
-
-        <div
-            id="workers"
-            class="value purple">
-
-            —
-
-        </div>
-
-        <div
-            id="workersSub"
-            class="small">
-
-            —
-
-        </div>
-
-    </div>
-
-
-</div>
-
-<div class="section-heading">
-
-    <div>
-
-        <div class="section-title">
-            🎯 Progreso hacia un bloque
-        </div>
-
-        <div class="section-description">
-            Comparación entre tu mejor dificultad y la dificultad actual de la red
-        </div>
-
-    </div>
-
-    <div
-        id="blockProgressBadge"
-        class="section-badge">
-
-        CALCULANDO
-
-    </div>
-
-</div>
-
-
-<div class="block-progress">
-
-
-    <div class="block-progress-header">
-
+      <div class="distance-grid">
         <div>
-
-            <div class="block-progress-title">
-                Dificultad de bloque
-            </div>
-
-            <div class="block-progress-sub">
-                Un share necesita alcanzar o superar la dificultad de la red para ser candidato a bloque.
-            </div>
-
+          <div class="distance-stat-label">Tu mejor dificultad</div>
+          <div class="distance-stat-value orange" id="distBest">—</div>
         </div>
-
-
-        <div
-            id="blockStatus"
-            class="block-status">
-
-            Esperando datos...
-
+        <div>
+          <div class="distance-stat-label">Dificultad de red</div>
+          <div class="distance-stat-value blue" id="distNet">—</div>
         </div>
-
-    </div>
-
-
-    <div class="progress-track">
-
-        <div
-            id="blockProgressBar"
-            class="progress-bar">
-
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-bar" id="distBar" style="width:0%"></div>
         </div>
-
-    </div>
-
-
-    <div
-        id="blockProgressPercent"
-        class="progress-percent">
-
-        —
-
-    </div>
-
-
-    <div class="block-grid">
-
-
-        <div class="block-stat">
-
-            <div class="block-stat-label">
-                Tu mejor dificultad
-            </div>
-
-            <div
-                id="blockBestDifficulty"
-                class="block-stat-value orange">
-
-                —
-
-            </div>
-
+        <div class="progress-label">
+          <span>Has alcanzado el <strong class="progress-pct" id="distPct">—</strong> de la dificultad necesaria</span>
         </div>
-
-
-        <div class="block-stat">
-
-            <div class="block-stat-label">
-                Dificultad de red
-            </div>
-
-            <div
-                id="blockNetworkDifficulty"
-                class="block-stat-value blue">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="block-stat">
-
-            <div class="block-stat-label">
-                Te falta
-            </div>
-
-            <div
-                id="blockMissingPercent"
-                class="block-stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="block-stat">
-
-            <div class="block-stat-label">
-                Veces dificultad de red
-            </div>
-
-            <div
-                id="blockRatio"
-                class="block-stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="block-stat">
-
-            <div class="block-stat-label">
-                Hashrate actual
-            </div>
-
-            <div
-                id="blockHashrate"
-                class="block-stat-value green">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="block-stat">
-
-            <div class="block-stat-label">
-                Tiempo esperado
-            </div>
-
-            <div
-                id="blockExpectedTime"
-                class="block-stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="block-stat">
-
-            <div class="block-stat-label">
-                Probabilidad / hash
-            </div>
-
-            <div
-                id="blockProbability"
-                class="block-stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="block-stat">
-
-            <div class="block-stat-label">
-                Estado
-            </div>
-
-            <div
-                id="blockCandidateCount"
-                class="block-stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-    <div class="block-note">
-
+      </div>
+      <div class="distance-note">
         La barra representa la relación entre tu mejor dificultad observada y la dificultad de red.
         No significa que un share al 50% tenga un 50% de probabilidad de ser bloque: cada hash es un intento independiente.
-
+      </div>
     </div>
+  </div>
 
-
-</div>
-
-<div class="section-heading">
-
-    <div>
-
-        <div class="section-title">
-            🏆 Evolución del récord
-        </div>
-
-        <div class="section-description">
-            Historial completo de todos los nuevos máximos de dificultad detectados por este navegador
-        </div>
-
+  <!-- PERSONAL RECORD -->
+  <div class="record-hero" id="recordHero" style="display:none;">
+    <div class="record-hero-left">
+      <div class="record-trophy">🏆</div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Récord personal</div>
+        <div class="record-hero-value" id="heroDiff">—</div>
+        <div class="record-hero-meta" id="heroMeta">—</div>
+      </div>
     </div>
+    <div class="record-delta" id="heroDelta" style="display:none;"></div>
+  </div>
 
+  <!-- TWO COL: CHART + TOP -->
+  <div class="two-col" style="margin-bottom:28px;">
 
-    <div
-        id="timelineCount"
-        class="section-badge">
-
-        0 récords
-
-    </div>
-
-</div>
-
-
-<div class="panel">
-
-
-    <div class="panel-header">
-
+    <!-- EVOLUTION CHART -->
+    <div class="section" style="margin:0;">
+      <div class="section-head">
         <div>
-
-            <div class="panel-title">
-                📈 Evolución de dificultad
-            </div>
-
-            <div class="panel-sub">
-                Cada nuevo máximo queda almacenado localmente y puede abrirse para consultar sus detalles.
-            </div>
-
+          <div class="section-title">📈 Evolución del mejor share</div>
+          <div class="section-desc">Nuevos máximos de dificultad detectados</div>
         </div>
-
-
-        <div style="
-            display:flex;
-            gap:7px;
-            align-items:center;
-        ">
-
-            <div
-                id="timelineStorage"
-                class="chart-pill">
-
-                HISTORIAL LOCAL
-
-            </div>
-
-
-            <button
-                onclick="clearRanking()"
-                title="Borrar historial de récords">
-
-                🗑️
-
-            </button>
-
+        <div class="badge" id="chartBadge">HISTORIAL LOCAL</div>
+      </div>
+      <div class="card">
+        <div class="chart-wrap">
+          <canvas id="diffChart"></canvas>
         </div>
-
+      </div>
     </div>
 
-
-    <div class="record-timeline-wrap">
-
-
-        <div
-            id="recordProgressList"
-            class="record-timeline">
-
-            <div class="empty-ranking">
-
-                Esperando récords...
-
-            </div>
-
-        </div>
-
-
-        <div
-            id="timelineScrollHint"
-            class="timeline-scroll-hint"
-            style="display:none;">
-
-            ↕ Scroll para ver más
-
-        </div>
-
-
-    </div>
-
-</div>
-
-<div class="section-heading">
-
-    <div>
-
-        <div class="section-title">
-            ⚡ Rendimiento
-        </div>
-
-        <div class="section-description">
-            Evolución del hashrate capturada por este navegador
-        </div>
-
-    </div>
-
-    <div class="section-badge">
-        HISTORIAL LOCAL
-    </div>
-
-</div>
-
-
-<div class="panel">
-
-
-    <div class="panel-header">
-
+    <!-- TOP 15 -->
+    <div class="section" style="margin:0;">
+      <div class="section-head">
         <div>
-
-            <div class="panel-title">
-                Hashrate
-            </div>
-
-            <div class="panel-sub">
-                Historial de lecturas realizadas cada 30 segundos
-            </div>
-
+          <div class="section-title">🏆 TOP récords</div>
+          <div class="section-desc">Mejores dificultades registradas</div>
         </div>
-
-
-        <div class="chart-summary">
-
-            <div
-                class="chart-pill"
-                id="chartPoints">
-
-                0 puntos
-
-            </div>
-
-            <div
-                class="chart-pill"
-                id="chartRange">
-
-                —
-
-            </div>
-
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div class="badge" id="recordsCount">0 récords</div>
+          <button class="btn" onclick="clearRecords()" title="Borrar historial">🗑️</button>
         </div>
-
-    </div>
-
-
-    <div class="chart">
-
-        <canvas id="hashrateChart"></canvas>
-
-    </div>
-
-</div>
-
-<div class="section-heading">
-
-    <div>
-
-        <div class="section-title">
-            ⛏️ Workers
+      </div>
+      <div class="card" style="padding:10px;">
+        <div class="records-list" id="recordsList">
+          <div class="empty-state">Esperando récords...</div>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <div class="section-description">
-            Estado y rendimiento de tus dispositivos
+  <!-- PROBABILITY -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">🍀 Probabilidad de encontrar un bloque</div>
+        <div class="section-desc">Con tu hashrate actual · cada hash es independiente</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stats-grid" style="margin-bottom:18px;">
+        <div class="stat-box">
+          <div class="stat-box-label">Por hash</div>
+          <div class="stat-box-value" id="probHash">—</div>
         </div>
-
-    </div>
-
-
-    <div
-        id="workerStatus"
-        class="section-badge">
-
-        —
-
-    </div>
-
-</div>
-
-
-<div class="panel">
-
-
-    <table>
-
+        <div class="stat-box">
+          <div class="stat-box-label">Por minuto</div>
+          <div class="stat-box-value" id="probMin">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Por hora</div>
+          <div class="stat-box-value" id="probHour">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Por día</div>
+          <div class="stat-box-value cyan" id="probDay">—</div>
+        </div>
+      </div>
+      <table class="prob-table">
         <thead>
-
-            <tr>
-
-                <th>
-                    Worker
-                </th>
-
-                <th>
-                    Estado
-                </th>
-
-                <th>
-                    Hashrate
-                </th>
-
-                <th>
-                    Mejor dificultad
-                </th>
-
-                <th>
-                    Sesión iniciada
-                </th>
-
-                <th>
-                    Último contacto
-                </th>
-
-            </tr>
-
+          <tr>
+            <th>Periodo</th>
+            <th>Probabilidad acumulada ≥1 bloque</th>
+          </tr>
         </thead>
-
-
-        <tbody id="workerTable">
-
-            <tr>
-
-                <td colspan="6">
-                    Cargando...
-                </td>
-
-            </tr>
-
+        <tbody id="probTableBody">
+          <tr><td>1 día</td><td>—</td></tr>
+          <tr><td>7 días</td><td>—</td></tr>
+          <tr><td>30 días</td><td>—</td></tr>
+          <tr><td>1 año</td><td>—</td></tr>
         </tbody>
-
-    </table>
-
-</div>
-
-<div class="section-heading">
-
-    <div>
-
-        <div class="section-title">
-            🌐 Bitcoin Network
-        </div>
-
-        <div class="section-description">
-            Información global de la red y del pool cuando está disponible
-        </div>
-
+      </table>
     </div>
+  </div>
 
-
-    <div
-        id="networkStatus"
-        class="section-badge">
-
-        —
-
+  <!-- WEEKLY STATS -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">📊 Estadísticas de la semana</div>
+        <div class="section-desc">Basado en el historial local de este navegador</div>
+      </div>
+      <div class="badge">LOCAL</div>
     </div>
+    <div class="card">
+      <div class="stats-grid" id="weeklyStats">
+        <div class="stat-box"><div class="stat-box-label">Shares registrados</div><div class="stat-box-value" id="weekShares">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Mejor dificultad</div><div class="stat-box-value orange" id="weekBest">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Media dificultad</div><div class="stat-box-value" id="weekAvg">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Récords superados</div><div class="stat-box-value purple" id="weekRecords">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Tiempo minando</div><div class="stat-box-value" id="weekTime">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Hashes estimados</div><div class="stat-box-value" id="weekHashes">—</div></div>
+      </div>
+    </div>
+  </div>
 
-</div>
+  <!-- WORKERS -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">⛏️ Workers</div>
+        <div class="section-desc">Estado y rendimiento de tus dispositivos</div>
+      </div>
+      <div class="badge" id="workerBadge">—</div>
+    </div>
+    <div class="card" style="padding:0;">
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Worker</th>
+              <th>Estado</th>
+              <th>Hashrate</th>
+              <th>Mejor dificultad</th>
+              <th>Sesión iniciada</th>
+              <th>Último contacto</th>
+            </tr>
+          </thead>
+          <tbody id="workerTable">
+            <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-
-<div class="panel">
-
-
-    <div class="network-highlight">
-
-
+  <!-- NETWORK -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">🌐 Bitcoin Network</div>
+        <div class="section-desc">Información global de la red y del pool</div>
+      </div>
+      <div class="badge live" id="networkBadge">LIVE</div>
+    </div>
+    <div class="card">
+      <div class="network-row">
         <div class="network-big">
-
-            <div class="network-big-label">
-                Block height
-            </div>
-
-            <div
-                id="blockHeight"
-                class="network-big-value cyan">
-
-                —
-
-            </div>
-
+          <div class="network-big-label">Block height</div>
+          <div class="network-big-value cyan" id="netHeight">—</div>
         </div>
-
-
         <div class="network-big">
-
-            <div class="network-big-label">
-                Network difficulty
-            </div>
-
-            <div
-                id="networkDifficulty"
-                class="network-big-value orange">
-
-                —
-
-            </div>
-
+          <div class="network-big-label">Network difficulty</div>
+          <div class="network-big-value orange" id="netDiff">—</div>
         </div>
-
-
         <div class="network-big">
-
-            <div class="network-big-label">
-                Network hashrate
-            </div>
-
-            <div
-                id="networkHashrate"
-                class="network-big-value">
-
-                —
-
-            </div>
-
+          <div class="network-big-label">Network hashrate</div>
+          <div class="network-big-value" id="netHashrate">—</div>
         </div>
-
-
         <div class="network-big">
-
-            <div class="network-big-label">
-                Pool hashrate
-            </div>
-
-            <div
-                id="poolHashrate"
-                class="network-big-value green">
-
-                —
-
-            </div>
-
+          <div class="network-big-label">Pool hashrate</div>
+          <div class="network-big-value green" id="poolHashrate">—</div>
         </div>
-
-
+      </div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-box-label">Pool miners</div><div class="stat-box-value" id="poolMiners">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Pool blocks</div><div class="stat-box-value" id="poolBlocks">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Último bloque pool</div><div class="stat-box-value" id="poolLastBlock">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Actualizado</div><div class="stat-box-value" id="netUpdated">—</div></div>
+      </div>
     </div>
+  </div>
 
-
-    <div class="stats">
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Pool miners
-            </div>
-
-            <div
-                id="poolMiners"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Pool blocks
-            </div>
-
-            <div
-                id="poolBlocks"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Último bloque
-            </div>
-
-            <div
-                id="poolLastBlock"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Actualizado
-            </div>
-
-            <div
-                id="networkUpdated"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
+  <!-- ACCOUNTING -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">📊 Accounting</div>
+        <div class="section-desc">Shares y dificultad acreditada</div>
+      </div>
     </div>
+    <div class="card">
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-box-label">Shares totales</div><div class="stat-box-value" id="accTotalShares">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Dificultad acreditada</div><div class="stat-box-value" id="accTotalDiff">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Shares · 10 min</div><div class="stat-box-value" id="accShares10">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Dificultad · 10 min</div><div class="stat-box-value" id="accDiff10">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Shares · 1 h</div><div class="stat-box-value" id="accSharesHour">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Dificultad · 1 h</div><div class="stat-box-value" id="accDiffHour">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Shares · 24 h</div><div class="stat-box-value" id="accSharesDay">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Dificultad · 24 h</div><div class="stat-box-value" id="accDiffDay">—</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">🎯 Actividad del minero</div>
+        <div class="section-desc">Actividad reciente y estado de la ronda</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-box-label">Mejor submission</div><div class="stat-box-value orange" id="actBestSub">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Último share</div><div class="stat-box-value" id="actLatest">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Desde último share</div><div class="stat-box-value" id="actSince">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Candidatos de bloque</div><div class="stat-box-value" id="actCandidates">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Work desde último bloque</div><div class="stat-box-value" id="actWork">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Round actual</div><div class="stat-box-value" id="actRound">—</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENERGY -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-title">🔌 Energía & eficiencia</div>
+        <div class="section-desc">Estimaciones basadas en 25 W de consumo</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-box-label">Potencia</div><div class="stat-box-value">25 W</div></div>
+        <div class="stat-box"><div class="stat-box-label">Energía / hora</div><div class="stat-box-value">0,025 kWh</div></div>
+        <div class="stat-box"><div class="stat-box-label">Energía / día</div><div class="stat-box-value">0,600 kWh</div></div>
+        <div class="stat-box"><div class="stat-box-label">Energía / 30 días</div><div class="stat-box-value">18,0 kWh</div></div>
+        <div class="stat-box"><div class="stat-box-label">Eficiencia actual</div><div class="stat-box-value green" id="efficiency">—</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECHNICAL (collapsible) -->
+  <div class="section">
+    <details class="tech-panel">
+      <summary>⚙️ Información técnica</summary>
+      <div class="tech-body" id="techBody">
+        <div class="stat-box"><div class="stat-box-label">Shares aceptados</div><div class="stat-box-value" id="techAccepted">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Workers activos</div><div class="stat-box-value" id="techWorkers">—</div></div>
+        <div class="stat-box"><div class="stat-box-label">Pool</div><div class="stat-box-value" style="font-size:13px;">public-pool.io</div></div>
+        <div class="stat-box"><div class="stat-box-label">Modo</div><div class="stat-box-value" style="font-size:13px;">Solo</div></div>
+      </div>
+    </details>
+  </div>
+
+  <!-- RAW DIAGNOSTICS -->
+  <div class="section">
+    <details class="tech-panel">
+      <summary>🧪 Diagnóstico · JSON de APIs</summary>
+      <pre id="rawJson" style="padding:0 20px 20px;font-size:11px;color:var(--text-dim);overflow:auto;max-height:400px;white-space:pre-wrap;word-break:break-all;">Esperando datos...</pre>
+    </details>
+  </div>
 
 </div>
 
-<div class="section-heading">
-
-    <div>
-
-        <div class="section-title">
-            📊 Accounting
-        </div>
-
-        <div class="section-description">
-            Shares y dificultad acreditada de tu dirección
-        </div>
-
-    </div>
-
-</div>
-
-
-<div class="panel">
-
-
-    <div class="stats">
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Shares totales
-            </div>
-
-            <div
-                id="totalShares"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Dificultad acreditada
-            </div>
-
-            <div
-                id="totalDifficulty"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Shares · 10 min
-            </div>
-
-            <div
-                id="shares10"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Dificultad · 10 min
-            </div>
-
-            <div
-                id="difficulty10"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Shares · 1 h
-            </div>
-
-            <div
-                id="sharesHour"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Dificultad · 1 h
-            </div>
-
-            <div
-                id="difficultyHour"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Shares · 24 h
-            </div>
-
-            <div
-                id="sharesDay"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Dificultad · 24 h
-            </div>
-
-            <div
-                id="difficultyDay"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</div>
-
-<div class="section-heading">
-
-    <div>
-
-        <div class="section-title">
-            🎯 Actividad del minero
-        </div>
-
-        <div class="section-description">
-            Actividad reciente y estado de la ronda actual
-        </div>
-
-    </div>
-
-</div>
-
-
-<div class="panel">
-
-
-    <div class="stats">
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Mejor submission
-            </div>
-
-            <div
-                id="bestSubmission"
-                class="stat-value orange">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Último share
-            </div>
-
-            <div
-                id="latestShare"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Desde último share
-            </div>
-
-            <div
-                id="sinceShare"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Candidatos de bloque
-            </div>
-
-            <div
-                id="blockCandidates"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Work desde último bloque
-            </div>
-
-            <div
-                id="workSinceBlock"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Round actual
-            </div>
-
-            <div
-                id="roundShares"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Dificultad round
-            </div>
-
-            <div
-                id="roundDifficulty"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-                Expected payout
-            </div>
-
-            <div
-                id="expectedPayout"
-                class="stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</div>
-
-<div class="section-heading">
-
-    <div>
-
-        <div class="section-title">
-            🔌 Energía & eficiencia
-        </div>
-
-        <div class="section-description">
-            Estimaciones basadas en un consumo configurado de 25 W
-        </div>
-
-    </div>
-
-</div>
-
-
-<div class="panel">
-
-
-    <div class="energy-grid">
-
-
-        <div class="energy-item">
-
-            <div class="energy-label">
-                Potencia
-            </div>
-
-            <div class="energy-value">
-                25 W
-            </div>
-
-        </div>
-
-
-        <div class="energy-item">
-
-            <div class="energy-label">
-                Energía / hora
-            </div>
-
-            <div class="energy-value">
-                0,025 kWh
-            </div>
-
-        </div>
-
-
-        <div class="energy-item">
-
-            <div class="energy-label">
-                Energía / día
-            </div>
-
-            <div class="energy-value">
-                0,600 kWh
-            </div>
-
-        </div>
-
-
-        <div class="energy-item">
-
-            <div class="energy-label">
-                Energía / 30 días
-            </div>
-
-            <div class="energy-value">
-                18,0 kWh
-            </div>
-
-        </div>
-
-
-        <div class="energy-item">
-
-            <div class="energy-label">
-                Eficiencia actual
-            </div>
-
-            <div
-                id="efficiency"
-                class="energy-value green">
-
-                —
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-</div>
-
-<div class="section-heading">
-
-    <div>
-
-        <div class="section-title">
-            🧪 Diagnóstico
-        </div>
-
-        <div class="section-description">
-            Datos originales recibidos desde las APIs
-        </div>
-
-    </div>
-
-</div>
-
-
-<details class="panel">
-
-    <summary>
-        Ver JSON completo de las APIs
-    </summary>
-
-    <pre id="raw">
-
-Esperando datos... 
-</details>
-
-Bitaxe Solo Mining Dashboard
-
-<br>
-
-Public Pool · Actualización automática cada 30 segundos
-
-<br><br>
-
-Los datos históricos de récords y hashrate
-se almacenan únicamente en este navegador.
-
-<div class="modal-box">
-
-
+<footer class="footer">
+  Bitaxe Solo Mining Dashboard<br>
+  Public Pool · Actualización automática cada 30 segundos<br><br>
+  Los datos históricos de récords y hashrate se almacenan únicamente en este navegador.
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="recordModal" onclick="if(event.target===this)closeRecordModal()">
+  <div class="modal-box">
     <div class="modal-header">
-
-        <div class="modal-title">
-            🏆 Detalle del récord
-        </div>
-
-        <button
-            class="modal-close"
-            onclick="closeRecordModal()">
-
-            ✕
-
-        </button>
-
+      <div class="modal-title">🏆 Detalle del récord</div>
+      <button class="modal-close" onclick="closeRecordModal()">✕</button>
     </div>
-
-
-    <div
-        id="modalDifficulty"
-        class="modal-difficulty">
-
-        —
-
-    </div>
-
-
+    <div class="modal-difficulty" id="modalDiff">—</div>
     <div class="modal-grid">
-
-
-        <div class="modal-stat">
-
-            <div class="modal-stat-label">
-                Fecha
-            </div>
-
-            <div
-                id="modalDate"
-                class="modal-stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="modal-stat">
-
-            <div class="modal-stat-label">
-                Hora
-            </div>
-
-            <div
-                id="modalTime"
-                class="modal-stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="modal-stat">
-
-            <div class="modal-stat-label">
-                Hashrate
-            </div>
-
-            <div
-                id="modalHashrate"
-                class="modal-stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
-        <div class="modal-stat">
-
-            <div class="modal-stat-label">
-                Timestamp
-            </div>
-
-            <div
-                id="modalTimestamp"
-                class="modal-stat-value">
-
-                —
-
-            </div>
-
-        </div>
-
-
+      <div>
+        <div class="modal-stat-label">Fecha</div>
+        <div class="modal-stat-value" id="modalDate">—</div>
+      </div>
+      <div>
+        <div class="modal-stat-label">Hora</div>
+        <div class="modal-stat-value" id="modalTime">—</div>
+      </div>
+      <div>
+        <div class="modal-stat-label">Hashrate</div>
+        <div class="modal-stat-value" id="modalHashrate">—</div>
+      </div>
+      <div>
+        <div class="modal-stat-label">Timestamp</div>
+        <div class="modal-stat-value" id="modalTs">—</div>
+      </div>
     </div>
-
+  </div>
 </div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   CONFIG & STATE
+═══════════════════════════════════════════════════ */
+const API_BASE = 'https://public-pool.io:40557/api';
+const STORAGE_KEY_ADDR = 'bitaxe_address';
+const STORAGE_KEY_RECORDS = 'bitaxe_records_v2';
+const STORAGE_KEY_HASHRATE = 'bitaxe_hashrate_hist';
+const POWER_WATTS = 25;
+const REFRESH_MS = 30000;
+
+let address = localStorage.getItem(STORAGE_KEY_ADDR) || '';
+let records = JSON.parse(localStorage.getItem(STORAGE_KEY_RECORDS) || '[]');
+let hashrateHist = JSON.parse(localStorage.getItem(STORAGE_KEY_HASHRATE) || '[]');
+let lastBestDiff = 0;
+let networkDiff = 0;
+let currentHashrate = 0;
+let diffChart = null;
+let alertTimeout = null;
+
+/* ═══════════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════════ */
+function fmtHashrate(h) {
+  if (h == null || isNaN(h)) return '—';
+  h = Number(h);
+  if (h >= 1e15) return (h / 1e15).toFixed(2) + ' PH/s';
+  if (h >= 1e12) return (h / 1e12).toFixed(2) + ' TH/s';
+  if (h >= 1e9)  return (h / 1e9).toFixed(2) + ' GH/s';
+  if (h >= 1e6)  return (h / 1e6).toFixed(2) + ' MH/s';
+  if (h >= 1e3)  return (h / 1e3).toFixed(2) + ' KH/s';
+  return h.toFixed(0) + ' H/s';
+}
+
+function fmtDiff(d) {
+  if (d == null || isNaN(d) || d === 0) return '—';
+  d = Number(d);
+  if (d >= 1e15) return (d / 1e15).toFixed(2) + ' P';
+  if (d >= 1e12) return (d / 1e12).toFixed(2) + ' T';
+  if (d >= 1e9)  return (d / 1e9).toFixed(2) + ' G';
+  if (d >= 1e6)  return (d / 1e6).toFixed(2) + ' M';
+  if (d >= 1e3)  return (d / 1e3).toFixed(2) + ' K';
+  return d.toFixed(0);
+}
+
+function fmtNum(n) {
+  if (n == null || isNaN(n)) return '—';
+  return Number(n).toLocaleString('es-ES');
+}
+
+function fmtRelative(ts) {
+  if (!ts) return '—';
+  const diff = Date.now() - new Date(ts).getTime();
+  if (diff < 0) return 'ahora';
+  const s = Math.floor(diff / 1000);
+  if (s < 60) return `hace ${s}s`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `hace ${m}m`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `hace ${h}h ${m % 60}m`;
+  const d = Math.floor(h / 24);
+  return `hace ${d}d ${h % 24}h`;
+}
+
+function fmtDateTime(ts) {
+  if (!ts) return { date: '—', time: '—' };
+  const d = new Date(ts);
+  return {
+    date: d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+    time: d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+  };
+}
+
+function expectedHashes(diff) {
+  // Bitcoin: expected hashes ≈ difficulty * 2^32
+  return Number(diff) * Math.pow(2, 32);
+}
+
+function formatProb(p) {
+  if (p == null || isNaN(p)) return '—';
+  if (p < 1e-12) return p.toExponential(2) + ' %';
+  if (p < 0.0001) return p.toFixed(8) + ' %';
+  if (p < 0.01) return p.toFixed(6) + ' %';
+  if (p < 1) return p.toFixed(4) + ' %';
+  return p.toFixed(2) + ' %';
+}
+
+function formatTime(seconds) {
+  if (!seconds || !isFinite(seconds)) return '—';
+  const y = seconds / (365.25 * 86400);
+  if (y >= 1) return y.toFixed(1) + ' años';
+  const d = seconds / 86400;
+  if (d >= 1) return d.toFixed(1) + ' días';
+  const h = seconds / 3600;
+  if (h >= 1) return h.toFixed(1) + ' horas';
+  const m = seconds / 60;
+  return m.toFixed(0) + ' min';
+}
+
+/* ═══════════════════════════════════════════════════
+   ADDRESS
+═══════════════════════════════════════════════════ */
+function setAddress() {
+  const val = document.getElementById('addressInput').value.trim();
+  if (!val) return;
+  address = val;
+  localStorage.setItem(STORAGE_KEY_ADDR, address);
+  document.getElementById('poolLink').href = `https://web.public-pool.io/#/${address}`;
+  loadAll();
+}
+
+function copyAddress() {
+  if (!address) return;
+  navigator.clipboard.writeText(address).then(() => {
+    showAlert('Dirección copiada al portapapeles', 'record');
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   RECORDS (localStorage)
+═══════════════════════════════════════════════════ */
+function saveRecords() {
+  localStorage.setItem(STORAGE_KEY_RECORDS, JSON.stringify(records));
+}
+
+function addRecordIfNew(diff, hashrate) {
+  if (!diff || diff <= 0) return false;
+  const best = records.length ? Math.max(...records.map(r => r.diff)) : 0;
+  if (diff > best) {
+    const prev = best;
+    records.unshift({
+      diff: Number(diff),
+      hashrate: Number(hashrate) || 0,
+      ts: Date.now()
+    });
+    // Keep max 100
+    if (records.length > 100) records = records.slice(0, 100);
+    saveRecords();
+    renderRecords();
+    renderDiffChart();
+    updatePersonalRecord();
+
+    // Alert
+    const pct = prev > 0 ? ((diff - prev) / prev * 100).toFixed(1) : null;
+    showAlert(
+      `🚀 NUEVO RÉCORD · ${fmtDiff(diff)}` + (pct ? ` · +${pct}% sobre el anterior` : ''),
+      'record'
+    );
+    return true;
+  }
+  return false;
+}
+
+function clearRecords() {
+  if (!confirm('¿Borrar todo el historial de récords?')) return;
+  records = [];
+  saveRecords();
+  renderRecords();
+  renderDiffChart();
+  updatePersonalRecord();
+}
+
+function renderRecords() {
+  const list = document.getElementById('recordsList');
+  document.getElementById('recordsCount').textContent = records.length + ' récords';
+
+  if (!records.length) {
+    list.innerHTML = '<div class="empty-state">Esperando récords...</div>';
+    return;
+  }
+
+  // Sort by difficulty desc
+  const sorted = [...records].sort((a, b) => b.diff - a.diff).slice(0, 15);
+
+  list.innerHTML = sorted.map((r, i) => {
+    let rankClass = 'normal';
+    let medal = (i + 1);
+    if (i === 0) { rankClass = 'gold'; medal = '🥇'; }
+    else if (i === 1) { rankClass = 'silver'; medal = '🥈'; }
+    else if (i === 2) { rankClass = 'bronze'; medal = '🥉'; }
+
+    const dt = fmtDateTime(r.ts);
+    return `
+      <div class="record-item" onclick='openRecordModal(${JSON.stringify(r)})'>
+        <div class="record-rank ${rankClass}">${medal}</div>
+        <div class="record-diff">${fmtDiff(r.diff)}</div>
+        <div class="record-time">
+          ${fmtRelative(r.ts)}<br>
+          <span style="opacity:0.7">${dt.time}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updatePersonalRecord() {
+  const hero = document.getElementById('recordHero');
+  if (!records.length) {
+    hero.style.display = 'none';
+    return;
+  }
+  const sorted = [...records].sort((a, b) => b.diff - a.diff);
+  const best = sorted[0];
+  const second = sorted[1];
+
+  hero.style.display = 'flex';
+  document.getElementById('heroDiff').textContent = fmtDiff(best.diff);
+  const dt = fmtDateTime(best.ts);
+  document.getElementById('heroMeta').textContent = `Conseguido ${dt.date} · ${dt.time}`;
+
+  const deltaEl = document.getElementById('heroDelta');
+  if (second) {
+    const pct = ((best.diff - second.diff) / second.diff * 100).toFixed(1);
+    deltaEl.style.display = 'block';
+    deltaEl.textContent = `▲ ${pct}% sobre el anterior`;
+  } else {
+    deltaEl.style.display = 'none';
+  }
+}
+
+function openRecordModal(r) {
+  const dt = fmtDateTime(r.ts);
+  document.getElementById('modalDiff').textContent = fmtDiff(r.diff);
+  document.getElementById('modalDate').textContent = dt.date;
+  document.getElementById('modalTime').textContent = dt.time;
+  document.getElementById('modalHashrate').textContent = fmtHashrate(r.hashrate);
+  document.getElementById('modalTs').textContent = r.ts;
+  document.getElementById('recordModal').classList.add('show');
+}
+
+function closeRecordModal() {
+  document.getElementById('recordModal').classList.remove('show');
+}
+
+/* ═══════════════════════════════════════════════════
+   CHART
+═══════════════════════════════════════════════════ */
+function renderDiffChart() {
+  const ctx = document.getElementById('diffChart');
+  if (!ctx) return;
+
+  // Take chronological order of records (oldest first)
+  const data = [...records].sort((a, b) => a.ts - b.ts);
+
+  const labels = data.map(r => {
+    const d = new Date(r.ts);
+    return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' }) + ' ' +
+           d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+  });
+  const values = data.map(r => r.diff);
+
+  if (diffChart) {
+    diffChart.data.labels = labels;
+    diffChart.data.datasets[0].data = values;
+    diffChart.update('none');
+    return;
+  }
+
+  diffChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Mejor dificultad',
+        data: values,
+        borderColor: '#f59e0b',
+        backgroundColor: 'rgba(245, 158, 11, 0.08)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#f59e0b',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => fmtDiff(ctx.raw)
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#5a6d85', font: { size: 10 }, maxTicksLimit: 8 },
+          grid: { color: 'rgba(28,40,56,0.5)' }
+        },
+        y: {
+          ticks: {
+            color: '#5a6d85',
+            font: { size: 10 },
+            callback: v => fmtDiff(v)
+          },
+          grid: { color: 'rgba(28,40,56,0.5)' }
+        }
+      }
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   ALERTS
+═══════════════════════════════════════════════════ */
+function showAlert(msg, type = 'record') {
+  const el = document.getElementById('alertBanner');
+  el.className = 'alert-banner show ' + type;
+  el.innerHTML = msg;
+  clearTimeout(alertTimeout);
+  alertTimeout = setTimeout(() => {
+    el.classList.remove('show');
+  }, 8000);
+}
+
+/* ═══════════════════════════════════════════════════
+   PROBABILITY
+═══════════════════════════════════════════════════ */
+function updateProbabilities(hashrate, netDiff) {
+  if (!hashrate || !netDiff || hashrate <= 0 || netDiff <= 0) return;
+
+  const hashesNeeded = expectedHashes(netDiff);
+  const probPerHash = 1 / hashesNeeded;
+  const hashesPerSec = hashrate;
+
+  // Instant probs
+  document.getElementById('probHash').textContent = formatProb(probPerHash * 100);
+  document.getElementById('probMin').textContent = formatProb((1 - Math.exp(-hashesPerSec * 60 * probPerHash)) * 100);
+  document.getElementById('probHour').textContent = formatProb((1 - Math.exp(-hashesPerSec * 3600 * probPerHash)) * 100);
+  document.getElementById('probDay').textContent = formatProb((1 - Math.exp(-hashesPerSec * 86400 * probPerHash)) * 100);
+
+  // Cumulative table
+  const periods = [
+    { label: '1 día', secs: 86400 },
+    { label: '7 días', secs: 7 * 86400 },
+    { label: '30 días', secs: 30 * 86400 },
+    { label: '1 año', secs: 365.25 * 86400 }
+  ];
+
+  const tbody = document.getElementById('probTableBody');
+  tbody.innerHTML = periods.map(p => {
+    const lambda = hashesPerSec * p.secs * probPerHash;
+    const prob = (1 - Math.exp(-lambda)) * 100;
+    return `<tr><td>${p.label}</td><td>${formatProb(prob)}</td></tr>`;
+  }).join('');
+
+  // KPI daily
+  const dayProb = (1 - Math.exp(-hashesPerSec * 86400 * probPerHash)) * 100;
+  document.getElementById('kpiProbDay').textContent = formatProb(dayProb);
+
+  // Expected time
+  const expectedSecs = hashesNeeded / hashesPerSec;
+  document.getElementById('kpiExpectedTime').textContent = formatTime(expectedSecs);
+}
+
+/* ═══════════════════════════════════════════════════
+   WEEKLY STATS
+═══════════════════════════════════════════════════ */
+function updateWeeklyStats() {
+  const weekAgo = Date.now() - 7 * 86400 * 1000;
+  const weekRecords = records.filter(r => r.ts >= weekAgo);
+
+  document.getElementById('weekShares').textContent = weekRecords.length || '0';
+  document.getElementById('weekRecords').textContent = weekRecords.length || '0';
+
+  if (weekRecords.length) {
+    const diffs = weekRecords.map(r => r.diff);
+    const best = Math.max(...diffs);
+    const avg = diffs.reduce((a, b) => a + b, 0) / diffs.length;
+    document.getElementById('weekBest').textContent = fmtDiff(best);
+    document.getElementById('weekAvg').textContent = fmtDiff(avg);
+  } else {
+    document.getElementById('weekBest').textContent = '—';
+    document.getElementById('weekAvg').textContent = '—';
+  }
+
+  // Approximate mining time from hashrate history points (every 30s)
+  const weekHash = hashrateHist.filter(h => h.ts >= weekAgo);
+  const miningSecs = weekHash.length * 30;
+  document.getElementById('weekTime').textContent = miningSecs > 0
+    ? (miningSecs / 3600).toFixed(1) + ' h'
+    : '—';
+
+  // Estimated hashes
+  if (weekHash.length) {
+    const avgHr = weekHash.reduce((a, b) => a + b.h, 0) / weekHash.length;
+    const totalHashes = avgHr * miningSecs;
+    document.getElementById('weekHashes').textContent = totalHashes >= 1e12
+      ? (totalHashes / 1e12).toFixed(2) + ' T'
+      : totalHashes >= 1e9
+        ? (totalHashes / 1e9).toFixed(2) + ' G'
+        : fmtNum(Math.round(totalHashes));
+  } else {
+    document.getElementById('weekHashes').textContent = '—';
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   HASHRATE HISTORY
+═══════════════════════════════════════════════════ */
+function pushHashrate(h) {
+  if (!h || h <= 0) return;
+  hashrateHist.push({ h: Number(h), ts: Date.now() });
+  // Keep last 7 days of 30s samples ≈ 20160 points max, prune to 3000
+  if (hashrateHist.length > 3000) {
+    hashrateHist = hashrateHist.slice(-3000);
+  }
+  localStorage.setItem(STORAGE_KEY_HASHRATE, JSON.stringify(hashrateHist));
+}
+
+/* ═══════════════════════════════════════════════════
+   MAIN LOAD
+═══════════════════════════════════════════════════ */
+async function loadAll() {
+  if (!address) {
+    setStatus(false, 'Sin dirección');
+    return;
+  }
+
+  setStatus(true, 'Actualizando...');
+
+  try {
+    const [clientRes, poolRes, netRes] = await Promise.all([
+      fetch(`${API_BASE}/client/${address}`).then(r => r.json()),
+      fetch(`${API_BASE}/pool`).then(r => r.json()),
+      fetch(`${API_BASE}/network`).then(r => r.json())
+    ]);
+
+    document.getElementById('rawJson').textContent = JSON.stringify({ client: clientRes, pool: poolRes, network: netRes }, null, 2);
+
+    // Network
+    networkDiff = Number(netRes.difficulty) || 0;
+    document.getElementById('netHeight').textContent = fmtNum(netRes.blocks);
+    document.getElementById('netDiff').textContent = fmtDiff(networkDiff);
+    document.getElementById('kpiNetDiff').textContent = fmtDiff(networkDiff);
+    document.getElementById('netHashrate').textContent = fmtHashrate(netRes.networkhashps);
+    document.getElementById('netUpdated').textContent = new Date().toLocaleTimeString('es-ES');
+
+    // Pool
+    document.getElementById('poolHashrate').textContent = fmtHashrate(poolRes.totalHashRate);
+    document.getElementById('poolMiners').textContent = fmtNum(poolRes.totalMiners);
+    const blocks = poolRes.blocksFound || [];
+    document.getElementById('poolBlocks').textContent = fmtNum(blocks.length);
+    if (blocks.length) {
+      const last = blocks[0];
+      document.getElementById('poolLastBlock').textContent = `#${last.height}`;
+    }
+
+    // Client
+    const acc = clientRes.accounting || {};
+    const bestDiff = Number(clientRes.bestDifficulty) || Number(acc.bestSubmissionDifficulty) || 0;
+    currentHashrate = Number(acc.hashRateLast10Minutes) || 0;
+
+    // Workers
+    const workers = clientRes.workers || [];
+    let totalHr = 0;
+    workers.forEach(w => {
+      // Some APIs expose hashrate differently; fall back to accounting
+      if (w.hashRate) totalHr += Number(w.hashRate);
+    });
+    if (totalHr <= 0) totalHr = currentHashrate;
+
+    // KPIs
+    document.getElementById('kpiHashrate').textContent = fmtHashrate(totalHr);
+    document.getElementById('topHashrate').textContent = fmtHashrate(totalHr);
+    document.getElementById('kpiBestDiff').textContent = fmtDiff(bestDiff);
+
+    // % of network
+    const pct = networkDiff > 0 ? (bestDiff / networkDiff * 100) : 0;
+    document.getElementById('kpiPctNetwork').textContent = pct > 0 ? pct.toFixed(4) + ' %' : '—';
+
+    // Distance section
+    document.getElementById('distBest').textContent = fmtDiff(bestDiff);
+    document.getElementById('distNet').textContent = fmtDiff(networkDiff);
+    const barPct = Math.min(pct, 100);
+    document.getElementById('distBar').style.width = barPct + '%';
+    document.getElementById('distPct').textContent = pct > 0 ? pct.toFixed(4) + '%' : '—';
+    document.getElementById('distanceBadge').textContent = pct >= 100 ? '¡BLOQUE!' : pct > 0 ? pct.toFixed(2) + '%' : '—';
+    document.getElementById('distanceBadge').className = 'badge' + (pct >= 100 ? ' live' : '');
+
+    // Probabilities
+    updateProbabilities(totalHr, networkDiff);
+
+    // Efficiency
+    if (totalHr > 0) {
+      const ths = totalHr / 1e12;
+      const efficiency = (POWER_WATTS / ths).toFixed(1);
+      document.getElementById('efficiency').textContent = efficiency + ' J/TH';
+    }
+
+    // Accounting
+    document.getElementById('accTotalShares').textContent = fmtNum(acc.totalAcceptedShares);
+    document.getElementById('accTotalDiff').textContent = fmtDiff(acc.totalCreditedDifficulty);
+    document.getElementById('accShares10').textContent = fmtNum(acc.acceptedSharesLast10Minutes);
+    document.getElementById('accDiff10').textContent = fmtDiff(acc.creditedDifficultyLast10Minutes);
+    document.getElementById('accSharesHour').textContent = fmtNum(acc.acceptedSharesLastHour);
+    document.getElementById('accDiffHour').textContent = fmtDiff(acc.creditedDifficultyLastHour);
+    document.getElementById('accSharesDay').textContent = fmtNum(acc.acceptedSharesLastDay);
+    document.getElementById('accDiffDay').textContent = fmtDiff(acc.creditedDifficultyLastDay);
+
+    // Activity
+    document.getElementById('actBestSub').textContent = fmtDiff(acc.bestSubmissionDifficulty);
+    document.getElementById('actLatest').textContent = acc.latestShareAt
+      ? fmtRelative(acc.latestShareAt)
+      : '—';
+    document.getElementById('actSince').textContent = acc.latestShareAt
+      ? fmtRelative(acc.latestShareAt)
+      : '—';
+    document.getElementById('actCandidates').textContent = fmtNum(acc.blockCandidateCount);
+    document.getElementById('actWork').textContent = fmtNum(acc.workSinceLastBlock);
+    document.getElementById('actRound').textContent = fmtNum(acc.currentRoundAcceptedShares);
+
+    // Tech
+    document.getElementById('techAccepted').textContent = fmtNum(acc.totalAcceptedShares);
+    document.getElementById('techWorkers').textContent = fmtNum(clientRes.workersCount || workers.length);
+
+    // Workers table
+    renderWorkers(workers);
+
+    // Records
+    addRecordIfNew(bestDiff, totalHr);
+    lastBestDiff = bestDiff;
+
+    // Hashrate hist
+    pushHashrate(totalHr);
+    updateWeeklyStats();
+
+    // Status
+    const online = workers.some(w => {
+      if (!w.lastSeen) return true;
+      return (Date.now() - new Date(w.lastSeen).getTime()) < 10 * 60 * 1000;
+    }) || totalHr > 0;
+
+    setStatus(online, online ? 'ONLINE' : 'OFFLINE');
+
+    // Possible block candidate alert
+    if (acc.blockCandidateCount > 0) {
+      showAlert('🔴 ¡POSIBLE BLOQUE ENCONTRADO! Candidatos: ' + acc.blockCandidateCount, 'block');
+    }
+
+  } catch (err) {
+    console.error(err);
+    setStatus(false, 'Error de conexión');
+  }
+}
+
+function renderWorkers(workers) {
+  const tbody = document.getElementById('workerTable');
+  document.getElementById('workerBadge').textContent = (workers.length || 0) + ' workers';
+
+  if (!workers.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:24px;">Sin workers activos</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = workers.map(w => {
+    const lastSeen = w.lastSeen || w.updatedAt || null;
+    const isOnline = !lastSeen || (Date.now() - new Date(lastSeen).getTime()) < 10 * 60 * 1000;
+    const hr = w.hashRate || w.hashrate || 0;
+    const best = w.bestDifficulty || w.bestDiff || 0;
+    const started = w.sessionStart || w.startedAt || null;
+
+    return `<tr>
+      <td style="font-weight:600;">${w.name || w.sessionId || '—'}</td>
+      <td>${isOnline ? '<span class="worker-online">Online</span>' : '<span class="worker-offline">Offline</span>'}</td>
+      <td>${fmtHashrate(hr)}</td>
+      <td class="orange">${fmtDiff(best)}</td>
+      <td>${started ? fmtRelative(started) : '—'}</td>
+      <td>${lastSeen ? fmtRelative(lastSeen) : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function setStatus(online, text) {
+  const pill = document.getElementById('statusPill');
+  const txt = document.getElementById('statusText');
+  pill.className = 'status-pill' + (online ? '' : ' offline');
+  txt.textContent = text;
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+(function init() {
+  if (address) {
+    document.getElementById('addressInput').value = address;
+    document.getElementById('poolLink').href = `https://web.public-pool.io/#/${address}`;
+  }
+
+  renderRecords();
+  updatePersonalRecord();
+  renderDiffChart();
+  updateWeeklyStats();
+
+  if (address) loadAll();
+
+  setInterval(loadAll, REFRESH_MS);
+})();
+</script>
+</body>
+</html>
