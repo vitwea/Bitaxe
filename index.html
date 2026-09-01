@@ -1191,6 +1191,30 @@
     </details>
   </div>
 
+  <!-- IMPORT / MIGRATE RECORDS -->
+  <div class="section">
+    <details class="tech-panel">
+      <summary>📦 Importar / migrar récords antiguos</summary>
+      <div style="padding:0 20px 20px;">
+        <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.5;">
+          Si tenías récords guardados en una versión anterior del dashboard, se intentan migrar automáticamente al cargar la página.
+          Si no aparecen, puedes:
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+          <button class="btn" onclick="forceRemigrate()">🔄 Forzar migración desde localStorage</button>
+          <button class="btn" onclick="showLocalStorageKeys()">🔍 Ver claves de localStorage</button>
+          <button class="btn" onclick="exportRecords()">⬇️ Exportar récords (JSON)</button>
+        </div>
+        <div style="margin-bottom:10px;">
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px;">Pegar JSON de récords antiguos para importar manualmente:</label>
+          <textarea id="importJson" rows="4" placeholder='[{"diff":8420000000000,"ts":1725...}, ...]' style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:10px;font-size:12px;font-family:monospace;resize:vertical;"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="importRecordsManual()">Importar JSON pegado</button>
+        <pre id="storageDebug" style="margin-top:14px;font-size:11px;color:var(--text-dim);overflow:auto;max-height:220px;white-space:pre-wrap;word-break:break-all;"></pre>
+      </div>
+    </details>
+  </div>
+
 </div>
 
 <footer class="footer">
@@ -1239,14 +1263,182 @@ const STORAGE_KEY_HASHRATE = 'bitaxe_hashrate_hist';
 const POWER_WATTS = 25;
 const REFRESH_MS = 30000;
 
+// Possible keys used by older versions of this / similar dashboards
+const LEGACY_RECORD_KEYS = [
+  'bitaxe_records_v2',
+  'bitaxe_records',
+  'bitaxe_ranking',
+  'ranking',
+  'records',
+  'recordProgress',
+  'bestDiffRecords',
+  'difficultyRecords',
+  'bitaxe_best_diffs',
+  'solo_records',
+  'publicpool_records',
+  'timelineRecords'
+];
+
 let address = localStorage.getItem(STORAGE_KEY_ADDR) || '';
-let records = JSON.parse(localStorage.getItem(STORAGE_KEY_RECORDS) || '[]');
+let records = [];
 let hashrateHist = JSON.parse(localStorage.getItem(STORAGE_KEY_HASHRATE) || '[]');
 let lastBestDiff = 0;
 let networkDiff = 0;
 let currentHashrate = 0;
 let diffChart = null;
 let alertTimeout = null;
+
+/* ═══════════════════════════════════════════════════
+   MIGRATION FROM OLD localStorage
+═══════════════════════════════════════════════════ */
+function normalizeRecord(item) {
+  if (item == null) return null;
+
+  // Already in new format
+  if (typeof item === 'object' && item.diff != null) {
+    return {
+      diff: Number(item.diff),
+      hashrate: Number(item.hashrate || item.hashRate || item.hr || 0),
+      ts: Number(item.ts || item.timestamp || item.time || item.date || Date.now())
+    };
+  }
+
+  // Simple number = difficulty only
+  if (typeof item === 'number' && item > 0) {
+    return { diff: item, hashrate: 0, ts: Date.now() };
+  }
+
+  // String number
+  if (typeof item === 'string' && !isNaN(Number(item)) && Number(item) > 0) {
+    return { diff: Number(item), hashrate: 0, ts: Date.now() };
+  }
+
+  // Common older shapes
+  if (typeof item === 'object') {
+    const diff = item.difficulty ?? item.bestDifficulty ?? item.bestDiff ??
+                 item.value ?? item.score ?? item.d ?? item.diff;
+    if (diff == null || isNaN(Number(diff)) || Number(diff) <= 0) return null;
+
+    return {
+      diff: Number(diff),
+      hashrate: Number(item.hashrate || item.hashRate || item.hr || 0),
+      ts: Number(item.ts || item.timestamp || item.time || item.createdAt || item.date || Date.now())
+    };
+  }
+
+  return null;
+}
+
+function migrateOldRecords() {
+  const collected = [];
+  const seen = new Set();
+
+  // 1. Prefer the official new key first
+  try {
+    const current = JSON.parse(localStorage.getItem(STORAGE_KEY_RECORDS) || '[]');
+    if (Array.isArray(current)) {
+      current.forEach(item => {
+        const n = normalizeRecord(item);
+        if (n && n.diff > 0 && !seen.has(n.diff + '_' + n.ts)) {
+          seen.add(n.diff + '_' + n.ts);
+          collected.push(n);
+        }
+      });
+    }
+  } catch (_) {}
+
+  // 2. Scan all legacy keys
+  for (const key of LEGACY_RECORD_KEYS) {
+    if (key === STORAGE_KEY_RECORDS) continue;
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) continue;
+
+      let parsed;
+      try { parsed = JSON.parse(raw); } catch { continue; }
+
+      // Array of records
+      if (Array.isArray(parsed)) {
+        parsed.forEach(item => {
+          const n = normalizeRecord(item);
+          if (n && n.diff > 0 && !seen.has(n.diff + '_' + n.ts)) {
+            seen.add(n.diff + '_' + n.ts);
+            collected.push(n);
+          }
+        });
+      }
+      // Object with a list inside
+      else if (parsed && typeof parsed === 'object') {
+        const list = parsed.records || parsed.ranking || parsed.items ||
+                     parsed.data || parsed.list || parsed.history || null;
+        if (Array.isArray(list)) {
+          list.forEach(item => {
+            const n = normalizeRecord(item);
+            if (n && n.diff > 0 && !seen.has(n.diff + '_' + n.ts)) {
+              seen.add(n.diff + '_' + n.ts);
+              collected.push(n);
+            }
+          });
+        }
+        // Single best difficulty stored as object
+        else {
+          const n = normalizeRecord(parsed);
+          if (n && n.diff > 0 && !seen.has(n.diff + '_' + n.ts)) {
+            seen.add(n.diff + '_' + n.ts);
+            collected.push(n);
+          }
+        }
+      }
+    } catch (_) {}
+  }
+
+  // 3. Also scan every localStorage key that looks related (fallback)
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key) continue;
+      const lower = key.toLowerCase();
+      if (!/record|ranking|diff|best|timeline|score|solo|bitaxe/.test(lower)) continue;
+      if (LEGACY_RECORD_KEYS.includes(key) || key === STORAGE_KEY_RECORDS) continue;
+
+      try {
+        const parsed = JSON.parse(localStorage.getItem(key));
+        if (Array.isArray(parsed)) {
+          parsed.forEach(item => {
+            const n = normalizeRecord(item);
+            if (n && n.diff > 0 && !seen.has(n.diff + '_' + n.ts)) {
+              seen.add(n.diff + '_' + n.ts);
+              collected.push(n);
+            }
+          });
+        }
+      } catch (_) {}
+    }
+  } catch (_) {}
+
+  // Sort newest first, keep unique by difficulty (keep the earliest timestamp for each max)
+  collected.sort((a, b) => b.diff - a.diff || b.ts - a.ts);
+
+  // Deduplicate by difficulty keeping the one with the oldest timestamp (first time it was hit)
+  const uniqueByDiff = new Map();
+  collected.forEach(r => {
+    if (!uniqueByDiff.has(r.diff) || r.ts < uniqueByDiff.get(r.diff).ts) {
+      uniqueByDiff.set(r.diff, r);
+    }
+  });
+
+  const final = Array.from(uniqueByDiff.values()).sort((a, b) => b.diff - a.diff);
+
+  if (final.length) {
+    localStorage.setItem(STORAGE_KEY_RECORDS, JSON.stringify(final));
+    console.log(`[Bitaxe Dashboard] Migrados ${final.length} récords desde localStorage antiguo.`);
+  }
+
+  return final;
+}
+
+// Run migration immediately
+records = migrateOldRecords();
 
 /* ═══════════════════════════════════════════════════
    UTILS
@@ -1388,6 +1580,79 @@ function clearRecords() {
   renderRecords();
   renderDiffChart();
   updatePersonalRecord();
+}
+
+function forceRemigrate() {
+  records = migrateOldRecords();
+  saveRecords();
+  renderRecords();
+  renderDiffChart();
+  updatePersonalRecord();
+  updateWeeklyStats();
+  showAlert(`Migración completada · ${records.length} récords encontrados`, 'record');
+}
+
+function showLocalStorageKeys() {
+  const lines = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    let preview = '';
+    try {
+      const val = localStorage.getItem(key);
+      preview = val.length > 120 ? val.slice(0, 120) + '…' : val;
+    } catch (_) { preview = '(error)'; }
+    lines.push(`${key}\n  → ${preview}`);
+  }
+  document.getElementById('storageDebug').textContent =
+    lines.length ? lines.join('\n\n') : 'localStorage vacío';
+}
+
+function exportRecords() {
+  const blob = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `bitaxe-records-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importRecordsManual() {
+  const raw = document.getElementById('importJson').value.trim();
+  if (!raw) {
+    alert('Pega primero un JSON válido');
+    return;
+  }
+  try {
+    const parsed = JSON.parse(raw);
+    const list = Array.isArray(parsed) ? parsed : (parsed.records || parsed.ranking || []);
+    if (!Array.isArray(list) || !list.length) {
+      alert('No se encontraron récords en el JSON');
+      return;
+    }
+
+    let added = 0;
+    list.forEach(item => {
+      const n = normalizeRecord(item);
+      if (!n || n.diff <= 0) return;
+      const exists = records.some(r => r.diff === n.diff && Math.abs(r.ts - n.ts) < 60000);
+      if (!exists) {
+        records.push(n);
+        added++;
+      }
+    });
+
+    records.sort((a, b) => b.diff - a.diff);
+    saveRecords();
+    renderRecords();
+    renderDiffChart();
+    updatePersonalRecord();
+    updateWeeklyStats();
+    showAlert(`Importados ${added} récords nuevos (${records.length} total)`, 'record');
+    document.getElementById('importJson').value = '';
+  } catch (e) {
+    alert('JSON inválido: ' + e.message);
+  }
 }
 
 function renderRecords() {
